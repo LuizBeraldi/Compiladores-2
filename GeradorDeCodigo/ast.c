@@ -175,7 +175,7 @@ Comando *criarExit(Expressao *expressao, void *prox) {
     return novoExit;
 }
 
-Comando *criarComandoExpressao(Expressao *expressao, void *prox) {
+Comando *criarComandoExpressao(Expressao *expressao, void *prox){
     Comando *novoComando = calloc(1, sizeof(Comando));
     novoComando->tipo = LISTA_EXP_COMANDO;
     novoComando->condicao = expressao;
