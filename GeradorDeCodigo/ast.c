@@ -166,7 +166,7 @@ Comando *criarReturn(Expressao *expressao, void *prox) {
     return novoReturn;
 }
 
-Comando *criarExit(Expressao *expressao, void *prox) {
+Comando *criarExit(Expressao *expressao, void *prox){
     Comando *novoExit = calloc(1, sizeof(Comando));
     novoExit->tipo = EXIT;
     novoExit->condicao = expressao;
