@@ -1695,6 +1695,22 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             int regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "sub");
             resultado->tipoReg = 0;
             resultado->numReg = regT;
+
+            return resultado;
+        }else if(expressao->operador == MULTIPLY){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+
+            if(dir->NoAuxid && ((HashNo *)dir->NoAuxid)->tipok == VECTOR){
+                regDir = loadDoArray(dir->numReg);
+                tipoDir = 0;
+            }
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao * dir->atribuicao);
+            regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "mul");
+            resultado->numReg = regT;
+            resultado->tipoReg = 0;
             
             return resultado;
         }
