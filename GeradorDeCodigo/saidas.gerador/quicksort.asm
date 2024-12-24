@@ -31,7 +31,7 @@ quicksort:
 	addi $t0, $zero, 1
 	add $s2, $zero, $t0
 	sle $t0, $s0, $s1
-	beqz $t0, else_1273136384
+	beqz $t0, else_1071453440
 
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -49,9 +49,9 @@ quicksort:
 	addi $sp, $sp, 52
 
 	jr $ra
-	j exit_if_1273136384
-	else_1273136384:
-	exit_if_1273136384:
+	j exit_if_1071453440
+	else_1071453440:
+	exit_if_1071453440:
 	addi $t0, $zero, 1
 	sub $t1, $s1, $t0
 	add $s3, $zero, $t1
@@ -63,13 +63,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	add $s5, $zero, $t0
-	j while_teste_1273204560
-	while_corpo_1273204560:
-	while_corpo_1273184160:
+	j while_teste_1071521616
+	while_corpo_1071521616:
+	while_corpo_1071501216:
 	addi $t0, $zero, 1
 	add $t1, $s3, $t0
 	add $s3, $zero, $t1
-	while_teste_1273184160:
+	while_teste_1071501216:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -77,12 +77,12 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	slt $t1, $t0, $s5
-	bnez $t1, while_corpo_1273184160
-	while_corpo_1273184064:
+	bnez $t1, while_corpo_1071501216
+	while_corpo_1071501120:
 	addi $t0, $zero, 1
 	sub $t1, $s4, $t0
 	add $s4, $zero, $t1
-	while_teste_1273184064:
+	while_teste_1071501120:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s4
 	la $t0, a
@@ -90,13 +90,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	sgt $t1, $t0, $s5
-	bnez $t1, while_corpo_1273184064
+	bnez $t1, while_corpo_1071501120
 	sge $t0, $s3, $s4
-	beqz $t0, else_1273183840
+	beqz $t0, else_1071500896
 	addi $t0, $zero, 0
 	add $s2, $zero, $t0
-	j exit_if_1273171344
-	else_1273183840:
+	j exit_if_1071488400
+	else_1071500896:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -122,9 +122,9 @@ quicksort:
 	sll $t2, $t1, 2
 	add $t2, $t2, $t0
 	sw $s6, 0($t2)
-	exit_if_1273171344:
-	while_teste_1273204560:
-	bnez $s2, while_corpo_1273204560
+	exit_if_1071488400:
+	while_teste_1071521616:
+	bnez $s2, while_corpo_1071521616
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -184,19 +184,19 @@ main:
 	addi $t0, $zero, 0
 	la $t1, max
 	sw $t0, 0($t1)
-	j while_teste_1273340304
-	while_corpo_1273340304:
+	j while_teste_1071657360
+	while_corpo_1071657360:
 	.data
-		string_1273308848: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
+		string_1071625904: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
 	.text
-	la $a0, string_1273308848
+	la $a0, string_1071625904
 	addi $v0, $zero, 4
 	syscall
 	addi $v0, $zero, 5
 	syscall
 	la $t0, max
 	sw $v0, 0($t0)
-	while_teste_1273340304:
+	while_teste_1071657360:
 	la $t0, max
 	lw $t1, 0($t0)
 	addi $t0, $zero, 0
@@ -206,21 +206,21 @@ main:
 	addi $t0, $zero, 100
 	sgt $t3, $t1, $t0
 	addi $t0, $zero, 1
-	beq $t0, $t2, t_logical_or_1273307904
-	beq $t0, $t3, t_logical_or_1273307904
+	beq $t0, $t2, t_logical_or_1071624960
+	beq $t0, $t3, t_logical_or_1071624960
 	addi $t0, $zero, 0
-	t_logical_or_1273307904:
-	bnez $t0, while_corpo_1273340304
+	t_logical_or_1071624960:
+	bnez $t0, while_corpo_1071657360
 	addi $t0, $zero, 0
 	add $s1, $zero, $t0
-	j for_teste_1273340208
-	for_corpo_1273340208:
+	j for_teste_1071657264
+	for_corpo_1071657264:
 	addi $t0, $zero, 1
 	add $t1, $s1, $t0
 	.data
-		string_1273369120: .asciiz "Entre com o valor da posicao "
+		string_1071686176: .asciiz "Entre com o valor da posicao "
 	.text
-	la $a0, string_1273369120
+	la $a0, string_1071686176
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t1
@@ -243,11 +243,11 @@ main:
 	sw $s2, 0($t2)
 	add $t0, $zero, $s1
 	addi $s1, $s1, 1
-	for_teste_1273340208:
+	for_teste_1071657264:
 	la $t1, max
 	lw $t2, 0($t1)
 	slt $t1, $s1, $t2
-	bnez $t1, for_corpo_1273340208
+	bnez $t1, for_corpo_1071657264
 	addi $t1, $zero, 0
 	add $a1, $zero, $t1 # function param m
 	la $t1, max
@@ -259,8 +259,8 @@ main:
 	add $t1, $zero, $v0
 	addi $t2, $zero, 0
 	add $s1, $zero, $t2
-	j for_teste_1273340016
-	for_corpo_1273340016:
+	j for_teste_1071657072
+	for_corpo_1071657072:
 	addi $t2, $zero, 1
 	mul $t3, $t2, $s1
 	la $t2, a
@@ -268,9 +268,9 @@ main:
 	add $t4, $t4, $t2
 	lw $t2, 0($t4)
 	.data
-		string_1273374992: .asciiz ""
+		string_1071692048: .asciiz ""
 	.text
-	la $a0, string_1273374992
+	la $a0, string_1071692048
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t2
@@ -284,15 +284,15 @@ main:
 	syscall
 	add $t2, $zero, $s1
 	addi $s1, $s1, 1
-	for_teste_1273340016:
+	for_teste_1071657072:
 	la $t3, max
 	lw $t4, 0($t3)
 	slt $t3, $s1, $t4
-	bnez $t3, for_corpo_1273340016
+	bnez $t3, for_corpo_1071657072
 	.data
-		string_1273338720: .asciiz "\n"
+		string_1071655776: .asciiz "\n"
 	.text
-	la $a0, string_1273338720
+	la $a0, string_1071655776
 	addi $v0, $zero, 4
 	syscall
 	addi $t3, $zero, 0

@@ -182,37 +182,6 @@ char *tipoE(int tipo, int ptr){
     return aux;
 }
 
-/*char *tipoE(int tipo, int ptr){
-    char novoTipo[50];
-
-    switch(tipo){
-        case 275:
-        case 309:
-            strcpy(novoTipo, "int");
-            break;
-        case 276:
-        case 313:
-            strcpy(novoTipo, "char");
-            break;
-        case 277:
-            strcpy(novoTipo, "void");
-            break;
-        case 312:
-            strcpy(novoTipo, "char*");
-            break;
-        default:
-            break;
-    }
-
-    for(int i = 0; i < ptr; i++){
-        strcat(novoTipo, "*");
-    }
-    char *aux = calloc(strlen(novoTipo) + 1, sizeof(char));
-    strcpy(aux, novoTipo);
-
-    return aux;
-}*/
-
 void imprimirProgram(void *AST){
     void **hash = NULL;
 

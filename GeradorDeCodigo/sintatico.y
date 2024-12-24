@@ -95,27 +95,27 @@ Programa *AST = NULL;
 %token <token> ID
 
 %type <sinalAux> Sinal 
-%type <dim> ArrayCheck
-%type <expr> Expression 
-%type <expr> BinaryExpr 
-%type <expr> TernaryExpr 
-%type <expr> UnaryExpr
+%type <dim> ChecarArray
+%type <expr> Expressao 
+%type <expr> ExpressaoBinaria 
+%type <expr> ExpressaoTernaria 
+%type <expr> ExpressaoUnaria
 %type <token> Ops
 %type <expr> Primaria
 %type <posfixa> PosFixa
-%type <dim> ArrayCall
-%type <param> FunctionCall
-%type <param> ParamExpression
-%type <token> VarType
-%type <param> Parameters
+%type <dim> ChamadaArray
+%type <param> ChamadaFuncao
+%type <param> ExpressaoParam
+%type <token> TipoVar
+%type <param> Param
 %type <cmd> ListaComandos
 %type <cmd> Comandos
 %type <cmd> AuxElse
 %type <expr> AuxReturn
 %type <expr> AuxPrint
-%type <token> SemicolonDeSchrodinger
+%type <token> SemiColunS
 %type DeclaracoesLocais
-%type Pointers
+%type Ptr
 
 %start AstParse
 
@@ -149,7 +149,7 @@ Sinal : PLUS { $$ = PLUS; }
     | MINUS { $$ = MINUS; } ;
     | { $$ = PLUS; } ; 
 
-DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck {
+DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr ChecarArray {
         void *no = inserirHash(hashGlobal, $4.valor, $7.tipo, ptrCont);
         if(!$10){
             setTipo(no, VAR);
@@ -160,7 +160,7 @@ DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } P
         setEhGlobal(no);
     } ;
 
-DeclaraFuncao: FUNCTION COLON ID { hashAtual = criarHash(); } RETURN_TYPE COLON VarType { ptrCont = 0; } Pointers { paramCont = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
+DeclaraFuncao: FUNCTION COLON ID { hashAtual = criarHash(); } RETURN_TYPE COLON TipoVar { ptrCont = 0; } Ptr { paramCont = 0; } Param DeclaracoesLocais ListaComandos END_FUNCTION {
         Funcao *func = criarFuncao(hashAtual, $7.tipo, ptrCont, $3.valor, $13, NULL);
         if(listaFunc){
             Funcao *aux = listaFunc;
@@ -179,41 +179,41 @@ DeclaraFuncao: FUNCTION COLON ID { hashAtual = criarHash(); } RETURN_TYPE COLON 
         hashAtual = NULL;
     } ;
 
-ArrayCheck: L_SQUARE_BRACKET NUM_INT R_SQUARE_BRACKET ArrayCheck {
+ChecarArray: L_SQUARE_BRACKET NUM_INT R_SQUARE_BRACKET ChecarArray {
         Dimensao *dim = criarDimensao(atoi($2.valor));
         dim->prox = $4;
         $$ = dim;
     }
     | { $$ = NULL; } ;
 
-Expression: BinaryExpr { $$ = $1; }
-    | TernaryExpr { $$ = $1; }
-    | UnaryExpr { $$ = $1; } 
+Expressao: ExpressaoBinaria { $$ = $1; }
+    | ExpressaoTernaria { $$ = $1; }
+    | ExpressaoUnaria { $$ = $1; } 
     | Primaria { $$ = $1; } 
-    | FunctionCall { $$ = $1; } ;
+    | ChamadaFuncao { $$ = $1; } ;
 
-BinaryExpr: Ops L_PAREN Expression COMMA Expression R_PAREN {
+ExpressaoBinaria: Ops L_PAREN Expressao COMMA Expressao R_PAREN {
         Expressao *bop = criarExpressao(BOP, $1.tipo, $3, $5);
         $$ = bop;
     } ;
 
-TernaryExpr: TERNARY_CONDITIONAL L_PAREN Expression COMMA Expression COMMA Expression {
+ExpressaoTernaria: TERNARY_CONDITIONAL L_PAREN Expressao COMMA Expressao COMMA Expressao {
         Expressao *ternaria = criarExpressao(TERNARY, TERNARY_CONDITIONAL, $5, $7);
         ternaria->condicaoTernaria = $3;
         $$ = ternaria;
     } ;
 
-UnaryExpr: Ops L_PAREN Expression R_PAREN {
+ExpressaoUnaria: Ops L_PAREN Expressao R_PAREN {
         Expressao *uop = criarExpressao(UOP, $1.tipo, $3, NULL);
         uop->preOuPos = 1;
         $$ = uop;
     } 
-    | L_PAREN Expression R_PAREN INC {
+    | L_PAREN Expressao R_PAREN INC {
         Expressao *uop = criarExpressao(UOP, INC, $2, NULL);
         uop->preOuPos = 2;
         $$ = uop;
     } 
-    | L_PAREN Expression R_PAREN DEC {
+    | L_PAREN Expressao R_PAREN DEC {
         Expressao *uop = criarExpressao(UOP, DEC, $2, NULL);
         uop->preOuPos = 2;
         $$ = uop;
@@ -294,34 +294,34 @@ Primaria: NUM_INT {
         $$ = expr;
     } ;
 
-PosFixa: ArrayCall { ehFuncOuArray = 1; $$ = $1; }
-    | FunctionCall { ehFuncOuArray = 2; $$ = $1; }
+PosFixa: ChamadaArray { ehFuncOuArray = 1; $$ = $1; }
+    | ChamadaFuncao { ehFuncOuArray = 2; $$ = $1; }
     | { ehFuncOuArray = 0; $$ = NULL; }
 
-ArrayCall: L_SQUARE_BRACKET Expression R_SQUARE_BRACKET {
+ChamadaArray: L_SQUARE_BRACKET Expressao R_SQUARE_BRACKET {
         Dimensao *dim = criarDimensaoExpressao($2);
         $$ = dim;
     } ;
 
-FunctionCall: L_PAREN ParamExpression R_PAREN {
+ChamadaFuncao: L_PAREN ExpressaoParam R_PAREN {
         $$ = $2;
     } ;
 
-ParamExpression: Expression ParamExpression {
+ExpressaoParam: Expressao ExpressaoParam {
         ExpParam *aux = criarExpressaoParametro($1, $2);
         $$ = aux;
     }
-    | COMMA Expression ParamExpression {
+    | COMMA Expressao ExpressaoParam {
         ExpParam *aux = criarExpressaoParametro($2, $3);
         $$ = aux;
     }
     | { $$ = NULL; } ;
 
-VarType: INT { $$ = yylval.token; }
+TipoVar: INT { $$ = yylval.token; }
     | CHAR { $$ = yylval.token; }
     | VOID { $$ = yylval.token; } ;
 
-Parameters: PARAMETER COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck Parameters {
+Param: PARAMETER COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr ChecarArray Param {
         void *no = inserirHash(hashAtual, $3.valor, $6.tipo, ptrCont);
         paramCont++;
         setQntParam(no, paramCont);
@@ -340,7 +340,7 @@ Parameters: PARAMETER COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers Arra
     }
     | { $$ = NULL; } ;
 
-DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck DeclaracoesLocais {
+DeclaracoesLocais: VARIABLE COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr ChecarArray DeclaracoesLocais {
         void *no = inserirHash(hashAtual, $3.valor, $6.tipo, ptrCont);
         if (!$9){
             setTipo(no, VAR);
@@ -351,10 +351,10 @@ DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } Pointer
     }
     | { } ; 
 
-Pointers: MULTIPLY Pointers { ptrCont++; }
+Ptr: MULTIPLY Ptr { ptrCont++; }
     | { } ;
 
-ListaComandos: Comandos SemicolonDeSchrodinger ListaComandos {       
+ListaComandos: Comandos SemiColunS ListaComandos {       
         Comando *cmd = $1;
         while (cmd->prox != NULL){
             cmd = cmd->prox;
@@ -364,27 +364,27 @@ ListaComandos: Comandos SemicolonDeSchrodinger ListaComandos {
     }
     | { $$ = NULL; } ;
 
-Comandos: IF L_PAREN Expression COMMA Comandos AuxElse R_PAREN SemicolonDeSchrodinger Comandos {
+Comandos: IF L_PAREN Expressao COMMA Comandos AuxElse R_PAREN SemiColunS Comandos {
         Comando *cmd = criarSe($3, $5, $6, $9);
         $$ = cmd;
     }
-    | DO_WHILE L_PAREN Comandos COMMA Expression R_PAREN SemicolonDeSchrodinger Comandos {
+    | DO_WHILE L_PAREN Comandos COMMA Expressao R_PAREN SemiColunS Comandos {
         Comando *cmd = criarFaçaEnquanto($5, $3, $8);
         $$ = cmd;
     }
-    | WHILE L_PAREN Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos {
+    | WHILE L_PAREN Expressao COMMA Comandos R_PAREN SemiColunS Comandos {
         Comando *cmd = criarEnquanto($3, $5, $8);
         $$ = cmd;
     }
-    | FOR L_PAREN Expression COMMA Expression COMMA Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos {
+    | FOR L_PAREN Expressao COMMA Expressao COMMA Expressao COMMA Comandos R_PAREN SemiColunS Comandos {
         Comando *cmd = criarPara($3, $5, $7, $9, $12);
         $$ = cmd;
     }
-    | PRINTF L_PAREN STRING AuxPrint R_PAREN SemicolonDeSchrodinger Comandos {
+    | PRINTF L_PAREN STRING AuxPrint R_PAREN SemiColunS Comandos {
         Comando *cmd = criarImprimir($3.valor, $4, $7);
         $$ = cmd;
     }
-    | SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemicolonDeSchrodinger Comandos {
+    | SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemiColunS Comandos {
         Comando *cmd = criarScan($3.valor, $7.valor, $11);
         $$ = cmd;
     }
@@ -392,11 +392,11 @@ Comandos: IF L_PAREN Expression COMMA Comandos AuxElse R_PAREN SemicolonDeSchrod
         Comando *cmd = criarReturn($3, $5);
         $$ = cmd;
     }
-    | EXIT L_PAREN Expression R_PAREN Comandos {
+    | EXIT L_PAREN Expressao R_PAREN Comandos {
         Comando *cmd = criarExit($3, $5);
         $$ = cmd;
     } 
-    | Expression SemicolonDeSchrodinger Comandos {
+    | Expressao SemiColunS Comandos {
         Comando *cmd = criarComandoExpressao($1, $3);
         $$ = cmd;
     } 
@@ -405,16 +405,16 @@ Comandos: IF L_PAREN Expression COMMA Comandos AuxElse R_PAREN SemicolonDeSchrod
 AuxElse: COMMA Comandos { $$ = $2; }
     | { $$ = NULL; } ;
 
-AuxPrint: COMMA Expression AuxPrint {
+AuxPrint: COMMA Expressao AuxPrint {
         $2->proxExpr = $3;
         $$ = $2;
     }
     | { $$ = NULL; } ;
 
-AuxReturn: Expression { $$ = $1; }
+AuxReturn: Expressao { $$ = $1; }
     | { $$ = NULL; } ;
 
-SemicolonDeSchrodinger: SEMICOLON { }
+SemiColunS: SEMICOLON { }
     | { } ;
 
 %%

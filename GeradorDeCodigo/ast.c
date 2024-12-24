@@ -4,8 +4,6 @@
 #include "hash.h"
 #include "sintatico.tab.h"
 
-//1287
-
 int *regTsv = NULL, noAtri = 0;
 
 Programa *criarPrograma(void **hash, void *listaFuncoes, void *main){
