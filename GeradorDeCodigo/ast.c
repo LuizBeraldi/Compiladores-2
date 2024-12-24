@@ -2476,12 +2476,11 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         if(comando->imprimirAux){
             Expressao *prox = comando->imprimirAux;
             ResultadoExpr *toPrint = NULL;
-
             char *restOfString = NULL;
-
             char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
             strcpy(stringWithoutFormat, comando->string + 1);
-            while (prox) {
+
+            while(prox){
                 toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
                 prox = prox->proxExpr;
                 if (toPrint) {
