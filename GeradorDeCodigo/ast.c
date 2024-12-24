@@ -2472,6 +2472,73 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         ResultadoExpr *forResult = NULL;
         forResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
         para(forResult->tipoReg, forResult->numReg, forLine);
+    }else if(comando->tipo == PRINTF){
+        if (comando->imprimirAux) {
+            Expressao *prox = comando->imprimirAux;
+            ResultadoExpr *toPrint = NULL;
+
+            char *restOfString = NULL;
+
+            char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
+            strcpy(stringWithoutFormat, comando->string + 1);
+            while (prox) {
+                toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
+                prox = prox->proxExpr;
+                if (toPrint) {
+                    if (toPrint->NoAuxid) {
+                        if (((HashNo *)toPrint->NoAuxid)->tipok == VECTOR) {
+                            toPrint->numReg = loadDoArray(toPrint->numReg);
+                            toPrint->tipoReg = 0;
+                        }
+                    }
+                }
+
+                int printing = 0;
+                char *formatSpecifier = strstr(stringWithoutFormat, "%d");
+                if (formatSpecifier) {
+                    printing = INT;
+                } else {
+                    formatSpecifier = strstr(stringWithoutFormat, "%s");
+                    if (formatSpecifier) {
+                        printing = STRING;
+                    } else {
+                        formatSpecifier = strstr(stringWithoutFormat, "%c");
+                        if (formatSpecifier) {
+                            printing = CHAR;
+                        }
+                    }
+                }
+                if (restOfString) free(restOfString);
+                restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
+                strcpy(restOfString, formatSpecifier + 2);
+                restOfString[strlen(restOfString)] = '\0';
+                if (formatSpecifier != NULL) *formatSpecifier = '\0';
+                string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
+                if (printing == INT)
+                    inteiro(toPrint->tipoReg, toPrint->numReg);
+                else if (printing == CHAR)
+                    caracter(toPrint->tipoReg, toPrint->numReg);
+                else if (printing == STRING)
+                    stringVar(toPrint->tipoReg, toPrint->numReg);
+
+                free(stringWithoutFormat);
+                stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
+                strcpy(stringWithoutFormat, restOfString);
+            }
+            if (strlen(restOfString) > 0) {
+                restOfString[strlen(restOfString) - 1] = '\0';
+                string(restOfString, rand() % 67282);
+            }
+            if (restOfString) free(restOfString);
+            if (stringWithoutFormat) free(stringWithoutFormat);
+
+        } else {
+            char *fixedString = calloc(strlen(comando->string) - 1, sizeof(char));
+            strncpy(fixedString, comando->string + 1, strlen(comando->string) - 2);
+            fixedString[strlen(comando->string) - 2] = '\0';
+            string(fixedString, abs((int)((intptr_t)comando->string)));
+            free(fixedString);
+        }
     }
 
     switch (comando->tipo) {
