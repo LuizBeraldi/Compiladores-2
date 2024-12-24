@@ -137,7 +137,7 @@ Comando *criarPara(Expressao *ini, Expressao *condicao, Expressao *incrementa, v
     return novoPara;
 }
 
-Comando *criarImprimir(char *string, Expressao *imprimirAux, void *prox) {
+Comando *criarImprimir(char *string, Expressao *imprimirAux, void *prox){
     Comando *novoImprimir = calloc(1, sizeof(Comando));
     novoImprimir->tipo = PRINTF;
     novoImprimir->string = string;
