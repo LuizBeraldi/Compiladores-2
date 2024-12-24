@@ -2546,8 +2546,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             if(stringWithoutFormat){
                 free(stringWithoutFormat);
             }
-
-        } else {
+        }else{
             char *fixedString = calloc(strlen(comando->string) - 1, sizeof(char));
             strncpy(fixedString, comando->string + 1, strlen(comando->string) - 2);
             fixedString[strlen(comando->string) - 2] = '\0';
