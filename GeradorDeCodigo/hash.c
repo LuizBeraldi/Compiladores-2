@@ -42,7 +42,7 @@ void *insertHash(void **hashTable, char *varId, int currenttipo, int ptr) {
 
 void setIsConstant(void *no) {
     HashNo *aux = no;
-    aux->isConstant = 1;
+    aux->ehConstante = 1;
 }
 
 void setIsGlobal(void *no) {

@@ -19,7 +19,7 @@
 #define VECTOR 3
 
 typedef struct no {
-    int tipoVar, ptr, atribuicao, isConstant, ehGlobal, tipok, qntParam, qntDimen, atribuicaoLinha, atribuicaoColuna, regS;
+    int tipoVar, ptr, atribuicao, ehConstante, ehGlobal, tipok, qntParam, qntDimen, atribuicaoLinha, atribuicaoColuna, regS;
     char *varId, string[256];
     void *dimensao, *param, *hashExpr;
     struct no *prox;

@@ -234,7 +234,7 @@ ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor){
                         resultado = criarResultadoExpressao(VOID, hashNo->ptr, hashNo->atribuicao);
                         if (hashNo->tipok == VECTOR) resultado->ptr = 1;
                         resultado->NoAuxid = hashNo;
-                        if (hashNo->isConstant || hashNo->ehGlobal) {
+                        if (hashNo->ehConstante || hashNo->ehGlobal) {
                             if (!noAtri && hashNo->tipok != VECTOR) {
                                 resultado->numReg = loadGlobalInt(hashNo->varId);
                                 resultado->tipoReg = 0;
@@ -251,7 +251,7 @@ ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor){
                         resultado = criarResultadoExpressao(hashNo->tipoVar, hashNo->ptr, hashNo->atribuicao);
                         if (hashNo->tipok == VECTOR) resultado->ptr = 1;
                         resultado->NoAuxid = hashNo;
-                        if (hashNo->isConstant || hashNo->ehGlobal) {
+                        if (hashNo->ehConstante || hashNo->ehGlobal) {
                             if (!noAtri && hashNo->tipok != VECTOR) {
                                 resultado->numReg = loadGlobalInt(hashNo->varId);
                                 resultado->tipoReg = 0;
@@ -1019,7 +1019,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
                 }
                 resultado->NoAuxid = hashNo;
 
-                if(hashNo->isConstant || hashNo->ehGlobal){
+                if(hashNo->ehConstante || hashNo->ehGlobal){
                     if(!noAtri && hashNo->tipok != VECTOR){
                         resultado->numReg = loadGlobalInt(hashNo->varId);
                         resultado->tipoReg = 0;
@@ -1041,7 +1041,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
                 }
                 resultado->NoAuxid = hashNo;
 
-                if(hashNo->isConstant || hashNo->ehGlobal){
+                if(hashNo->ehConstante || hashNo->ehGlobal){
                     if(!noAtri && hashNo->tipok != VECTOR){
                         resultado->numReg = loadGlobalInt(hashNo->varId);
                         resultado->tipoReg = 0;
@@ -2624,7 +2624,7 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
         ResultadoExpr *atrib = NULL;
 
         while(node){
-            if(node->tipok == FUNCTION || node->isConstant){
+            if(node->tipok == FUNCTION || node->ehConstante){
                 node = node->prox;
                 continue;
             }
