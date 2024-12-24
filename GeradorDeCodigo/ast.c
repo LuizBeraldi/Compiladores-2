@@ -115,7 +115,7 @@ Comando *criarFaçaEnquanto(Expressao *condicao, void *entao, void *prox) {
     return novoFacaEnquanto;
 }
 
-Comando *criarEnquanto(Expressao *condicao, void *entao, void *prox) {
+Comando *criarEnquanto(Expressao *condicao, void *entao, void *prox){
     Comando *novoEnquanto = calloc(1, sizeof(Comando));
     novoEnquanto->tipo = WHILE;
     novoEnquanto->condicao = condicao;
