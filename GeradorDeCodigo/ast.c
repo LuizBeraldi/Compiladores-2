@@ -125,7 +125,7 @@ Comando *criarEnquanto(Expressao *condicao, void *entao, void *prox) {
     return novoEnquanto;
 }
 
-Comando *criarPara(Expressao *ini, Expressao *condicao, Expressao *incrementa, void *entao, void *prox) {
+Comando *criarPara(Expressao *ini, Expressao *condicao, Expressao *incrementa, void *entao, void *prox){
     Comando *novoPara = calloc(1, sizeof(Comando));
     novoPara->tipo = FOR;
     novoPara->ini = ini;
