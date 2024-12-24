@@ -2494,10 +2494,10 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 }
                 int printing = 0;
                 char *formatSpecifier = strstr(stringWithoutFormat, "%d");
-                
-                if (formatSpecifier) {
+
+                if(formatSpecifier){
                     printing = INT;
-                } else {
+                }else{
                     formatSpecifier = strstr(stringWithoutFormat, "%s");
                     if (formatSpecifier) {
                         printing = STRING;
