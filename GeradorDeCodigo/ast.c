@@ -2521,13 +2521,14 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                     *formatSpecifier = '\0';
                 }
                 string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
-                if (printing == INT)
-                    inteiro(toPrint->tipoReg, toPrint->numReg);
-                else if (printing == CHAR)
-                    caracter(toPrint->tipoReg, toPrint->numReg);
-                else if (printing == STRING)
-                    stringVar(toPrint->tipoReg, toPrint->numReg);
 
+                if (printing == INT){
+                    inteiro(toPrint->tipoReg, toPrint->numReg);
+                }else if (printing == CHAR){
+                    caracter(toPrint->tipoReg, toPrint->numReg);
+                }else if (printing == STRING){
+                    stringVar(toPrint->tipoReg, toPrint->numReg);
+                }
                 free(stringWithoutFormat);
                 stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
                 strcpy(stringWithoutFormat, restOfString);
