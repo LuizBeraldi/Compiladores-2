@@ -2483,7 +2483,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             while(prox){
                 toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
                 prox = prox->proxExpr;
-                if (toPrint) {
+                
+                if(toPrint){
                     if (toPrint->NoAuxid) {
                         if (((HashNo *)toPrint->NoAuxid)->tipok == VECTOR) {
                             toPrint->numReg = loadDoArray(toPrint->numReg);
