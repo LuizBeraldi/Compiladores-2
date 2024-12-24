@@ -2511,14 +2511,15 @@ int traverseAST(Programa *programa) {
         }else{
             globalAtribuicaoVar();
         }
-        
         parametroFuncao(funcaoAtual->nome, funcNode->qntParam);
         lookForNodeInHashWithExpr(programa->hashTable, funcaoAtual->hashTable, programa);
         Comando *comando = funcaoAtual->listaComando;
-        while (comando != NULL) {
+
+        while(comando != NULL){
             traverseASTCommand(comando, programa->hashTable, funcaoAtual->hashTable, programa, funcaoAtual);
             comando = comando->prox;
         }
+        
         if (strcmp(funcaoAtual->nome, "main")) {
             loadDaPilha();
             loadRegT(regTsv);
