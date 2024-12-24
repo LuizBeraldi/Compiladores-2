@@ -2606,6 +2606,9 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             printf("\t# exit with status %d", status->atribuicao);
             imprimirExit();
         }
+    }else if(comando->tipo == LISTA_EXP_COMANDO){
+        avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+        traverseASTCommand(comando->prox, globalHash, localHash, programa, funcaoAtual);
     }
 
     switch (comando->tipo) {
