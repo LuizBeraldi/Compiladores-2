@@ -2516,7 +2516,10 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
                 strcpy(restOfString, formatSpecifier + 2);
                 restOfString[strlen(restOfString)] = '\0';
-                if (formatSpecifier != NULL) *formatSpecifier = '\0';
+
+                if(formatSpecifier != NULL){
+                    *formatSpecifier = '\0';
+                }
                 string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
                 if (printing == INT)
                     inteiro(toPrint->tipoReg, toPrint->numReg);
