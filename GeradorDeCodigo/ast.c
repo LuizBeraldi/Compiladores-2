@@ -8,7 +8,7 @@
 
 int *regTsv = NULL, noAtri = 0;
 
-Programa *criarPrograma(void **hash, void *listaFuncoes, void *main) {
+Programa *criarPrograma(void **hash, void *listaFuncoes, void *main){
     Programa *novoProg = calloc(1, sizeof(Programa));
     novoProg->hashTable = hash;
     novoProg->listaFuncoes = listaFuncoes;
