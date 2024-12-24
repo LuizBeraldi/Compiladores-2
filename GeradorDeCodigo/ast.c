@@ -2144,6 +2144,33 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
         }
 
         return resultado;
+    }else if(expressao->tipo == ARRAY_CALL){
+        NoAuxid = getIdentifierNode(localHash, expressao->identificador);
+
+        if(!NoAuxid){
+            NoAuxid = getIdentifierNode(globalHash, expressao->identificador);
+        }
+
+        int posic = -1, qntdDimenRecebidas = 0;
+        Dimensao *dimenRecebidas = expressao->dimensao, *dimenEsperada = NoAuxid->dimensao;
+        ResultadoExpr *dimenResult = NULL;
+
+        int mipsIndex = constante(1);
+
+        while(dimenRecebidas){
+            qntdDimenRecebidas++;
+            dimenResult = avaliarExpressao(dimenRecebidas->exp, globalHash, localHash, programa);
+            mipsIndex = opeAritmeticas(0, mipsIndex, dimenResult->tipoReg, dimenResult->numReg, "mul");
+            dimenEsperada = dimenEsperada->prox;
+            dimenRecebidas = dimenRecebidas->prox;
+        }
+        posic = acessarEnderecoArray(1, NoAuxid->regS, NoAuxid->varId, 0, mipsIndex, NoAuxid->ehGlobal);
+        resultado = criarResultadoExpressao(NoAuxid->tipoVar, 0, 0);
+        resultado->tipoReg = 0;
+        resultado->numReg = posic;
+        resultado->NoAuxid = NoAuxid;
+        
+        return resultado;
     }
 
     switch (expressao->tipo) {
