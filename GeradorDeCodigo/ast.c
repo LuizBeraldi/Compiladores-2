@@ -2456,6 +2456,22 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         ResultadoExpr *whileResult = NULL;
         whileResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
         enquanto(whileResult->tipoReg, whileResult->numReg, whileLine);
+    }else if(comando->tipo == FOR){
+        int forLine = abs((int)((intptr_t)comando));
+        avaliarExpressao(comando->ini, globalHash, localHash, programa);
+        jump("for_teste_", forLine);
+        label("for_corpo_", forLine);
+        t = comando->entao;
+        
+        while (t) {
+            traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+            t = t->prox;
+        }
+        avaliarExpressao(comando->incrimenta, globalHash, localHash, programa);
+        label("for_teste_", forLine);
+        ResultadoExpr *forResult = NULL;
+        forResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+        para(forResult->tipoReg, forResult->numReg, forLine);
     }
 
     switch (comando->tipo) {
