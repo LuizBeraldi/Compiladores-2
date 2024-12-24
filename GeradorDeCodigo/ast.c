@@ -2600,6 +2600,12 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 imprimirReturn();
             }
         }
+    }else if(comando->tipo == EXIT){
+        if(comando->condicao){
+            ResultadoExpr *status = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            printf("\t# exit with status %d", status->atribuicao);
+            imprimirExit();
+        }
     }
 
     switch (comando->tipo) {
