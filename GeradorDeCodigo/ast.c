@@ -2609,6 +2609,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
     }else if(comando->tipo == LISTA_EXP_COMANDO){
         avaliarExpressao(comando->condicao, globalHash, localHash, programa);
         traverseASTCommand(comando->prox, globalHash, localHash, programa, funcaoAtual);
+    }else{
+        printf("Erro: Comando desconhecido!\n");
     }
 
     switch (comando->tipo) {
