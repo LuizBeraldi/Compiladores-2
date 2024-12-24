@@ -2412,6 +2412,33 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
     comando->visitado = 1;
 
     Comando *t = NULL;
+
+    if(comando->tipo == IF){
+        ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+        int ifLine = abs((int)((intptr_t)comando->entao)), elseLine = -1;
+
+        if(comando->elseS){
+            elseLine = abs((int)((intptr_t)comando->elseS));
+        }else{
+            elseLine = ifLine;
+        }
+        se(ifResult->tipoReg, ifResult->numReg, elseLine);
+        t = comando->entao;
+        
+        while (t) {
+            traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+            t = t->prox;
+        }
+        jump("exit_if_", ifLine);
+        label("else_", elseLine);
+        Comando *t2 = comando->elseS;
+        while (t2) {
+            traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
+            t2 = t2->prox;
+        }
+        label("exit_if_", ifLine);
+    }
+
     switch (comando->tipo) {
         case IF:
             ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
