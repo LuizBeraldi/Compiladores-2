@@ -1510,6 +1510,21 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
 
             return resultado;
         }
+    }else if(expressao->tipo == BOP){
+        if(expressao->esq->operador == ASSIGN){
+            noAtri = 1;
+        }
+        esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
+
+        if(expressao->esq->operador == ASSIGN){
+            noAtri = 0;
+        }
+        dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
+
+        tipoEsq = esq->tipoReg;
+        regEsq = esq->numReg;
+        tipoDir = dir->tipoReg;
+        regDir = dir->numReg;
     }
 
     switch (expressao->tipo) {
