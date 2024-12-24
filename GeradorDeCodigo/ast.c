@@ -2565,8 +2565,10 @@ void freeAST(Programa *programa){
             cmd = cmd2;
         }
         freeHash(functions->hashTable);
-        
-        if (functions->nome) free(functions->nome);
+
+        if(functions->nome){
+            free(functions->nome);
+        }
         free(functions);
         functions = functions2;
     }
