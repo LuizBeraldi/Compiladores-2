@@ -80,7 +80,7 @@ Dimensao *criarDimensaoExpressao(Expressao *exp) {
     return novaDimensao;
 }
 
-void setDimensaoExpressao(Expressao *expressao, Dimensao *dimensao) {
+void setDimensaoExpressao(Expressao *expressao, Dimensao *dimensao){
     if(!expressao){
         return;
     }
