@@ -2503,13 +2503,16 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                         printing = STRING;
                     }else{
                         formatSpecifier = strstr(stringWithoutFormat, "%c");
-                        
+
                         if(formatSpecifier){
                             printing = CHAR;
                         }
                     }
                 }
-                if (restOfString) free(restOfString);
+
+                if(restOfString){
+                    free(restOfString);
+                }
                 restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
                 strcpy(restOfString, formatSpecifier + 2);
                 restOfString[strlen(restOfString)] = '\0';
