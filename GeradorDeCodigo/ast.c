@@ -2559,8 +2559,10 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         if(!node){
             node = getIdentifierNode(globalHash, comando->identificador);
         }
-        
-        if (!node) printf("Erro: Variável %s não declarada no scanf\n", comando->identificador);
+
+        if(!node){
+            printf("Erro: Variável %s não declarada no scanf\n", comando->identificador);
+        }
 
         int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
         node->regS = sReg;
