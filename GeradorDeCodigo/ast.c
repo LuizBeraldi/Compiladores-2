@@ -2093,8 +2093,11 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
                 resultado = criarResultadoExpressao(esq->tipoVar, 0, *(&esq->atribuicao));
             }
             resultado->NoAuxid = esq->NoAuxid;
-            
+
             return resultado;
+        }else{
+            printf("Erro: Operador unario desconhecido\n");
+            exit(1);
         }
     }
 
