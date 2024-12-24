@@ -2553,10 +2553,11 @@ void freeAST(Programa *programa){
             if(cmd->ini){
                 free(cmd->ini);
             }
-            
-            if (cmd->incrimenta) {
+
+            if(cmd->incrimenta){
                 free(cmd->incrimenta);
             }
+            
             if (cmd->imprimirAux) {
                 free(cmd->imprimirAux);
             }
