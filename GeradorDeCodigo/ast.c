@@ -2025,6 +2025,17 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             hashNoTemp = NULL;
 
             return resultado;
+        }else if(expressao->operador == BITWISE_NOT){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, ~esq->atribuicao);
+            regT = bitNao(tipoEsq, regEsq);
+            resultado->numReg = regT;
+            resultado->tipoReg = 0;
+            
+            return resultado;
         }
     }
 
