@@ -2482,7 +2482,9 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
 }
 
 int traverseAST(Programa *programa) {
-    if (!programa) return -1;
+    if(!programa){
+        return -1;
+    }
 
     imprimirComeco();
     printf("\n.data\n");
