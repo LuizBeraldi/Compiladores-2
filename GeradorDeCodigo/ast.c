@@ -1629,6 +1629,32 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
                 setAssign(hashNoTemp, resultado->atribuicao);
             }
             hashNoTemp = NULL;
+
+            return resultado;
+        }else if(expressao->operador == MINUS_ASSIGN){
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao - dir->atribuicao);
+            regT = opeAritmeticas(esq->tipoReg, esq->numReg, dir->tipoReg, dir->numReg, "sub");
+
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->ehGlobal){
+                freeReg(esq->tipoReg, esq->numReg);
+                armazenarGlobalInt(0, regT, ((HashNo *)esq->NoAuxid)->varId);
+                resultado->tipoReg = 0;
+                resultado->numReg = esq->numReg;
+            }else{
+                atribuicaoParaReg(0, regT, esq->numReg);
+                resultado->numReg = esq->numReg;
+                resultado->tipoReg = esq->tipoReg;
+            }
+            hashNoTemp = getIdentifierNode(localHash, expressao->esq->identificador);
+
+            if(!hashNoTemp){
+                hashNoTemp = getIdentifierNode(globalHash, expressao->esq->identificador);
+            }
+
+            if(hashNoTemp){
+                setAssign(hashNoTemp, resultado->atribuicao);
+            }
+            hashNoTemp = NULL;
             
             return resultado;
         }
