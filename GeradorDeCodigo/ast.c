@@ -2282,69 +2282,69 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
         case PRINTF:
             if (comando->imprimirAux) {
                 Expressao *prox = comando->imprimirAux;
-                ResultadoExpr *toPrint = NULL;
+                ResultadoExpr *paraImprimir = NULL;
 
-                char *restOfString = NULL;
+                char *restoString = NULL;
 
-                char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
-                strcpy(stringWithoutFormat, comando->string + 1);
+                char *stringSemFormato = calloc(strlen(comando->string) + 1, sizeof(char));
+                strcpy(stringSemFormato, comando->string + 1);
                 while (prox) {
-                    toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
+                    paraImprimir = avaliarExpressao(prox, globalHash, localHash, programa);
                     prox = prox->proxExpr;
-                    if (toPrint) {
-                        if (toPrint->NoAuxid) {
-                            if (((HashNo *)toPrint->NoAuxid)->tipok == VECTOR) {
-                                toPrint->numReg = loadDoArray(toPrint->numReg);
-                                toPrint->tipoReg = 0;
+                    if (paraImprimir) {
+                        if (paraImprimir->NoAuxid) {
+                            if (((HashNo *)paraImprimir->NoAuxid)->tipok == VECTOR) {
+                                paraImprimir->numReg = loadDoArray(paraImprimir->numReg);
+                                paraImprimir->tipoReg = 0;
                             }
                         }
                     }
 
-                    int printing = 0;
-                    char *formatSpecifier = strstr(stringWithoutFormat, "%d");
-                    if (formatSpecifier) {
-                        printing = INT;
+                    int imprimindo = 0;
+                    char *formatoS = strstr(stringSemFormato, "%d");
+                    if (formatoS) {
+                        imprimindo = INT;
                     } else {
-                        formatSpecifier = strstr(stringWithoutFormat, "%s");
-                        if (formatSpecifier) {
-                            printing = STRING;
+                        formatoS = strstr(stringSemFormato, "%s");
+                        if (formatoS) {
+                            imprimindo = STRING;
                         } else {
-                            formatSpecifier = strstr(stringWithoutFormat, "%c");
-                            if (formatSpecifier) {
-                                printing = CHAR;
+                            formatoS = strstr(stringSemFormato, "%c");
+                            if (formatoS) {
+                                imprimindo = CHAR;
                             }
                         }
                     }
-                    if (restOfString) free(restOfString);
-                    restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
-                    strcpy(restOfString, formatSpecifier + 2);
-                    restOfString[strlen(restOfString)] = '\0';
-                    if (formatSpecifier != NULL) *formatSpecifier = '\0';
-                    string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
-                    if (printing == INT)
-                        inteiro(toPrint->tipoReg, toPrint->numReg);
-                    else if (printing == CHAR)
-                        caracter(toPrint->tipoReg, toPrint->numReg);
-                    else if (printing == STRING)
-                        stringVar(toPrint->tipoReg, toPrint->numReg);
+                    if (restoString) free(restoString);
+                    restoString = calloc(strlen(formatoS) + 1, sizeof(char));
+                    strcpy(restoString, formatoS + 2);
+                    restoString[strlen(restoString)] = '\0';
+                    if (formatoS != NULL) *formatoS = '\0';
+                    string(stringSemFormato, abs((int)((intptr_t)paraImprimir)));
+                    if (imprimindo == INT)
+                        inteiro(paraImprimir->tipoReg, paraImprimir->numReg);
+                    else if (imprimindo == CHAR)
+                        caracter(paraImprimir->tipoReg, paraImprimir->numReg);
+                    else if (imprimindo == STRING)
+                        stringVar(paraImprimir->tipoReg, paraImprimir->numReg);
 
-                    free(stringWithoutFormat);
-                    stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
-                    strcpy(stringWithoutFormat, restOfString);
+                    free(stringSemFormato);
+                    stringSemFormato = calloc(strlen(restoString) + 1, sizeof(char));
+                    strcpy(stringSemFormato, restoString);
                 }
-                if (strlen(restOfString) > 0) {
-                    restOfString[strlen(restOfString) - 1] = '\0';
-                    string(restOfString, rand() % 67282);
+                if (strlen(restoString) > 0) {
+                    restoString[strlen(restoString) - 1] = '\0';
+                    string(restoString, rand() % 67282);
                 }
-                if (restOfString) free(restOfString);
-                if (stringWithoutFormat) free(stringWithoutFormat);
+                if (restoString) free(restoString);
+                if (stringSemFormato) free(stringSemFormato);
 
             } else {
-                char *fixedString = calloc(strlen(comando->string) - 1, sizeof(char));
-                strncpy(fixedString, comando->string + 1, strlen(comando->string) - 2);
-                fixedString[strlen(comando->string) - 2] = '\0';
-                string(fixedString, abs((int)((intptr_t)comando->string)));
-                free(fixedString);
+                char *stringF = calloc(strlen(comando->string) - 1, sizeof(char));
+                strncpy(stringF, comando->string + 1, strlen(comando->string) - 2);
+                stringF[strlen(comando->string) - 2] = '\0';
+                string(stringF, abs((int)((intptr_t)comando->string)));
+                free(stringF);
             }
             break;
 
@@ -2474,97 +2474,97 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
     }else if(comando->tipo == PRINTF){
         if(comando->imprimirAux){
             Expressao *prox = comando->imprimirAux;
-            ResultadoExpr *toPrint = NULL;
-            char *restOfString = NULL;
-            char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
-            strcpy(stringWithoutFormat, comando->string + 1);
+            ResultadoExpr *paraImprimir = NULL;
+            char *restoString = NULL;
+            char *stringSemFormato = calloc(strlen(comando->string) + 1, sizeof(char));
+            strcpy(stringSemFormato, comando->string + 1);
 
             while(prox){
-                toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
+                paraImprimir = avaliarExpressao(prox, globalHash, localHash, programa);
                 prox = prox->proxExpr;
 
-                if(toPrint){
-                    if(toPrint->NoAuxid){
-                        if(((HashNo *)toPrint->NoAuxid)->tipok == VECTOR){
-                            toPrint->numReg = loadDoArray(toPrint->numReg);
-                            toPrint->tipoReg = 0;
+                if(paraImprimir){
+                    if(paraImprimir->NoAuxid){
+                        if(((HashNo *)paraImprimir->NoAuxid)->tipok == VECTOR){
+                            paraImprimir->numReg = loadDoArray(paraImprimir->numReg);
+                            paraImprimir->tipoReg = 0;
                         }
                     }
                 }
-                int printing = 0;
-                char *formatSpecifier = strstr(stringWithoutFormat, "%d");
+                int imprimindo = 0;
+                char *formatoS = strstr(stringSemFormato, "%d");
 
-                if(formatSpecifier){
-                    printing = INT;
+                if(formatoS){
+                    imprimindo = INT;
                 }else{
-                    formatSpecifier = strstr(stringWithoutFormat, "%s");
-                    if(formatSpecifier){
-                        printing = STRING;
+                    formatoS = strstr(stringSemFormato, "%s");
+                    if(formatoS){
+                        imprimindo = STRING;
                     }else{
-                        formatSpecifier = strstr(stringWithoutFormat, "%c");
+                        formatoS = strstr(stringSemFormato, "%c");
 
-                        if(formatSpecifier){
-                            printing = CHAR;
+                        if(formatoS){
+                            imprimindo = CHAR;
                         }
                     }
                 }
 
-                if(restOfString){
-                    free(restOfString);
+                if(restoString){
+                    free(restoString);
                 }
-                restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
-                strcpy(restOfString, formatSpecifier + 2);
-                restOfString[strlen(restOfString)] = '\0';
+                restoString = calloc(strlen(formatoS) + 1, sizeof(char));
+                strcpy(restoString, formatoS + 2);
+                restoString[strlen(restoString)] = '\0';
 
-                if(formatSpecifier != NULL){
-                    *formatSpecifier = '\0';
+                if(formatoS != NULL){
+                    *formatoS = '\0';
                 }
-                string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
+                string(stringSemFormato, abs((int)((intptr_t)paraImprimir)));
 
-                if (printing == INT){
-                    inteiro(toPrint->tipoReg, toPrint->numReg);
-                }else if (printing == CHAR){
-                    caracter(toPrint->tipoReg, toPrint->numReg);
-                }else if (printing == STRING){
-                    stringVar(toPrint->tipoReg, toPrint->numReg);
+                if (imprimindo == INT){
+                    inteiro(paraImprimir->tipoReg, paraImprimir->numReg);
+                }else if (imprimindo == CHAR){
+                    caracter(paraImprimir->tipoReg, paraImprimir->numReg);
+                }else if (imprimindo == STRING){
+                    stringVar(paraImprimir->tipoReg, paraImprimir->numReg);
                 }
-                free(stringWithoutFormat);
-                stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
-                strcpy(stringWithoutFormat, restOfString);
+                free(stringSemFormato);
+                stringSemFormato = calloc(strlen(restoString) + 1, sizeof(char));
+                strcpy(stringSemFormato, restoString);
             }
 
-            if(strlen(restOfString) > 0){
-                restOfString[strlen(restOfString) - 1] = '\0';
-                string(restOfString, rand() % 67282);
+            if(strlen(restoString) > 0){
+                restoString[strlen(restoString) - 1] = '\0';
+                string(restoString, rand() % 67282);
             }
 
-            if(restOfString){
-                free(restOfString);
+            if(restoString){
+                free(restoString);
             }
 
-            if(stringWithoutFormat){
-                free(stringWithoutFormat);
+            if(stringSemFormato){
+                free(stringSemFormato);
             }
         }else{
-            char *fixedString = calloc(strlen(comando->string) - 1, sizeof(char));
-            strncpy(fixedString, comando->string + 1, strlen(comando->string) - 2);
-            fixedString[strlen(comando->string) - 2] = '\0';
-            string(fixedString, abs((int)((intptr_t)comando->string)));
-            free(fixedString);
+            char *stringF = calloc(strlen(comando->string) - 1, sizeof(char));
+            strncpy(stringF, comando->string + 1, strlen(comando->string) - 2);
+            stringF[strlen(comando->string) - 2] = '\0';
+            string(stringF, abs((int)((intptr_t)comando->string)));
+            free(stringF);
         }
     }else if(comando->tipo == SCANF){
-        HashNo *node = getIdentifierNode(localHash, comando->identificador);
+        HashNo *no = getIdentifierNode(localHash, comando->identificador);
 
-        if(!node){
-            node = getIdentifierNode(globalHash, comando->identificador);
+        if(!no){
+            no = getIdentifierNode(globalHash, comando->identificador);
         }
 
-        if(!node){
+        if(!no){
             printf("Erro: Variável %s não declarada no scanf\n", comando->identificador);
         }
 
-        int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
-        node->regS = sReg;
+        int sReg = scanInt(no->regS, no->varId, no->ehGlobal);
+        no->regS = sReg;
     }else if(comando->tipo == RETURN){
         if(funcaoAtual->retornaTipo == VOID && funcaoAtual->ptr == 0){
             if(comando->condicao){
@@ -2619,42 +2619,42 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
     }
 
     for(int i = 0; i < TAM_HASH; i++){
-        HashNo *node = (HashNo *)localHash[i];
+        HashNo *no = (HashNo *)localHash[i];
         ResultadoExpr *atrib = NULL;
 
-        while(node){
-            if(node->tipok == FUNCTION || node->ehConstante){
-                node = node->prox;
+        while(no){
+            if(no->tipok == FUNCTION || no->ehConstante){
+                no = no->prox;
                 continue;
             }
 
             if(localHash == globalHash){
-                node->ehGlobal = 1;
-                int size = 0;
-                if(node->tipok == VAR){
-                    if(node->tipoVar == NUM_INT || node->tipoVar == INT || node->tipoVar == VOID || node->ptr > 0){
-                        size = 32;
+                no->ehGlobal = 1;
+                int tam = 0;
+                if(no->tipok == VAR){
+                    if(no->tipoVar == NUM_INT || no->tipoVar == INT || no->tipoVar == VOID || no->ptr > 0){
+                        tam = 32;
                     }else{
-                        size = 8;
+                        tam = 8;
                     }
-                    variavelGlobalMemoria(size, node->varId);
+                    variavelGlobalMemoria(tam, no->varId);
                 }
             }
 
-            if(node->tipok == VECTOR){
-                Dimensao *d = node->dimensao;
-                int size = 0;
+            if(no->tipok == VECTOR){
+                Dimensao *d = no->dimensao;
+                int tam = 0;
 
                 while(d){
-                    size = size + d->tam;
+                    tam = tam + d->tam;
                     d = d->prox;
                 }
-                int s = declaraArray(node->varId, size, node->ehGlobal);
-                setSRegisterInHash(node, s);
+                int s = declaraArray(no->varId, tam, no->ehGlobal);
+                setSRegisterInHash(no, s);
             }
 
-            if(node->hashExpr){
-                atrib = avaliarExpressao(node->hashExpr, globalHash, localHash, programa);
+            if(no->hashExpr){
+                atrib = avaliarExpressao(no->hashExpr, globalHash, localHash, programa);
                 int atribuicaoType, atribuicaoptr = atrib->ptr;
 
                 if(atrib->tipoVar == CHAR){
@@ -2669,22 +2669,22 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
                 }
 
                 if(globalHash == localHash){
-                    setGlobalAtribuicaoVar(node->varId, atrib->atribuicao);
+                    setGlobalAtribuicaoVar(no->varId, atrib->atribuicao);
                 }else{
                     if(atribuicaoType == CHAR && atribuicaoptr == 1){
                         atrib->str[strlen(atrib->str) - 1] = '\0';
                         strcpy(atrib->str, atrib->str + 1);
-                        int regS = declararString(node->varId, atrib->str);
-                        setSRegisterInHash(node, regS);
-                        strcpy(node->string, atrib->str);
+                        int regS = declararString(no->varId, atrib->str);
+                        setSRegisterInHash(no, regS);
+                        strcpy(no->string, atrib->str);
                     }else{
                         int regS = atribuicao(atrib->tipoReg, atrib->numReg);
-                        setSRegisterInHash(node, regS);
-                        setAssign(node, atrib->atribuicao);
+                        setSRegisterInHash(no, regS);
+                        setAssign(no, atrib->atribuicao);
                     }
                 }
             }
-            node = node->prox;
+            no = no->prox;
         }
     }
 }
@@ -2745,11 +2745,11 @@ void freeAST(Programa *programa){
         return;
     }
     freeHash(programa->hashTable);
-    Funcao *functions = programa->listaFuncoes;
+    Funcao *func = programa->listaFuncoes;
 
-    while(functions){
-        Funcao *functions2 = functions->prox;
-        Comando *cmd = functions->listaComando;
+    while(func){
+        Funcao *func2 = func->prox;
+        Comando *cmd = func->listaComando;
 
         while(cmd){
             Comando *cmd2 = cmd->prox;
@@ -2772,13 +2772,13 @@ void freeAST(Programa *programa){
             free(cmd);
             cmd = cmd2;
         }
-        freeHash(functions->hashTable);
+        freeHash(func->hashTable);
 
-        if(functions->nome){
-            free(functions->nome);
+        if(func->nome){
+            free(func->nome);
         }
-        free(functions);
-        functions = functions2;
+        free(func);
+        func = func2;
     }
     free(programa);
 }
