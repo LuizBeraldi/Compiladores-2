@@ -94,7 +94,7 @@ void setDimensaoExpressao(Expressao *expressao, Dimensao *dimensao) {
     }
 }
 
-Comando *criarSe(Expressao *condicao, void *entao, void *elseS, void *prox) {
+Comando *criarSe(Expressao *condicao, void *entao, void *elseS, void *prox){
     Comando *novoSe = calloc(1, sizeof(Comando));
     novoSe->tipo = IF;
     novoSe->condicao = condicao;
