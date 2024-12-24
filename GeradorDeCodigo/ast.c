@@ -2533,7 +2533,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
                 strcpy(stringWithoutFormat, restOfString);
             }
-            if (strlen(restOfString) > 0) {
+
+            if(strlen(restOfString) > 0){
                 restOfString[strlen(restOfString) - 1] = '\0';
                 string(restOfString, rand() % 67282);
             }
