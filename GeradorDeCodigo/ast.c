@@ -2442,10 +2442,12 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         return;
     }else if(comando->tipo == WHILE){
         int whileLine = abs((int)((intptr_t)comando));
-        if (comando->tipo == WHILE)
+        if(comando->tipo == WHILE){
             jump("while_teste_", whileLine);
+        }
         label("while_corpo_", whileLine);
         t = comando->entao;
+        
         while (t) {
             traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
             t = t->prox;
