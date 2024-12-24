@@ -2503,7 +2503,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                         printing = STRING;
                     }else{
                         formatSpecifier = strstr(stringWithoutFormat, "%c");
-                        if (formatSpecifier) {
+                        
+                        if(formatSpecifier){
                             printing = CHAR;
                         }
                     }
