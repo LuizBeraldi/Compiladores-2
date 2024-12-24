@@ -2211,7 +2211,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
     return 0;
 }
 
-void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, Programa *programa, Funcao *funcaoAtual) {
+/*void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, Programa *programa, Funcao *funcaoAtual) {
     if(!comando || comando->visitado){
         return;
     }
@@ -2403,7 +2403,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             printf("Erro: Comando desconhecido!\n");
             break;
     }
-}
+}*/
 
 void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *programa){
     if(!localHash){
