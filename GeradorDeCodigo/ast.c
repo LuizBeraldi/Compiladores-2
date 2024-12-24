@@ -2545,10 +2545,11 @@ void freeAST(Programa *programa){
 
         while(cmd){
             Comando *cmd2 = cmd->prox;
-            
-            if (cmd->condicao) {
+
+            if(cmd->condicao){
                 free(cmd->condicao);
             }
+            
             if (cmd->ini) {
                 free(cmd->ini);
             }
