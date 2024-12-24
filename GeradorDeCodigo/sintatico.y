@@ -143,10 +143,10 @@ DeclaraDefine: CONSTANT COLON ID VALUE COLON Sinal NUM_INT {
         if ($6 == MINUS) {
             valor *= -1;
         }
-        void *node = insertHash(globalHash, $3.valor, INT, 0);
-        setKind(node, VAR);
-        setIsConstant(node);
-        setAssign(node, valor); 
+        void *node = inserirHash(globalHash, $3.valor, INT, 0);
+        setTipo(node, VAR);
+        setEhConstante(node);
+        setAtrib(node, valor); 
         setDefinicaoVariavelInt($3.valor, valor);
     } ;
 
@@ -155,17 +155,17 @@ Sinal : PLUS { $$ = PLUS; }
     | { $$ = PLUS; } ; 
 
 DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck {
-        void *node = insertHash(globalHash, $4.valor, $7.type, pointerCount);
+        void *node = inserirHash(globalHash, $4.valor, $7.type, pointerCount);
         if (!$10) {
-            setKind(node, VAR);
+            setTipo(node, VAR);
         } else {
-            setKind(node, VECTOR);
+            setTipo(node, VECTOR);
         }
-        setDimensions(node, $10);
-        setIsGlobal(node);
+        setDimen(node, $10);
+        setEhGlobal(node);
     } ;
 
-DeclaraFuncao: FUNCTION COLON ID { currentHash = createHash(); } RETURN_TYPE COLON VarType { pointerCount = 0; } Pointers { paramCount = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
+DeclaraFuncao: FUNCTION COLON ID { currentHash = criarHash(); } RETURN_TYPE COLON VarType { pointerCount = 0; } Pointers { paramCount = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
         Funcao *func = criarFuncao(currentHash, $7.type, pointerCount, $3.valor, $13, NULL);
         if (functionList) {
             Funcao *aux = functionList;
@@ -177,9 +177,9 @@ DeclaraFuncao: FUNCTION COLON ID { currentHash = createHash(); } RETURN_TYPE COL
             functionList = func;
         }
         
-        void *node = insertHash(globalHash, $3.valor, $7.type, pointerCount);
-        setKind(node, FUNCTION);
-        setQntdParams(node, paramCount);
+        void *node = inserirHash(globalHash, $3.valor, $7.type, pointerCount);
+        setTipo(node, FUNCTION);
+        setQntParam(node, paramCount);
         setParam(node, $11);
         currentHash = NULL;
     } ;
@@ -334,32 +334,32 @@ VarType: INT { $$ = yylval.token; }
     | VOID { $$ = yylval.token; } ;
 
 Parameters: PARAMETER COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck Parameters {
-        void *node = insertHash(currentHash, $3.valor, $6.type, pointerCount);
+        void *node = inserirHash(currentHash, $3.valor, $6.type, pointerCount);
         paramCount++;
-        setQntdParams(node, paramCount);
-        setSRegisterInHash(node, paramCount-1);
-        Param *param = createParam($6.type, $3.valor, pointerCount, $10);
+        setQntParam(node, paramCount);
+        setRegSHash(node, paramCount-1);
+        Param *param = criarParamH($6.type, $3.valor, pointerCount, $10);
         if (!$9) {
-            setKind(node, VAR);
+            setTipo(node, VAR);
             param->tipoParam = VAR;
         } else {
-            setKind(node, VECTOR);
+            setTipo(node, VECTOR);
             param->tipoParam = VECTOR;
         }
-        setDimensions(node, $9);
+        setDimen(node, $9);
         param->prox = $10;
         $$ = param;
     }
     | { $$ = NULL; } ;
 
 DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck DeclaracoesLocais {
-        void *node = insertHash(currentHash, $3.valor, $6.type, pointerCount);
+        void *node = inserirHash(currentHash, $3.valor, $6.type, pointerCount);
         if (!$9) {
-            setKind(node, VAR);
+            setTipo(node, VAR);
         } else {
-            setKind(node, VECTOR);
+            setTipo(node, VECTOR);
         }
-        setDimensions(node, $9);
+        setDimen(node, $9);
     }
     | { } ; 
 
@@ -436,7 +436,7 @@ void yyerror(void *s) {
 }
 
 int main(int argc, char *argv[]) {
-    globalHash = createHash();
+    globalHash = criarHash();
     yyparse();
 
     if (AST) {

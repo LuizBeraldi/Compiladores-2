@@ -31,24 +31,24 @@ typedef struct param {
     struct param *prox;
 } Param;
 
-void **createHash();
+void **criarHash();
 int hash(char *valor);
-void *insertHash(void **hashTable, char *varId, int tipoAtual, int ptr);
-void setIsConstant(void *no);
-void setIsGlobal(void *no);
-void setQntdParams(void *no, int qntParam);
+void *inserirHash(void **hashTable, char *varId, int tipoAtual, int ptr);
+void setEhConstante(void *no);
+void setEhGlobal(void *no);
+void setQntParam(void *no, int qntParam);
 void setParam(void *no, Param *p);
-void setAssign(void *no, int atribuicao);
-void setDimensions(void *no, void *dimensao);
-void setKind(void *no, int tipok);
+void setAtrib(void *no, int atribuicao);
+void setDimen(void *no, void *dimensao);
+void setTipo(void *no, int tipok);
 void setHashExpr(void *no, void *hashExpr);
-void setSRegisterInHash(void *no, int regS);
-int getSRegisterFromHash(void *no);
-int lookForValueInHash(void **hashTable, char *varId, int tipoAtual);
-Param *createParam(int tipo, char *identificador, int ptr, void *prox);
-HashNo *getIdentifierNode(void **hashTable, char *id);
-char *getExactType(int tipo, int ptr);
-void printProgram(void *AST);
+void setRegSHash(void *no, int regS);
+int regSHash(void *no);
+int valorHash(void **hashTable, char *varId, int tipoAtual);
+Param *criarParamH(int tipo, char *identificador, int ptr, void *prox);
+HashNo *idNo(void **hashTable, char *id);
+char *tipoE(int tipo, int ptr);
+void imprimirProgram(void *AST);
 void freeHash(void **hashTable);
 
 #endif
