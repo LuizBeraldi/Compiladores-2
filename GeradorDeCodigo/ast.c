@@ -2212,7 +2212,9 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
 }
 
 void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, Programa *programa, Funcao *funcaoAtual) {
-    if (!comando || comando->visitado) return;
+    if(!comando || comando->visitado){
+        return;
+    }
     comando->visitado = 1;
 
     Comando *t = NULL;
@@ -2404,31 +2406,38 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
 }
 
 void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *programa) {
-    if (!localHash) return;
-    for (int i = 0; i < TAM_HASH; i++) {
+    if(!localHash){
+        return;
+    }
+
+    for(int i = 0; i < TAM_HASH; i++){
         HashNo *node = (HashNo *)localHash[i];
         ResultadoExpr *atrib = NULL;
-        while (node) {
-            if (node->tipok == FUNCTION || node->isConstant) {
+
+        while(node){
+            if(node->tipok == FUNCTION || node->isConstant){
                 node = node->prox;
                 continue;
             }
-            if (localHash == globalHash) {
+
+            if(localHash == globalHash){
                 node->ehGlobal = 1;
                 int size = 0;
-                if (node->tipok == VAR) {
-                    if (node->tipoVar == NUM_INT || node->tipoVar == INT || node->tipoVar == VOID || node->ptr > 0)
+                if(node->tipok == VAR){
+                    if(node->tipoVar == NUM_INT || node->tipoVar == INT || node->tipoVar == VOID || node->ptr > 0){
                         size = 32;
-                    else
+                    }else{
                         size = 8;
+                    }
                     variavelGlobalMemoria(size, node->varId);
                 }
             }
 
-            if (node->tipok == VECTOR) {
+            if(node->tipok == VECTOR){
                 Dimensao *d = node->dimensao;
                 int size = 0;
-                while (d) {
+
+                while(d){
                     size = size + d->tam;
                     d = d->prox;
                 }
@@ -2436,33 +2445,31 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
                 setSRegisterInHash(node, s);
             }
 
-            if (node->hashExpr) {
+            if(node->hashExpr){
                 atrib = avaliarExpressao(node->hashExpr, globalHash, localHash, programa);
-
                 int atribuicaoType, atribuicaoptr = atrib->ptr;
-                if (atrib->tipoVar == CHAR) {
+
+                if(atrib->tipoVar == CHAR){
                     atribuicaoType = CHAR;
-                } else if (atrib->tipoVar == INT) {
+                }else if(atrib->tipoVar == INT){
                     atribuicaoType = INT;
-                } else if (atrib->tipoVar == STRING) {
+                }else if(atrib->tipoVar == STRING){
                     atribuicaoType = CHAR;
                     atribuicaoptr = 1;
-                } else {
+                }else{
                     atribuicaoType = VOID;
                 }
 
-                if (globalHash == localHash) {
+                if(globalHash == localHash){
                     setGlobalAtribuicaoVar(node->varId, atrib->atribuicao);
-
-                } else {
-                    if (atribuicaoType == CHAR && atribuicaoptr == 1) {
+                }else{
+                    if(atribuicaoType == CHAR && atribuicaoptr == 1){
                         atrib->str[strlen(atrib->str) - 1] = '\0';
                         strcpy(atrib->str, atrib->str + 1);
                         int regS = declararString(node->varId, atrib->str);
                         setSRegisterInHash(node, regS);
                         strcpy(node->string, atrib->str);
-
-                    } else {
+                    }else{
                         int regS = atribuicao(atrib->tipoReg, atrib->numReg);
                         setSRegisterInHash(node, regS);
                         setAssign(node, atrib->atribuicao);
