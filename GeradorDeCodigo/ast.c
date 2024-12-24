@@ -2438,6 +2438,22 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             t2 = t2->prox;
         }
         label("exit_if_", ifLine);
+    }else if(comando->tipo == DO_WHILE){
+        return;
+    }else if(comando->tipo == WHILE){
+        int whileLine = abs((int)((intptr_t)comando));
+        if (comando->tipo == WHILE)
+            jump("while_teste_", whileLine);
+        label("while_corpo_", whileLine);
+        t = comando->entao;
+        while (t) {
+            traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+            t = t->prox;
+        }
+        label("while_teste_", whileLine);
+        ResultadoExpr *whileResult = NULL;
+        whileResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+        enquanto(whileResult->tipoReg, whileResult->numReg, whileLine);
     }
 
     switch (comando->tipo) {
