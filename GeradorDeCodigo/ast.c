@@ -2584,7 +2584,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             ResultadoExpr *returnAux = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
 
             if(returnAux->NoAuxid){
-                if (((HashNo *)returnAux->NoAuxid)->regS == -1) {
+                if(((HashNo *)returnAux->NoAuxid)->regS == -1){
                     int null = constante(0);
                     int s = atribuicao(0, null);
                     setSRegisterInHash((HashNo *)returnAux->NoAuxid, s);
@@ -2593,6 +2593,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 }
             }
             imprimirReturnV0(returnAux->tipoReg, returnAux->numReg);
+            
             if (strcmp(funcaoAtual->nome, "main")) {
                 loadDaPilha();
                 loadRegT(regTsv);
