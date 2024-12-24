@@ -2447,8 +2447,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         }
         label("while_corpo_", whileLine);
         t = comando->entao;
-        
-        while (t) {
+
+        while(t){
             traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
             t = t->prox;
         }
