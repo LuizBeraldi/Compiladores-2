@@ -157,7 +157,7 @@ Comando *criarScan(char *string, char *identificador, void *prox) {
     return novoScan;
 }
 
-Comando *criarReturn(Expressao *expressao, void *prox) {
+Comando *criarReturn(Expressao *expressao, void *prox){
     Comando *novoReturn = calloc(1, sizeof(Comando));
     novoReturn->tipo = RETURN;
     novoReturn->condicao = expressao;
