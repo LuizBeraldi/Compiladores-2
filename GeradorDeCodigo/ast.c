@@ -2519,8 +2519,8 @@ int traverseAST(Programa *programa) {
             traverseASTCommand(comando, programa->hashTable, funcaoAtual->hashTable, programa, funcaoAtual);
             comando = comando->prox;
         }
-        
-        if (strcmp(funcaoAtual->nome, "main")) {
+
+        if(strcmp(funcaoAtual->nome, "main")){
             loadDaPilha();
             loadRegT(regTsv);
             free(regTsv);
@@ -2528,6 +2528,7 @@ int traverseAST(Programa *programa) {
         }
         funcaoAtual = funcaoAtual->prox;
     }
+    
     return 0;
 }
 
