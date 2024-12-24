@@ -2545,6 +2545,7 @@ void freeAST(Programa *programa){
 
         while(cmd){
             Comando *cmd2 = cmd->prox;
+            
             if (cmd->condicao) {
                 free(cmd->condicao);
             }
