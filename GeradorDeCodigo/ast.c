@@ -2067,6 +2067,34 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             regT = naoLogico(esq->tipoReg, esq->numReg);
             resultado->tipoReg = 0;
             resultado->numReg = regT;
+        }else if(expressao->operador == MULTIPLY){
+            if(esq->tipoVar == CHAR && esq->ptr == 1){
+                resultado = criarResultadoExpressao(CHAR, 0, *(((HashNo *)esq->NoAuxid)->string));
+                int t = loadByte(esq->tipoReg, esq->numReg);
+                resultado->tipoReg = 0;
+                resultado->numReg = t;
+            }else if(esq->tipoVar == INT && esq->ptr == 1){
+                resultado = criarResultadoExpressao(INT, 0, 0);
+                int i = constante(0);
+
+                if(esq->numReg == -1){
+                    esq->numReg = atribuicaoEndereco(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId);
+                    setSRegisterInHash(((HashNo *)esq->NoAuxid), esq->numReg);
+                }
+                int posic = acessarEnderecoArray(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId, 0, i, ((HashNo *)esq->NoAuxid)->ehGlobal);
+                resultado->tipoReg = 0;
+
+                if(noAtri){
+                    resultado->numReg = posic;
+                }else{
+                    resultado->numReg = loadDoArray(posic);
+                }
+            }else{
+                resultado = criarResultadoExpressao(esq->tipoVar, 0, *(&esq->atribuicao));
+            }
+            resultado->NoAuxid = esq->NoAuxid;
+            
+            return resultado;
         }
     }
 
