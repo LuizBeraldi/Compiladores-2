@@ -2508,7 +2508,7 @@ int traverseAST(Programa *programa) {
             regTsv = calloc(10, sizeof(int));
             armazenarRegT(regTsv);
             armazenarNaPilha();
-        } else {
+        }else{
             globalAtribuicaoVar();
         }
         parametroFuncao(funcaoAtual->nome, funcNode->qntParam);
