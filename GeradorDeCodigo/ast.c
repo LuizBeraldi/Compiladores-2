@@ -29,7 +29,7 @@ Funcao *criarFuncao(void **hash, int retornaTipo, int ptr, char *nome, void *lis
     return novoFunc;
 }
 
-ExpParam *criarExpressaoParametro(Expressao *exp, ExpParam *prox) {
+ExpParam *criarExpressaoParametro(Expressao *exp, ExpParam *prox){
     ExpParam *novoExprParam = calloc(1, sizeof(ExpParam));
     novoExprParam->exp = exp;
     novoExprParam->prox = prox;
