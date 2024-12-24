@@ -184,7 +184,7 @@ Comando *criarComandoExpressao(Expressao *expressao, void *prox) {
     return novoComando;
 }
 
-ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor) {
+ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor){
     ResultadoExpr *novoResultado = calloc(1, sizeof(ResultadoExpr));
     novoResultado->tipoVar = tipo;
     novoResultado->ptr = ptr;
