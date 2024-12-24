@@ -2557,8 +2557,8 @@ void freeAST(Programa *programa){
             if(cmd->incrimenta){
                 free(cmd->incrimenta);
             }
-            
-            if (cmd->imprimirAux) {
+
+            if(cmd->imprimirAux){
                 free(cmd->imprimirAux);
             }
             free(cmd);
