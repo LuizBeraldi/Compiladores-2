@@ -2553,6 +2553,14 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             string(fixedString, abs((int)((intptr_t)comando->string)));
             free(fixedString);
         }
+    }else if(comando->tipo == SCANF){
+        HashNo *node = getIdentifierNode(localHash, comando->identificador);
+        
+        if (!node) node = getIdentifierNode(globalHash, comando->identificador);
+        if (!node) printf("Erro: Variável %s não declarada no scanf\n", comando->identificador);
+
+        int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
+        node->regS = sReg;
     }
 
     switch (comando->tipo) {
