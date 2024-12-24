@@ -1655,7 +1655,31 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
                 setAssign(hashNoTemp, resultado->atribuicao);
             }
             hashNoTemp = NULL;
-            
+
+            return resultado;
+        }else if(expressao->operador == PLUS){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+
+            if(dir->NoAuxid && ((HashNo *)dir->NoAuxid)->tipok == VECTOR){
+                regDir = loadDoArray(dir->numReg);
+                tipoDir = 0;
+            }
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao + dir->atribuicao);
+            regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "add");
+
+            if(esq->tipoVar == CHAR && esq->ptr == 1){
+                strcpy(resultado->str, ((HashNo *)esq->NoAuxid)->string + dir->atribuicao);
+            }
+
+            if(dir->tipoVar == CHAR && dir->ptr == 1){
+                strcpy(resultado->str, ((HashNo *)dir->NoAuxid)->string + esq->atribuicao);
+            }
+            resultado->tipoReg = 0;
+            resultado->numReg = regT;
+
             return resultado;
         }
     }
