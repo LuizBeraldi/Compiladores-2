@@ -1525,6 +1525,87 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
         regEsq = esq->numReg;
         tipoDir = dir->tipoReg;
         regDir = dir->numReg;
+
+        if(expressao->operador == ASSIGN){
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, dir->atribuicao);
+
+            if((esq->tipoVar == INT || esq->tipoVar == VOID) && esq->ptr == 1 && dir->ptr == 1){
+                int s = atribuicaoEndereco(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId);
+                setSRegisterInHash(((HashNo *)esq->NoAuxid), s);
+                resultado->tipoReg = 1;
+                resultado->numReg = s;
+
+                return resultado;
+            }
+
+            if(dir->NoAuxid && ((HashNo *)dir->NoAuxid)->tipok == VECTOR){
+                regDir = loadDoArray(dir->numReg);
+                tipoDir = 0;
+            }
+
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                armazenarNoArray(esq->numReg, tipoDir, regDir);
+                resultado->tipoReg = 0;
+                regS = esq->numReg;
+
+            }else if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->ehGlobal){
+                freeReg(esq->tipoReg, esq->numReg);
+                armazenarGlobalInt(tipoDir, regDir, ((HashNo *)esq->NoAuxid)->varId);
+                resultado->tipoReg = 0;
+            }else{
+                if(((HashNo *)esq->NoAuxid)->regS == -1){
+                    if(esq->tipoVar == CHAR && esq->ptr == 1){
+                        dir->str[strlen(dir->str) - 1] = '\0';
+                        char aux[strlen(dir->str) - 1];
+                        strcpy(aux, dir->str + 1);
+
+                        for(int i = 0; i < strlen(dir->str); i++){
+                            dir->str[i] = '\0';
+                        }
+                        strcpy(dir->str, aux);
+                        regS = declararString(((HashNo *)esq->NoAuxid)->varId, dir->str);
+                        resultado->tipoReg = 1;
+                        resultado->numReg = regS;
+                        ((HashNo *)esq->NoAuxid)->regS = regS;
+                        strcpy(((HashNo *)esq->NoAuxid)->string, dir->str);
+                    }else{
+                        if(expressao->esq->tipo == UOP){
+                            armazenadoNoEndereco(esq->tipoReg, esq->numReg, tipoDir, regDir);
+                        }else{
+                            regS = atribuicao(tipoDir, regDir);
+                            ((HashNo *)esq->NoAuxid)->regS = regS;
+                        }
+                    }
+                }else{
+                    if(esq->tipoVar == CHAR && esq->ptr == 1){
+                        resultado->tipoReg = 1;
+                        resultado->numReg = ((HashNo *)esq->NoAuxid)->regS;
+                        strcpy(((HashNo *)esq->NoAuxid)->string, dir->str);
+                    }else{
+                        if(expressao->esq->tipo == UOP){
+                            armazenadoNoEndereco(esq->tipoReg, esq->numReg, tipoDir, regDir);
+                        }else{
+                            regS = esq->numReg;
+                            atribuicaoParaReg(tipoDir, regDir, regS);
+                        }
+                    }
+                }
+                resultado->tipoReg = 1;
+            }
+            resultado->numReg = regS;
+            hashNoTemp = getIdentifierNode(localHash, expressao->identificador);
+
+            if(!hashNoTemp){
+                hashNoTemp = getIdentifierNode(globalHash, expressao->identificador);
+            }
+
+            if(hashNoTemp){
+                setAssign(hashNoTemp, resultado->atribuicao);
+            }
+            hashNoTemp = NULL;
+
+            return resultado;
+        }
     }
 
     switch (expressao->tipo) {
