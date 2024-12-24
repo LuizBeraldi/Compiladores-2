@@ -2497,7 +2497,10 @@ int traverseAST(Programa *programa) {
         for(int i = 0; i < 10; i++){
             freeReg(0, i);
         }
-        for (int i = 0; i < 8; i++) freeReg(1, i);
+
+        for(int i = 0; i < 8; i++){
+            freeReg(1, i);
+        }
         HashNo *funcNode = getIdentifierNode(programa->hashTable, funcaoAtual->nome);
         funcao(funcaoAtual->nome);
         if (strcmp(funcaoAtual->nome, "main")) {
