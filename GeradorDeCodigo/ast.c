@@ -1823,6 +1823,22 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             regT = ouLogico(tipoEsq, regEsq, tipoDir, regDir, abs((int)((intptr_t)expressao)));
             resultado->numReg = regT;
             resultado->tipoReg = 0;
+
+            return resultado;
+        }else if(expressao->operador == LESS_THAN){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+
+            if(dir->NoAuxid && ((HashNo *)dir->NoAuxid)->tipok == VECTOR){
+                regDir = loadDoArray(dir->numReg);
+                tipoDir = 0;
+            }
+            resultado = criarResultadoExpressao(INT, 0, esq->atribuicao < dir->atribuicao);
+            regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "slt");
+            resultado->numReg = regT;
+            resultado->tipoReg = 0;
             
             return resultado;
         }
