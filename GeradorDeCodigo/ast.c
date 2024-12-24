@@ -972,7 +972,7 @@ ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor) {
     return 0;
 }*/
 
-ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **localHash, Programa *programa) {
+ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **localHash, Programa *programa){
     if(!expressao){
         return NULL;
     }
@@ -2405,7 +2405,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
     }
 }
 
-void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *programa) {
+void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *programa){
     if(!localHash){
         return;
     }
@@ -2481,7 +2481,7 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
     }
 }
 
-int traverseAST(Programa *programa) {
+int traverseAST(Programa *programa){
     if(!programa){
         return -1;
     }
@@ -2528,11 +2528,11 @@ int traverseAST(Programa *programa) {
         }
         funcaoAtual = funcaoAtual->prox;
     }
-    
+
     return 0;
 }
 
-void freeAST(Programa *programa) {
+void freeAST(Programa *programa){
     if (!programa) return;
     freeHash(programa->hashTable);
 
