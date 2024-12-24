@@ -2566,6 +2566,33 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
 
         int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
         node->regS = sReg;
+    }else if(comando->tipo == RETURN){
+        if (funcaoAtual->retornaTipo == VOID && funcaoAtual->ptr == 0) {
+            if (comando->condicao) printf("Erro: Função %s não pode retornar valor\n", funcaoAtual->nome);
+            if (strcmp(funcaoAtual->nome, "main")) {
+                loadDaPilha();
+                loadRegT(regTsv);
+                imprimirReturn();
+            }
+        } else {
+            if (!comando->condicao) printf("Erro: Função %s deve retornar valor\n", funcaoAtual->nome);
+            ResultadoExpr *returnAux = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            if (returnAux->NoAuxid) {
+                if (((HashNo *)returnAux->NoAuxid)->regS == -1) {
+                    int null = constante(0);
+                    int s = atribuicao(0, null);
+                    setSRegisterInHash((HashNo *)returnAux->NoAuxid, s);
+                    returnAux->tipoReg = 1;
+                    returnAux->numReg = s;
+                }
+            }
+            imprimirReturnV0(returnAux->tipoReg, returnAux->numReg);
+            if (strcmp(funcaoAtual->nome, "main")) {
+                loadDaPilha();
+                loadRegT(regTsv);
+                imprimirReturn();
+            }
+        }
     }
 
     switch (comando->tipo) {
