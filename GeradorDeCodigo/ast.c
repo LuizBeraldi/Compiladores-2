@@ -2542,7 +2542,8 @@ void freeAST(Programa *programa){
     while(functions){
         Funcao *functions2 = functions->prox;
         Comando *cmd = functions->listaComando;
-        while (cmd) {
+
+        while(cmd){
             Comando *cmd2 = cmd->prox;
             if (cmd->condicao) {
                 free(cmd->condicao);
