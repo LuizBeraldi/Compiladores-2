@@ -980,9 +980,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
     int tipoEsq, tipoDir, regEsq, regDir, regT, regS;
 
     if(expressao->tipo == PRIMARIA){
-        if(expressao->operador == INT){
-            return 0;
-        }else if(expressao->operador == CHAR){
+        if(expressao->operador == INT || expressao->operador == CHAR){
             resultado = criarResultadoExpressao(expressao->tipo, expressao->ptr, expressao->atribuicao);
             int regT = constante(resultado->atribuicao);
             resultado->tipoReg = 0;
@@ -1986,9 +1984,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             t2 = t2->prox;
         }
         label("exit_if_", seLinha);
-    }else if(comando->tipo == DO_WHILE){
-        return;
-    }else if(comando->tipo == WHILE){
+    }else if(comando->tipo == DO_WHILE || comando->tipo == WHILE){
         int whileLine = abs((int)((intptr_t)comando));
         if(comando->tipo == WHILE){
             jump("while_teste_", whileLine);
