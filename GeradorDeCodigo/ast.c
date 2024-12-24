@@ -2432,8 +2432,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         jump("exit_if_", ifLine);
         label("else_", elseLine);
         Comando *t2 = comando->elseS;
-        
-        while (t2) {
+
+        while(t2){
             traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
             t2 = t2->prox;
         }
