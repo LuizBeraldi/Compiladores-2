@@ -2538,8 +2538,8 @@ void freeAST(Programa *programa){
     }
     freeHash(programa->hashTable);
     Funcao *functions = programa->listaFuncoes;
-    
-    while (functions) {
+
+    while(functions){
         Funcao *functions2 = functions->prox;
         Comando *cmd = functions->listaComando;
         while (cmd) {
