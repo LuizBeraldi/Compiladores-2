@@ -1994,6 +1994,37 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             hashNoTemp = NULL;
 
             return resultado;
+        }else if(expressao->operador == DEC){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+
+            if(expressao->preOuPos == 1){
+                resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, --(esq->atribuicao));
+                regT = preIncremento(esq->tipoReg, esq->numReg, "subi");
+                resultado->tipoReg = esq->tipoReg;
+                resultado->numReg = regT;
+            }else if(expressao->preOuPos == 2){
+                int originalValue = esq->atribuicao;
+                esq->atribuicao--;
+                resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, originalValue);
+                regT = posIncremento(esq->tipoReg, esq->numReg, "subi");
+                resultado->tipoReg = 0;
+                resultado->numReg = regT;
+            }
+            hashNoTemp = getIdentifierNode(localHash, expressao->identificador);
+
+            if(!hashNoTemp){
+                hashNoTemp = getIdentifierNode(globalHash, expressao->identificador);
+            }
+
+            if(hashNoTemp){
+                setAssign(hashNoTemp, resultado->atribuicao);
+            }
+            hashNoTemp = NULL;
+
+            return resultado;
         }
     }
 
