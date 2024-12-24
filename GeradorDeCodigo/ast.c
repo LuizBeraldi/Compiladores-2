@@ -2405,6 +2405,200 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
     }
 }*/
 
+void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, Programa *programa, Funcao *funcaoAtual) {
+    if(!comando || comando->visitado){
+        return;
+    }
+    comando->visitado = 1;
+
+    Comando *t = NULL;
+    switch (comando->tipo) {
+        case IF:
+            ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+
+            int ifLine = abs((int)((intptr_t)comando->entao));
+            int elseLine = -1;
+            if (comando->elseS) {
+                elseLine = abs((int)((intptr_t)comando->elseS));
+            } else {
+                elseLine = ifLine;
+            }
+            se(ifResult->tipoReg, ifResult->numReg, elseLine);
+            t = comando->entao;
+            while (t) {
+                traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+                t = t->prox;
+            }
+            jump("exit_if_", ifLine);
+            label("else_", elseLine);
+            Comando *t2 = comando->elseS;
+            while (t2) {
+                traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
+                t2 = t2->prox;
+            }
+            label("exit_if_", ifLine);
+            break;
+
+        case DO_WHILE:
+        case WHILE:
+            int whileLine = abs((int)((intptr_t)comando));
+            if (comando->tipo == WHILE)
+                jump("while_teste_", whileLine);
+            label("while_corpo_", whileLine);
+            t = comando->entao;
+            while (t) {
+                traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+                t = t->prox;
+            }
+            label("while_teste_", whileLine);
+            ResultadoExpr *whileResult = NULL;
+            whileResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            enquanto(whileResult->tipoReg, whileResult->numReg, whileLine);
+            break;
+
+        case FOR:
+            int forLine = abs((int)((intptr_t)comando));
+            avaliarExpressao(comando->ini, globalHash, localHash, programa);
+            jump("for_teste_", forLine);
+            label("for_corpo_", forLine);
+            t = comando->entao;
+            while (t) {
+                traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
+                t = t->prox;
+            }
+            avaliarExpressao(comando->incrimenta, globalHash, localHash, programa);
+            label("for_teste_", forLine);
+            ResultadoExpr *forResult = NULL;
+            forResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            para(forResult->tipoReg, forResult->numReg, forLine);
+            break;
+
+        case PRINTF:
+            if (comando->imprimirAux) {
+                Expressao *prox = comando->imprimirAux;
+                ResultadoExpr *toPrint = NULL;
+
+                char *restOfString = NULL;
+
+                char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
+                strcpy(stringWithoutFormat, comando->string + 1);
+                while (prox) {
+                    toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
+                    prox = prox->proxExpr;
+                    if (toPrint) {
+                        if (toPrint->NoAuxid) {
+                            if (((HashNo *)toPrint->NoAuxid)->tipok == VECTOR) {
+                                toPrint->numReg = loadDoArray(toPrint->numReg);
+                                toPrint->tipoReg = 0;
+                            }
+                        }
+                    }
+
+                    int printing = 0;
+                    char *formatSpecifier = strstr(stringWithoutFormat, "%d");
+                    if (formatSpecifier) {
+                        printing = INT;
+                    } else {
+                        formatSpecifier = strstr(stringWithoutFormat, "%s");
+                        if (formatSpecifier) {
+                            printing = STRING;
+                        } else {
+                            formatSpecifier = strstr(stringWithoutFormat, "%c");
+                            if (formatSpecifier) {
+                                printing = CHAR;
+                            }
+                        }
+                    }
+                    if (restOfString) free(restOfString);
+                    restOfString = calloc(strlen(formatSpecifier) + 1, sizeof(char));
+                    strcpy(restOfString, formatSpecifier + 2);
+                    restOfString[strlen(restOfString)] = '\0';
+                    if (formatSpecifier != NULL) *formatSpecifier = '\0';
+                    string(stringWithoutFormat, abs((int)((intptr_t)toPrint)));
+                    if (printing == INT)
+                        inteiro(toPrint->tipoReg, toPrint->numReg);
+                    else if (printing == CHAR)
+                        caracter(toPrint->tipoReg, toPrint->numReg);
+                    else if (printing == STRING)
+                        stringVar(toPrint->tipoReg, toPrint->numReg);
+
+                    free(stringWithoutFormat);
+                    stringWithoutFormat = calloc(strlen(restOfString) + 1, sizeof(char));
+                    strcpy(stringWithoutFormat, restOfString);
+                }
+                if (strlen(restOfString) > 0) {
+                    restOfString[strlen(restOfString) - 1] = '\0';
+                    string(restOfString, rand() % 67282);
+                }
+                if (restOfString) free(restOfString);
+                if (stringWithoutFormat) free(stringWithoutFormat);
+
+            } else {
+                char *fixedString = calloc(strlen(comando->string) - 1, sizeof(char));
+                strncpy(fixedString, comando->string + 1, strlen(comando->string) - 2);
+                fixedString[strlen(comando->string) - 2] = '\0';
+                string(fixedString, abs((int)((intptr_t)comando->string)));
+                free(fixedString);
+            }
+            break;
+
+        case SCANF:
+            HashNo *node = getIdentifierNode(localHash, comando->identificador);
+            if (!node) node = getIdentifierNode(globalHash, comando->identificador);
+            if (!node) printf("Erro: Variável %s não declarada no scanf\n", comando->identificador);
+
+            int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
+            node->regS = sReg;
+            break;
+
+        case RETURN:
+            if (funcaoAtual->retornaTipo == VOID && funcaoAtual->ptr == 0) {
+                if (comando->condicao) printf("Erro: Função %s não pode retornar valor\n", funcaoAtual->nome);
+                if (strcmp(funcaoAtual->nome, "main")) {
+                    loadDaPilha();
+                    loadRegT(regTsv);
+                    imprimirReturn();
+                }
+            } else {
+                if (!comando->condicao) printf("Erro: Função %s deve retornar valor\n", funcaoAtual->nome);
+                ResultadoExpr *returnAux = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+                if (returnAux->NoAuxid) {
+                    if (((HashNo *)returnAux->NoAuxid)->regS == -1) {
+                        int null = constante(0);
+                        int s = atribuicao(0, null);
+                        setSRegisterInHash((HashNo *)returnAux->NoAuxid, s);
+                        returnAux->tipoReg = 1;
+                        returnAux->numReg = s;
+                    }
+                }
+                imprimirReturnV0(returnAux->tipoReg, returnAux->numReg);
+                if (strcmp(funcaoAtual->nome, "main")) {
+                    loadDaPilha();
+                    loadRegT(regTsv);
+                    imprimirReturn();
+                }
+            }
+            break;
+
+        case EXIT:
+            if (comando->condicao) {
+                ResultadoExpr *status = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+                printf("\t# exit with status %d", status->atribuicao);
+                imprimirExit();
+            }
+            break;
+
+        case LISTA_EXP_COMANDO:
+            avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            traverseASTCommand(comando->prox, globalHash, localHash, programa, funcaoAtual);
+            break;
+
+        default:
+            printf("Erro: Comando desconhecido!\n");
+            break;
+    }
+}
+
 void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *programa){
     if(!localHash){
         return;
