@@ -2424,14 +2424,15 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         }
         se(ifResult->tipoReg, ifResult->numReg, elseLine);
         t = comando->entao;
-        
-        while (t) {
+
+        while(t){
             traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
             t = t->prox;
         }
         jump("exit_if_", ifLine);
         label("else_", elseLine);
         Comando *t2 = comando->elseS;
+        
         while (t2) {
             traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
             t2 = t2->prox;
