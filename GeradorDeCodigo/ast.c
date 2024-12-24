@@ -2533,7 +2533,9 @@ int traverseAST(Programa *programa){
 }
 
 void freeAST(Programa *programa){
-    if (!programa) return;
+    if(!programa){
+        return;
+    }
     freeHash(programa->hashTable);
 
     Funcao *functions = programa->listaFuncoes;
