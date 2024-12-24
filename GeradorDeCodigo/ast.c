@@ -4,9 +4,9 @@
 #include "hash.h"
 #include "sintatico.tab.h"
 
-int *regTsAlive = NULL, inAtrib = 0;
+int *regTsv = NULL, noAtri = 0;
 
-Programa *createProgram(void **hash, void *listaFuncoes, void *main) {
+Programa *criarPrograma(void **hash, void *listaFuncoes, void *main) {
     Programa *novoProg = calloc(1, sizeof(Programa));
     novoProg->hashTable = hash;
     novoProg->listaFuncoes = listaFuncoes;
@@ -14,7 +14,7 @@ Programa *createProgram(void **hash, void *listaFuncoes, void *main) {
     return novoProg;
 }
 
-Funcao *createFunction(void **hash, int retornaTipo, int ptr, char *nome, void *listaComando, void *prox) {
+Funcao *criarFuncao(void **hash, int retornaTipo, int ptr, char *nome, void *listaComando, void *prox) {
     Funcao *novoFunc = calloc(1, sizeof(Funcao));
     novoFunc->hashTable = hash;
     novoFunc->retornaTipo = retornaTipo;
@@ -25,14 +25,14 @@ Funcao *createFunction(void **hash, int retornaTipo, int ptr, char *nome, void *
     return novoFunc;
 }
 
-ExpParam *createExpParam(Expressao *exp, ExpParam *prox) {
+ExpParam *criarExpressaoParametro(Expressao *exp, ExpParam *prox) {
     ExpParam *novoExprParam = calloc(1, sizeof(ExpParam));
     novoExprParam->exp = exp;
     novoExprParam->prox = prox;
     return novoExprParam;
 }
 
-Expressao *createExpression(int tipo, int operador, void * esq, void *dir) {
+Expressao *criarExpressao(int tipo, int operador, void * esq, void *dir) {
     Expressao *novaExpr = calloc(1, sizeof(Expressao));
     novaExpr->tipo = tipo;
     novaExpr->operador= operador;
@@ -43,13 +43,13 @@ Expressao *createExpression(int tipo, int operador, void * esq, void *dir) {
     return novaExpr;
 }
 
-Dimensao *createDimension(int tam) {
+Dimensao *criarDimensao(int tam) {
     Dimensao *novaDimensao = calloc(1, sizeof(Dimensao));
     novaDimensao->tam = tam;
     return novaDimensao;
 }
 
-int countDimension(void *d) {
+int contDimensao(void *d) {
     Dimensao *dimensao = d;
     if (!dimensao) return 0;
     int cont = 1;
@@ -61,13 +61,13 @@ int countDimension(void *d) {
     return cont;
 }
 
-Dimensao *createDimensionWithExp(Expressao *exp) {
+Dimensao *criarDimensaoExpressao(Expressao *exp) {
     Dimensao *novaDimensao = calloc(1, sizeof(Dimensao));
     novaDimensao->exp = exp;
     return novaDimensao;
 }
 
-void setDimensionExpression(Expressao *expressao, Dimensao *dimensao) {
+void setDimensaoExpressao(Expressao *expressao, Dimensao *dimensao) {
     if (!expressao) return;
     if (!expressao->dimensao) {
         expressao->dimensao = dimensao;
@@ -78,7 +78,7 @@ void setDimensionExpression(Expressao *expressao, Dimensao *dimensao) {
     }
 }
 
-Comando *createIfStatement(Expressao *condicao, void *entao, void *elseS, void *prox) {
+Comando *criarSe(Expressao *condicao, void *entao, void *elseS, void *prox) {
     Comando *novoSe = calloc(1, sizeof(Comando));
     novoSe->tipo = IF;
     novoSe->condicao = condicao;
@@ -88,7 +88,7 @@ Comando *createIfStatement(Expressao *condicao, void *entao, void *elseS, void *
     return novoSe;
 }
 
-Comando *createDoWhileStatement(Expressao *condicao, void *entao, void *prox) {
+Comando *criarFaçaEnquanto(Expressao *condicao, void *entao, void *prox) {
     Comando *novoFacaEnquanto = calloc(1, sizeof(Comando));
     novoFacaEnquanto->tipo = DO_WHILE;
     novoFacaEnquanto->condicao = condicao;
@@ -97,7 +97,7 @@ Comando *createDoWhileStatement(Expressao *condicao, void *entao, void *prox) {
     return novoFacaEnquanto;
 }
 
-Comando *createWhileStatement(Expressao *condicao, void *entao, void *prox) {
+Comando *criarEnquanto(Expressao *condicao, void *entao, void *prox) {
     Comando *novoEnquanto = calloc(1, sizeof(Comando));
     novoEnquanto->tipo = WHILE;
     novoEnquanto->condicao = condicao;
@@ -106,7 +106,7 @@ Comando *createWhileStatement(Expressao *condicao, void *entao, void *prox) {
     return novoEnquanto;
 }
 
-Comando *createForStatement(Expressao *ini, Expressao *condicao, Expressao *incrementa, void *entao, void *prox) {
+Comando *criarPara(Expressao *ini, Expressao *condicao, Expressao *incrementa, void *entao, void *prox) {
     Comando *novoPara = calloc(1, sizeof(Comando));
     novoPara->tipo = FOR;
     novoPara->ini = ini;
@@ -117,7 +117,7 @@ Comando *createForStatement(Expressao *ini, Expressao *condicao, Expressao *incr
     return novoPara;
 }
 
-Comando *createPrintStatement(char *string, Expressao *imprimirAux, void *prox) {
+Comando *criarImprimir(char *string, Expressao *imprimirAux, void *prox) {
     Comando *novoImprimir = calloc(1, sizeof(Comando));
     novoImprimir->tipo = PRINTF;
     novoImprimir->string = string;
@@ -126,7 +126,7 @@ Comando *createPrintStatement(char *string, Expressao *imprimirAux, void *prox) 
     return novoImprimir;
 }
 
-Comando *createScanStatement(char *string, char *identificador, void *prox) {
+Comando *criarScan(char *string, char *identificador, void *prox) {
     Comando *novoScan = calloc(1, sizeof(Comando));
     novoScan->tipo = SCANF;
     novoScan->string = string;
@@ -135,7 +135,7 @@ Comando *createScanStatement(char *string, char *identificador, void *prox) {
     return novoScan;
 }
 
-Comando *createReturnStatement(Expressao *expressao, void *prox) {
+Comando *criarReturn(Expressao *expressao, void *prox) {
     Comando *novoReturn = calloc(1, sizeof(Comando));
     novoReturn->tipo = RETURN;
     novoReturn->condicao = expressao;
@@ -143,7 +143,7 @@ Comando *createReturnStatement(Expressao *expressao, void *prox) {
     return novoReturn;
 }
 
-Comando *createExitStatement(Expressao *expressao, void *prox) {
+Comando *criarExit(Expressao *expressao, void *prox) {
     Comando *novoExit = calloc(1, sizeof(Comando));
     novoExit->tipo = EXIT;
     novoExit->condicao = expressao;
@@ -151,7 +151,7 @@ Comando *createExitStatement(Expressao *expressao, void *prox) {
     return novoExit;
 }
 
-Comando *createCommandExpression(Expressao *expressao, void *prox) {
+Comando *criarComandoExpressao(Expressao *expressao, void *prox) {
     Comando *novoComando = calloc(1, sizeof(Comando));
     novoComando->tipo = LISTA_EXP_COMANDO;
     novoComando->condicao = expressao;
@@ -159,7 +159,7 @@ Comando *createCommandExpression(Expressao *expressao, void *prox) {
     return novoComando;
 }
 
-ResultadoExpr *createResultadoExpr(int tipo, int ptr, int valor) {
+ResultadoExpr *criarResultadoExpressao(int tipo, int ptr, int valor) {
     ResultadoExpr *novoResultado = calloc(1, sizeof(ResultadoExpr));
     novoResultado->tipoVar = tipo;
     novoResultado->ptr = ptr;
@@ -169,7 +169,7 @@ ResultadoExpr *createResultadoExpr(int tipo, int ptr, int valor) {
     return novoResultado;
 }
 
-ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **localHash, Programa *programa) {
+ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **localHash, Programa *programa) {
     if (!expressao) return NULL;
 
     ResultadoExpr *esq = NULL;
@@ -190,7 +190,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
             switch (expressao->operador) {
                 case INT:
                 case CHAR:
-                    resultado = createResultadoExpr(expressao->tipo, expressao->ptr, expressao->atribuicao);
+                    resultado = criarResultadoExpressao(expressao->tipo, expressao->ptr, expressao->atribuicao);
                     int regT = constante(resultado->atribuicao);
                     resultado->tipoReg = 0;
                     resultado->numReg = regT;
@@ -198,7 +198,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     break;
 
                 case STRING:
-                    resultado = createResultadoExpr(STRING, 0, 0);
+                    resultado = criarResultadoExpressao(STRING, 0, 0);
                     strcpy(resultado->str, expressao->string);
                     return resultado;
                     break;
@@ -209,11 +209,11 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     if (!hashNo) printf("Erro: Variável %s não declarada\n", expressao->identificador);
 
                     if (hashNo->tipoVar == VOID) {
-                        resultado = createResultadoExpr(VOID, hashNo->ptr, hashNo->atribuicao);
+                        resultado = criarResultadoExpressao(VOID, hashNo->ptr, hashNo->atribuicao);
                         if (hashNo->tipok == VECTOR) resultado->ptr = 1;
                         resultado->NoAuxid = hashNo;
                         if (hashNo->isConstant || hashNo->ehGlobal) {
-                            if (!inAtrib && hashNo->tipok != VECTOR) {
+                            if (!noAtri && hashNo->tipok != VECTOR) {
                                 resultado->numReg = loadGlobalInt(hashNo->varId);
                                 resultado->tipoReg = 0;
                             }
@@ -226,11 +226,11 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         return resultado;
 
                     } else if (hashNo->tipoVar == INT || (hashNo->tipoVar == CHAR && hashNo->ptr == 0)) {
-                        resultado = createResultadoExpr(hashNo->tipoVar, hashNo->ptr, hashNo->atribuicao);
+                        resultado = criarResultadoExpressao(hashNo->tipoVar, hashNo->ptr, hashNo->atribuicao);
                         if (hashNo->tipok == VECTOR) resultado->ptr = 1;
                         resultado->NoAuxid = hashNo;
                         if (hashNo->isConstant || hashNo->ehGlobal) {
-                            if (!inAtrib && hashNo->tipok != VECTOR) {
+                            if (!noAtri && hashNo->tipok != VECTOR) {
                                 resultado->numReg = loadGlobalInt(hashNo->varId);
                                 resultado->tipoReg = 0;
                             }
@@ -242,7 +242,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         break;
 
                     } else if (hashNo->tipoVar == CHAR && hashNo->ptr == 1) {
-                        resultado = createResultadoExpr(CHAR, 1, 0);
+                        resultado = criarResultadoExpressao(CHAR, 1, 0);
                         strcpy(resultado->str, expressao->string);
                         resultado->NoAuxid = hashNo;
                         resultado->tipoReg = 1;
@@ -258,9 +258,9 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
             }
 
         case BOP:
-            if (expressao->esq->operador == ASSIGN) inAtrib = 1;
+            if (expressao->esq->operador == ASSIGN) noAtri = 1;
             esq = evalExpression(expressao->esq, globalHash, localHash, programa);
-            if (expressao->esq->operador == ASSIGN) inAtrib = 0;
+            if (expressao->esq->operador == ASSIGN) noAtri = 0;
             dir = evalExpression(expressao->dir, globalHash, localHash, programa);
 
             tipoEsq = esq->tipoReg;
@@ -270,7 +270,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
 
             switch (expressao->operador) {
                 case ASSIGN:
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, dir->atribuicao);
 
                     if ((esq->tipoVar == INT || esq->tipoVar == VOID) && esq->ptr == 1 && dir->ptr == 1) {
                         int s = atribuicaoEndereco(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId);
@@ -348,7 +348,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     break;
 
                 case ADD_ASSIGN:
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao + dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao + dir->atribuicao);
                     regT = opeAritmeticas(esq->tipoReg, esq->numReg, dir->tipoReg, dir->numReg, "add");
 
                     if (esq->NoAuxid && ((HashNo *)esq->NoAuxid)->ehGlobal) {
@@ -370,7 +370,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     break;
 
                 case MINUS_ASSIGN:
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao - dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao - dir->atribuicao);
                     regT = opeAritmeticas(esq->tipoReg, esq->numReg, dir->tipoReg, dir->numReg, "sub");
 
                     if (esq->NoAuxid && ((HashNo *)esq->NoAuxid)->ehGlobal) {
@@ -400,7 +400,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao + dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao + dir->atribuicao);
                     regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "add");
                     if (esq->tipoVar == CHAR && esq->ptr == 1) strcpy(resultado->str, ((HashNo *)esq->NoAuxid)->string + dir->atribuicao);
                     if (dir->tipoVar == CHAR && dir->ptr == 1) strcpy(resultado->str, ((HashNo *)dir->NoAuxid)->string + esq->atribuicao);
@@ -418,7 +418,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao - dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao - dir->atribuicao);
                     int regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "sub");
                     resultado->tipoReg = 0;
                     resultado->numReg = regT;
@@ -434,7 +434,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao * dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao * dir->atribuicao);
                     regT = opeAritmeticas(tipoEsq, regEsq, tipoDir, regDir, "mul");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -450,7 +450,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao / dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao / dir->atribuicao);
                     regT = opDivisao(tipoEsq, regEsq, tipoDir, regDir, "mflo");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -466,7 +466,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao % dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao % dir->atribuicao);
                     regT = opDivisao(tipoEsq, regEsq, tipoDir, regDir, "mfhi");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -482,7 +482,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao | dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao | dir->atribuicao);
                     regT = bitOp(tipoEsq, regEsq, tipoDir, regDir, "or");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -498,7 +498,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao & dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao & dir->atribuicao);
                     regT = bitOp(tipoEsq, regEsq, tipoDir, regDir, "and");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -514,7 +514,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao ^ dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao ^ dir->atribuicao);
                     regT = bitOp(tipoEsq, regEsq, tipoDir, regDir, "xor");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -530,7 +530,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao && dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao && dir->atribuicao);
                     regT = eLogico(tipoEsq, regEsq, tipoDir, regDir, abs((int)((intptr_t)expressao)));
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -546,7 +546,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao || dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao || dir->atribuicao);
                     regT = ouLogico(tipoEsq, regEsq, tipoDir, regDir, abs((int)((intptr_t)expressao)));
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -562,7 +562,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao < dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao < dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "slt");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -578,7 +578,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao <= dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao <= dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "sle");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -594,7 +594,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao > dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao > dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "sgt");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -610,7 +610,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao >= dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao >= dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "sge");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -626,7 +626,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao == dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao == dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "seq");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -642,7 +642,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(INT, 0, esq->atribuicao != dir->atribuicao);
+                    resultado = criarResultadoExpressao(INT, 0, esq->atribuicao != dir->atribuicao);
                     regT = opRelacional(tipoEsq, regEsq, tipoDir, regDir, "sne");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -658,7 +658,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao >> dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao >> dir->atribuicao);
                     regT = bitOp(tipoEsq, regEsq, tipoDir, regDir, "srlv");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -674,7 +674,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regDir = loadDoArray(dir->numReg);
                         tipoDir = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao << dir->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao << dir->atribuicao);
                     regT = bitOp(tipoEsq, regEsq, tipoDir, regDir, "sllv");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -702,7 +702,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     }
 
                     if (expressao->preOuPos == 1) {
-                        resultado = createResultadoExpr(esq->tipoVar, esq->ptr, ++(esq->atribuicao));
+                        resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, ++(esq->atribuicao));
                         regT = preIncremento(esq->tipoReg, esq->numReg, "addi");
                         resultado->tipoReg = esq->tipoReg;
                         resultado->numReg = regT;
@@ -710,7 +710,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     } else if (expressao->preOuPos == 2) {
                         int originalValue = esq->atribuicao;
                         esq->atribuicao++;
-                        resultado = createResultadoExpr(esq->tipoVar, esq->ptr, originalValue);
+                        resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, originalValue);
                         regT = posIncremento(esq->tipoReg, esq->numReg, "addi");
                         resultado->tipoReg = 0;
                         resultado->numReg = regT;
@@ -729,7 +729,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         tipoEsq = 0;
                     }
                     if (expressao->preOuPos == 1) {
-                        resultado = createResultadoExpr(esq->tipoVar, esq->ptr, --(esq->atribuicao));
+                        resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, --(esq->atribuicao));
                         regT = preIncremento(esq->tipoReg, esq->numReg, "subi");
                         resultado->tipoReg = esq->tipoReg;
                         resultado->numReg = regT;
@@ -737,7 +737,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                     } else if (expressao->preOuPos == 2) {
                         int originalValue = esq->atribuicao;
                         esq->atribuicao--;
-                        resultado = createResultadoExpr(esq->tipoVar, esq->ptr, originalValue);
+                        resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, originalValue);
                         regT = posIncremento(esq->tipoReg, esq->numReg, "subi");
                         resultado->tipoReg = 0;
                         resultado->numReg = regT;
@@ -755,7 +755,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regEsq = loadDoArray(esq->numReg);
                         tipoEsq = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, ~esq->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, ~esq->atribuicao);
                     regT = bitNao(tipoEsq, regEsq);
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -767,7 +767,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regEsq = loadDoArray(esq->numReg);
                         tipoEsq = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, +esq->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, +esq->atribuicao);
                     regT = maisMenos(tipoEsq, regEsq, "add");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -779,7 +779,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regEsq = loadDoArray(esq->numReg);
                         tipoEsq = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, -esq->atribuicao);
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, -esq->atribuicao);
                     regT = maisMenos(tipoEsq, regEsq, "sub");
                     resultado->numReg = regT;
                     resultado->tipoReg = 0;
@@ -791,7 +791,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         regEsq = loadDoArray(esq->numReg);
                         tipoEsq = 0;
                     }
-                    resultado = createResultadoExpr(esq->tipoVar, esq->ptr, !(esq->atribuicao));
+                    resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, !(esq->atribuicao));
                     regT = naoLogico(esq->tipoReg, esq->numReg);
                     resultado->tipoReg = 0;
                     resultado->numReg = regT;
@@ -799,13 +799,13 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
 
                 case MULTIPLY:
                     if (esq->tipoVar == CHAR && esq->ptr == 1) {
-                        resultado = createResultadoExpr(CHAR, 0, *(((HashNo *)esq->NoAuxid)->string));
+                        resultado = criarResultadoExpressao(CHAR, 0, *(((HashNo *)esq->NoAuxid)->string));
                         int t = loadByte(esq->tipoReg, esq->numReg);
                         resultado->tipoReg = 0;
                         resultado->numReg = t;
 
                     } else if (esq->tipoVar == INT && esq->ptr == 1) {
-                        resultado = createResultadoExpr(INT, 0, 0);
+                        resultado = criarResultadoExpressao(INT, 0, 0);
                         int i = constante(0);
                         if (esq->numReg == -1) {
                             esq->numReg = atribuicaoEndereco(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId);
@@ -813,14 +813,14 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                         }
                         int posic = acessarEnderecoArray(esq->tipoReg, esq->numReg, ((HashNo *)esq->NoAuxid)->varId, 0, i, ((HashNo *)esq->NoAuxid)->ehGlobal);
                         resultado->tipoReg = 0;
-                        if (inAtrib) {
+                        if (noAtri) {
                             resultado->numReg = posic;
                         } else {
                             resultado->numReg = loadDoArray(posic);
                         }
 
                     } else {
-                        resultado = createResultadoExpr(esq->tipoVar, 0, *(&esq->atribuicao));
+                        resultado = criarResultadoExpressao(esq->tipoVar, 0, *(&esq->atribuicao));
                     }
                     resultado->NoAuxid = esq->NoAuxid;
                     return resultado;
@@ -861,13 +861,13 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                 tipoDir = 0;
             }
             if (condicao->atribuicao) {
-                resultado = createResultadoExpr(esq->tipoVar, esq->ptr, esq->atribuicao);
+                resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao);
                 resultado->numReg = esq->numReg;
                 resultado->tipoReg = esq->tipoReg;
                 if (tipoDir == 0) freeReg(tipoDir, regDir);
 
             } else {
-                resultado = createResultadoExpr(dir->tipoVar, dir->ptr, dir->atribuicao);
+                resultado = criarResultadoExpressao(dir->tipoVar, dir->ptr, dir->atribuicao);
                 resultado->numReg = dir->numReg;
                 resultado->tipoReg = dir->tipoReg;
                 if (tipoEsq == 0) freeReg(tipoEsq, regEsq);
@@ -896,7 +896,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
             }
 
             posic = acessarEnderecoArray(1, NoAuxid->regS, NoAuxid->varId, 0, mipsIndex, NoAuxid->ehGlobal);
-            resultado = createResultadoExpr(NoAuxid->tipoVar, 0, 0);
+            resultado = criarResultadoExpressao(NoAuxid->tipoVar, 0, 0);
             resultado->tipoReg = 0;
             resultado->numReg = posic;
             resultado->NoAuxid = NoAuxid;
@@ -931,7 +931,7 @@ ResultadoExpr *evalExpression(Expressao *expressao, void **globalHash, void **lo
                 auxParamRecebido = auxParamRecebido->prox;
                 i++;
             }
-            resultado = createResultadoExpr(NoAuxid->tipoVar, NoAuxid->ptr, 0);
+            resultado = criarResultadoExpressao(NoAuxid->tipoVar, NoAuxid->ptr, 0);
 
             chamarFuncao(NoAuxid->varId);
             int r = imprimirLoadReturnV0();
@@ -1099,7 +1099,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 if (comando->condicao) printf("Erro: Função %s não pode retornar valor\n", funcaoAtual->nome);
                 if (strcmp(funcaoAtual->nome, "main")) {
                     loadDaPilha();
-                    loadRegT(regTsAlive);
+                    loadRegT(regTsv);
                     imprimirReturn();
                 }
             } else {
@@ -1117,7 +1117,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 imprimirReturnV0(returnAux->tipoReg, returnAux->numReg);
                 if (strcmp(funcaoAtual->nome, "main")) {
                     loadDaPilha();
-                    loadRegT(regTsAlive);
+                    loadRegT(regTsv);
                     imprimirReturn();
                 }
             }
@@ -1229,8 +1229,8 @@ int traverseAST(Programa *programa) {
         HashNo *funcNode = getIdentifierNode(programa->hashTable, funcaoAtual->nome);
         funcao(funcaoAtual->nome);
         if (strcmp(funcaoAtual->nome, "main")) {
-            regTsAlive = calloc(10, sizeof(int));
-            armazenarRegT(regTsAlive);
+            regTsv = calloc(10, sizeof(int));
+            armazenarRegT(regTsv);
             armazenarNaPilha();
         } else {
             globalAtribuicaoVar();
@@ -1244,8 +1244,8 @@ int traverseAST(Programa *programa) {
         }
         if (strcmp(funcaoAtual->nome, "main")) {
             loadDaPilha();
-            loadRegT(regTsAlive);
-            free(regTsAlive);
+            loadRegT(regTsv);
+            free(regTsv);
             imprimirReturn();
         }
         funcaoAtual = funcaoAtual->prox;
