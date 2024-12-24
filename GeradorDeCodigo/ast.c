@@ -37,7 +37,7 @@ ExpParam *criarExpressaoParametro(Expressao *exp, ExpParam *prox) {
     return novoExprParam;
 }
 
-Expressao *criarExpressao(int tipo, int operador, void * esq, void *dir) {
+Expressao *criarExpressao(int tipo, int operador, void * esq, void *dir){
     Expressao *novaExpr = calloc(1, sizeof(Expressao));
     novaExpr->tipo = tipo;
     novaExpr->operador= operador;
