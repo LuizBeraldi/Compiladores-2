@@ -1,7 +1,7 @@
 #include "hash.h"
 #include "ast.h"
 
-extern int countDimension(void *dimensao);
+extern int contDimensao(void *dimensao);
 
 void **createHash() {
     void **hashTable = calloc(TAM_HASH, sizeof(HashNo));
@@ -68,7 +68,7 @@ void setAssign(void *no, int assign) {
 void setDimensions(void *no, void *dimensao) {
     HashNo *aux = no;
     aux->dimensao = dimensao;
-    int qntdDimen = countDimension(dimensao);
+    int qntdDimen = contDimensao(dimensao);
     aux->qntDimen = qntdDimen;
     if (qntdDimen > 0) {
         aux->tipok = VECTOR;

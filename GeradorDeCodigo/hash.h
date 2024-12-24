@@ -8,10 +8,10 @@
 #define TAM_HASH 269
 
 /*
-./gerador < entradas.gerador/quicksort.txt > saidas_gerador/quicksort.asm 
-./gerador < entradas.gerador/fatorial.txt > saidas_gerador/fatorial.asm
-./gerador < entradas.gerador/triangulo.txt > saidas_gerador/triangulo.asm 
-./gerador < entradas.gerador/comparacao.txt > saidas_gerador/comparacao.asm 
+./gerador < entradas.gerador/quicksort.txt > saidas.gerador/quicksort.asm 
+./gerador < entradas.gerador/fatorial.txt > saidas.gerador/fatorial.asm
+./gerador < entradas.gerador/triangulo.txt > saidas.gerador/triangulo.asm 
+./gerador < entradas.gerador/comparacao.txt > saidas.gerador/comparacao.asm 
 */
 
 #define VAR 1

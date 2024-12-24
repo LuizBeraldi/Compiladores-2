@@ -26,7 +26,7 @@ fatorial:
 	add $s0, $zero, $a0
 	addi $t0, $zero, 0
 	sle $t1, $s0, $t0
-	beqz $t1, else_274192480
+	beqz $t1, else_1601087392
 	addi $t0, $zero, 0
 	add $v0, $zero, $t0
 
@@ -46,12 +46,12 @@ fatorial:
 	addi $sp, $sp, 52
 
 	jr $ra
-	j exit_if_274192480
-	else_274192480:
-	exit_if_274192480:
+	j exit_if_1601087392
+	else_1601087392:
+	exit_if_1601087392:
 	addi $t0, $zero, 1
 	seq $t1, $s0, $t0
-	beqz $t1, else_274202256
+	beqz $t1, else_1601077616
 	addi $t0, $zero, 1
 	add $v0, $zero, $t0
 
@@ -71,8 +71,8 @@ fatorial:
 	addi $sp, $sp, 52
 
 	jr $ra
-	j exit_if_274196448
-	else_274202256:
+	j exit_if_1601083424
+	else_1601077616:
 	addi $t0, $zero, 1
 	sub $t1, $s0, $t0
 	add $a0, $zero, $t1 # function param n
@@ -97,7 +97,7 @@ fatorial:
 	addi $sp, $sp, 52
 
 	jr $ra
-	exit_if_274196448:
+	exit_if_1601083424:
 
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -118,18 +118,18 @@ fatorial:
 
 main:
 	.data
-		string_274296400: .asciiz "Entre com um valor inteiro:"
+		string_1600983472: .asciiz "Entre com um valor inteiro:"
 	.text
-	la $a0, string_274296400
+	la $a0, string_1600983472
 	addi $v0, $zero, 4
 	syscall
 	addi $v0, $zero, 5
 	syscall
 	add $s0, $zero, $v0
 	.data
-		string_274310224: .asciiz "O fatorial de "
+		string_1600969648: .asciiz "O fatorial de "
 	.text
-	la $a0, string_274310224
+	la $a0, string_1600969648
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $s0
@@ -139,9 +139,9 @@ main:
 	jal fatorial
 	add $t0, $zero, $v0
 	.data
-		string_274310896: .asciiz " eh: "
+		string_1600968976: .asciiz " eh: "
 	.text
-	la $a0, string_274310896
+	la $a0, string_1600968976
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t0
