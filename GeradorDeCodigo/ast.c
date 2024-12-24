@@ -2034,6 +2034,17 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             regT = bitNao(tipoEsq, regEsq);
             resultado->numReg = regT;
             resultado->tipoReg = 0;
+
+            return resultado;
+        }else if(expressao->operador == PLUS){
+            if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+                regEsq = loadDoArray(esq->numReg);
+                tipoEsq = 0;
+            }
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, +esq->atribuicao);
+            regT = maisMenos(tipoEsq, regEsq, "add");
+            resultado->numReg = regT;
+            resultado->tipoReg = 0;
             
             return resultado;
         }
