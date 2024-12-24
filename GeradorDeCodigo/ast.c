@@ -2538,7 +2538,10 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 restOfString[strlen(restOfString) - 1] = '\0';
                 string(restOfString, rand() % 67282);
             }
-            if (restOfString) free(restOfString);
+            
+            if(restOfString){
+                free(restOfString);
+            }
             if (stringWithoutFormat) free(stringWithoutFormat);
 
         } else {
