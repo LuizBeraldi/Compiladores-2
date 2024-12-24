@@ -2473,7 +2473,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         forResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
         para(forResult->tipoReg, forResult->numReg, forLine);
     }else if(comando->tipo == PRINTF){
-        if (comando->imprimirAux) {
+        if(comando->imprimirAux){
             Expressao *prox = comando->imprimirAux;
             ResultadoExpr *toPrint = NULL;
 
