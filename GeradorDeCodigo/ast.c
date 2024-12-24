@@ -56,7 +56,7 @@ Dimensao *criarDimensao(int tam) {
     return novaDimensao;
 }
 
-int contDimensao(void *d) {
+int contDimensao(void *d){
     Dimensao *dimensao = d;
 
     if(!dimensao){
