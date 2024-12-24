@@ -2578,7 +2578,9 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 imprimirReturn();
             }
         }else{
-            if (!comando->condicao) printf("Erro: Função %s deve retornar valor\n", funcaoAtual->nome);
+            if(!comando->condicao){
+                printf("Erro: Função %s deve retornar valor\n", funcaoAtual->nome);
+            }
             ResultadoExpr *returnAux = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
             if (returnAux->NoAuxid) {
                 if (((HashNo *)returnAux->NoAuxid)->regS == -1) {
