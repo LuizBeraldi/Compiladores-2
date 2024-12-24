@@ -2571,8 +2571,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             if(comando->condicao){
                 printf("Erro: Função %s não pode retornar valor\n", funcaoAtual->nome);
             }
-            
-            if (strcmp(funcaoAtual->nome, "main")) {
+
+            if(strcmp(funcaoAtual->nome, "main")){
                 loadDaPilha();
                 loadRegT(regTsv);
                 imprimirReturn();
