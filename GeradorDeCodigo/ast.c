@@ -2220,29 +2220,29 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
     Comando *t = NULL;
     switch (comando->tipo) {
         case IF:
-            ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+            ResultadoExpr *seResultado = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
 
-            int ifLine = abs((int)((intptr_t)comando->entao));
-            int elseLine = -1;
+            int seLinha = abs((int)((intptr_t)comando->entao));
+            int elseLinha = -1;
             if (comando->elseS) {
-                elseLine = abs((int)((intptr_t)comando->elseS));
+                elseLinha = abs((int)((intptr_t)comando->elseS));
             } else {
-                elseLine = ifLine;
+                elseLinha = seLinha;
             }
-            se(ifResult->tipoReg, ifResult->numReg, elseLine);
+            se(seResultado->tipoReg, seResultado->numReg, elseLinha);
             t = comando->entao;
             while (t) {
                 traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
                 t = t->prox;
             }
-            jump("exit_if_", ifLine);
-            label("else_", elseLine);
+            jump("exit_if_", seLinha);
+            label("else_", elseLinha);
             Comando *t2 = comando->elseS;
             while (t2) {
                 traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
                 t2 = t2->prox;
             }
-            label("exit_if_", ifLine);
+            label("exit_if_", seLinha);
             break;
 
         case DO_WHILE:
@@ -2410,34 +2410,33 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         return;
     }
     comando->visitado = 1;
-
     Comando *t = NULL;
 
     if(comando->tipo == IF){
-        ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
-        int ifLine = abs((int)((intptr_t)comando->entao)), elseLine = -1;
+        ResultadoExpr *seResultado = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
+        int seLinha = abs((int)((intptr_t)comando->entao)), elseLinha = -1;
 
         if(comando->elseS){
-            elseLine = abs((int)((intptr_t)comando->elseS));
+            elseLinha = abs((int)((intptr_t)comando->elseS));
         }else{
-            elseLine = ifLine;
+            elseLinha = seLinha;
         }
-        se(ifResult->tipoReg, ifResult->numReg, elseLine);
+        se(seResultado->tipoReg, seResultado->numReg, elseLinha);
         t = comando->entao;
 
         while(t){
             traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
             t = t->prox;
         }
-        jump("exit_if_", ifLine);
-        label("else_", elseLine);
+        jump("exit_if_", seLinha);
+        label("else_", elseLinha);
         Comando *t2 = comando->elseS;
 
         while(t2){
             traverseASTCommand(t2, globalHash, localHash, programa, funcaoAtual);
             t2 = t2->prox;
         }
-        label("exit_if_", ifLine);
+        label("exit_if_", seLinha);
     }else if(comando->tipo == DO_WHILE){
         return;
     }else if(comando->tipo == WHILE){
