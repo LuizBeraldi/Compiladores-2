@@ -127,7 +127,7 @@ Programa *AST = NULL;
 %%
 
 AstParse: Declaracoes MyEOF {
-        Programa *ast = createProgram(globalHash, functionList, NULL);
+        Programa *ast = criarPrograma(globalHash, functionList, NULL);
         Funcao *aux = functionList;
         AST = ast;
         return 0;
@@ -166,7 +166,7 @@ DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { pointerCount = 0
     } ;
 
 DeclaraFuncao: FUNCTION COLON ID { currentHash = createHash(); } RETURN_TYPE COLON VarType { pointerCount = 0; } Pointers { paramCount = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
-        Funcao *func = createFunction(currentHash, $7.type, pointerCount, $3.valor, $13, NULL);
+        Funcao *func = criarFuncao(currentHash, $7.type, pointerCount, $3.valor, $13, NULL);
         if (functionList) {
             Funcao *aux = functionList;
             while (aux->prox) {
@@ -185,7 +185,7 @@ DeclaraFuncao: FUNCTION COLON ID { currentHash = createHash(); } RETURN_TYPE COL
     } ;
 
 ArrayCheck: L_SQUARE_BRACKET NUM_INT R_SQUARE_BRACKET ArrayCheck {
-        Dimensao *dim = createDimension(atoi($2.valor));
+        Dimensao *dim = criarDimensao(atoi($2.valor));
         dim->prox = $4;
         $$ = dim;
     }
@@ -198,28 +198,28 @@ Expression: BinaryExpr { $$ = $1; }
     | FunctionCall { $$ = $1; } ;
 
 BinaryExpr: Ops L_PAREN Expression COMMA Expression R_PAREN {
-        Expressao *bop = createExpression(BOP, $1.type, $3, $5);
+        Expressao *bop = criarExpressao(BOP, $1.type, $3, $5);
         $$ = bop;
     } ;
 
 TernaryExpr: TERNARY_CONDITIONAL L_PAREN Expression COMMA Expression COMMA Expression {
-        Expressao *ternary = createExpression(TERNARY, TERNARY_CONDITIONAL, $5, $7);
+        Expressao *ternary = criarExpressao(TERNARY, TERNARY_CONDITIONAL, $5, $7);
         ternary->condicaoTernaria = $3;
         $$ = ternary;
     } ;
 
 UnaryExpr: Ops L_PAREN Expression R_PAREN {
-        Expressao *uop = createExpression(UOP, $1.type, $3, NULL);
+        Expressao *uop = criarExpressao(UOP, $1.type, $3, NULL);
         uop->preOuPos = 1;
         $$ = uop;
     } 
     | L_PAREN Expression R_PAREN INC {
-        Expressao *uop = createExpression(UOP, INC, $2, NULL);
+        Expressao *uop = criarExpressao(UOP, INC, $2, NULL);
         uop->preOuPos = 2;
         $$ = uop;
     } 
     | L_PAREN Expression R_PAREN DEC {
-        Expressao *uop = createExpression(UOP, DEC, $2, NULL);
+        Expressao *uop = criarExpressao(UOP, DEC, $2, NULL);
         uop->preOuPos = 2;
         $$ = uop;
     } ;
@@ -251,12 +251,12 @@ Ops: PLUS { $$ = yylval.token; }
     | BITWISE_NOT { $$ = yylval.token; } ; 
 
 Primaria: NUM_INT {
-        Expressao *expr = createExpression(PRIMARIA, INT, NULL, NULL);
+        Expressao *expr = criarExpressao(PRIMARIA, INT, NULL, NULL);
         expr->atribuicao = atoi($1.valor);
         $$ = expr;
     }
     | CHARACTER {
-        Expressao *expr = createExpression(PRIMARIA, CHAR, NULL, NULL);
+        Expressao *expr = criarExpressao(PRIMARIA, CHAR, NULL, NULL);
         if ($1.valor[1] == '\\') {
             switch ($1.valor[2]) {
                 case 'n':
@@ -287,16 +287,16 @@ Primaria: NUM_INT {
         $$ = expr;
     }
     | STRING {
-        Expressao *expr = createExpression(PRIMARIA, STRING, NULL, NULL);
+        Expressao *expr = criarExpressao(PRIMARIA, STRING, NULL, NULL);
         strcpy(expr->string, $1.valor);
         $$ = expr;
     }
     | ID PosFixa {
-        Expressao *expr = createExpression(PRIMARIA, ID, NULL, NULL);
+        Expressao *expr = criarExpressao(PRIMARIA, ID, NULL, NULL);
         strcpy(expr->identificador, $1.valor);
         if (isFuncOrArray == 1) {
             expr->tipo = ARRAY_CALL;
-            setDimensionExpression(expr, ((Dimensao*)$2));
+            setDimensaoExpressao(expr, ((Dimensao*)$2));
         
         } else if (isFuncOrArray == 2) {
             expr->tipo = FUNCTION_CALL;
@@ -311,7 +311,7 @@ PosFixa: ArrayCall { isFuncOrArray = 1; $$ = $1; }
     | { isFuncOrArray = 0; $$ = NULL; }
 
 ArrayCall: L_SQUARE_BRACKET Expression R_SQUARE_BRACKET {
-        Dimensao *dim = createDimensionWithExp($2);
+        Dimensao *dim = criarDimensaoExpressao($2);
         $$ = dim;
     } ;
 
@@ -320,11 +320,11 @@ FunctionCall: L_PAREN ParamExpression R_PAREN {
     } ;
 
 ParamExpression: Expression ParamExpression {
-        ExpParam *aux = createExpParam($1, $2);
+        ExpParam *aux = criarExpressaoParametro($1, $2);
         $$ = aux;
     }
     | COMMA Expression ParamExpression {
-        ExpParam *aux = createExpParam($2, $3);
+        ExpParam *aux = criarExpressaoParametro($2, $3);
         $$ = aux;
     }
     | { $$ = NULL; } ;
@@ -377,39 +377,39 @@ ListaComandos: Comandos SemicolonDeSchrodinger ListaComandos {
     | { $$ = NULL; } ;
 
 Comandos: IF L_PAREN Expression COMMA Comandos AuxElse R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createIfStatement($3, $5, $6, $9);
+        Comando *cmd = criarSe($3, $5, $6, $9);
         $$ = cmd;
     }
     | DO_WHILE L_PAREN Comandos COMMA Expression R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createDoWhileStatement($5, $3, $8);
+        Comando *cmd = criarFaçaEnquanto($5, $3, $8);
         $$ = cmd;
     }
     | WHILE L_PAREN Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createWhileStatement($3, $5, $8);
+        Comando *cmd = criarEnquanto($3, $5, $8);
         $$ = cmd;
     }
     | FOR L_PAREN Expression COMMA Expression COMMA Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createForStatement($3, $5, $7, $9, $12);
+        Comando *cmd = criarPara($3, $5, $7, $9, $12);
         $$ = cmd;
     }
     | PRINTF L_PAREN STRING AuxPrint R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createPrintStatement($3.valor, $4, $7);
+        Comando *cmd = criarImprimir($3.valor, $4, $7);
         $$ = cmd;
     }
     | SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createScanStatement($3.valor, $7.valor, $11);
+        Comando *cmd = criarScan($3.valor, $7.valor, $11);
         $$ = cmd;
     }
     | RETURN L_PAREN AuxReturn R_PAREN Comandos {
-        Comando *cmd = createReturnStatement($3, $5);
+        Comando *cmd = criarReturn($3, $5);
         $$ = cmd;
     }
     | EXIT L_PAREN Expression R_PAREN Comandos {
-        Comando *cmd = createExitStatement($3, $5);
+        Comando *cmd = criarExit($3, $5);
         $$ = cmd;
     } 
     | Expression SemicolonDeSchrodinger Comandos {
-        Comando *cmd = createCommandExpression($1, $3);
+        Comando *cmd = criarComandoExpressao($1, $3);
         $$ = cmd;
     } 
     | { $$ = NULL; };

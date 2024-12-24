@@ -259,9 +259,9 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
 
         case BOP:
             if (expressao->esq->operador == ASSIGN) noAtri = 1;
-            esq = evalExpression(expressao->esq, globalHash, localHash, programa);
+            esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
             if (expressao->esq->operador == ASSIGN) noAtri = 0;
-            dir = evalExpression(expressao->dir, globalHash, localHash, programa);
+            dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
 
             tipoEsq = esq->tipoReg;
             regEsq = esq->numReg;
@@ -690,7 +690,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             break;
 
         case UOP:
-            esq = evalExpression(expressao->esq, globalHash, localHash, programa);
+            esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
             tipoEsq = esq->tipoReg;
             regEsq = esq->numReg;
 
@@ -835,16 +835,16 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             break;
 
         case TERNARY:
-            esq = evalExpression(expressao->esq, globalHash, localHash, programa);
-            dir = evalExpression(expressao->dir, globalHash, localHash, programa);
+            esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
+            dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
 
-            ResultadoExpr *condicao = evalExpression(expressao->condicaoTernaria, globalHash, localHash, programa);
+            ResultadoExpr *condicao = avaliarExpressao(expressao->condicaoTernaria, globalHash, localHash, programa);
             ternario(condicao->tipoReg, condicao->numReg, abs((int)((intptr_t)condicao)));
             label("true_ternary_", abs((int)((intptr_t)condicao)));
-            esq = evalExpression(expressao->esq, globalHash, localHash, programa);
+            esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
             jump("end_ternary_", abs((int)((intptr_t)condicao)));
             label("false_ternary_", abs((int)((intptr_t)condicao)));
-            dir = evalExpression(expressao->dir, globalHash, localHash, programa);
+            dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
             label("end_ternary_", abs((int)((intptr_t)condicao)));
 
             tipoEsq = esq->tipoReg;
@@ -889,7 +889,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             while (dimenRecebidas) {
                 qntdDimenRecebidas++;
 
-                dimenResult = evalExpression(dimenRecebidas->exp, globalHash, localHash, programa);
+                dimenResult = avaliarExpressao(dimenRecebidas->exp, globalHash, localHash, programa);
                 mipsIndex = opeAritmeticas(0, mipsIndex, dimenResult->tipoReg, dimenResult->numReg, "mul");
                 dimenEsperada = dimenEsperada->prox;
                 dimenRecebidas = dimenRecebidas->prox;
@@ -920,7 +920,7 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             int i = 1;
             int j = qntdParamRecebido - 1;
             while (auxParamRecebido && auxParam) {
-                resultParam = evalExpression(auxParamRecebido->exp, globalHash, localHash, programa);
+                resultParam = avaliarExpressao(auxParamRecebido->exp, globalHash, localHash, programa);
                 if (resultParam->NoAuxid && ((HashNo *)resultParam->NoAuxid)->tipok == VECTOR) {
                     resultParam->numReg = loadDoArray(resultParam->numReg);
                 }
@@ -957,7 +957,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
     Comando *t = NULL;
     switch (comando->tipo) {
         case IF:
-            ResultadoExpr *ifResult = evalExpression(comando->condicao, globalHash, localHash, programa);
+            ResultadoExpr *ifResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
 
             int ifLine = abs((int)((intptr_t)comando->entao));
             int elseLine = -1;
@@ -995,13 +995,13 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
             }
             label("while_teste_", whileLine);
             ResultadoExpr *whileResult = NULL;
-            whileResult = evalExpression(comando->condicao, globalHash, localHash, programa);
+            whileResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
             enquanto(whileResult->tipoReg, whileResult->numReg, whileLine);
             break;
 
         case FOR:
             int forLine = abs((int)((intptr_t)comando));
-            evalExpression(comando->ini, globalHash, localHash, programa);
+            avaliarExpressao(comando->ini, globalHash, localHash, programa);
             jump("for_teste_", forLine);
             label("for_corpo_", forLine);
             t = comando->entao;
@@ -1009,10 +1009,10 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 traverseASTCommand(t, globalHash, localHash, programa, funcaoAtual);
                 t = t->prox;
             }
-            evalExpression(comando->incrimenta, globalHash, localHash, programa);
+            avaliarExpressao(comando->incrimenta, globalHash, localHash, programa);
             label("for_teste_", forLine);
             ResultadoExpr *forResult = NULL;
-            forResult = evalExpression(comando->condicao, globalHash, localHash, programa);
+            forResult = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
             para(forResult->tipoReg, forResult->numReg, forLine);
             break;
 
@@ -1026,7 +1026,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 char *stringWithoutFormat = calloc(strlen(comando->string) + 1, sizeof(char));
                 strcpy(stringWithoutFormat, comando->string + 1);
                 while (prox) {
-                    toPrint = evalExpression(prox, globalHash, localHash, programa);
+                    toPrint = avaliarExpressao(prox, globalHash, localHash, programa);
                     prox = prox->proxExpr;
                     if (toPrint) {
                         if (toPrint->NoAuxid) {
@@ -1104,7 +1104,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 }
             } else {
                 if (!comando->condicao) printf("Erro: Função %s deve retornar valor\n", funcaoAtual->nome);
-                ResultadoExpr *returnAux = evalExpression(comando->condicao, globalHash, localHash, programa);
+                ResultadoExpr *returnAux = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
                 if (returnAux->NoAuxid) {
                     if (((HashNo *)returnAux->NoAuxid)->regS == -1) {
                         int null = constante(0);
@@ -1125,14 +1125,14 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
 
         case EXIT:
             if (comando->condicao) {
-                ResultadoExpr *status = evalExpression(comando->condicao, globalHash, localHash, programa);
+                ResultadoExpr *status = avaliarExpressao(comando->condicao, globalHash, localHash, programa);
                 printf("\t# exit with status %d", status->atribuicao);
                 imprimirExit();
             }
             break;
 
         case LISTA_EXP_COMANDO:
-            evalExpression(comando->condicao, globalHash, localHash, programa);
+            avaliarExpressao(comando->condicao, globalHash, localHash, programa);
             traverseASTCommand(comando->prox, globalHash, localHash, programa, funcaoAtual);
             break;
 
@@ -1176,7 +1176,7 @@ void lookForNodeInHashWithExpr(void **globalHash, void **localHash, Programa *pr
             }
 
             if (node->hashExpr) {
-                atrib = evalExpression(node->hashExpr, globalHash, localHash, programa);
+                atrib = avaliarExpressao(node->hashExpr, globalHash, localHash, programa);
 
                 int atribuicaoType, atribuicaoptr = atrib->ptr;
                 if (atrib->tipoVar == CHAR) {
