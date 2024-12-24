@@ -2567,7 +2567,7 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
         int sReg = scanInt(node->regS, node->varId, node->ehGlobal);
         node->regS = sReg;
     }else if(comando->tipo == RETURN){
-        if (funcaoAtual->retornaTipo == VOID && funcaoAtual->ptr == 0) {
+        if(funcaoAtual->retornaTipo == VOID && funcaoAtual->ptr == 0){
             if (comando->condicao) printf("Erro: Função %s não pode retornar valor\n", funcaoAtual->nome);
             if (strcmp(funcaoAtual->nome, "main")) {
                 loadDaPilha();
