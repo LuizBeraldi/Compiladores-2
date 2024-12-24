@@ -2099,6 +2099,51 @@ ResultadoExpr *avaliarExpressao(Expressao *expressao, void **globalHash, void **
             printf("Erro: Operador unario desconhecido\n");
             exit(1);
         }
+    }else if(expressao->tipo == TERNARY){
+        esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
+        dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
+
+        ResultadoExpr *condicao = avaliarExpressao(expressao->condicaoTernaria, globalHash, localHash, programa);
+        ternario(condicao->tipoReg, condicao->numReg, abs((int)((intptr_t)condicao)));
+        label("true_ternary_", abs((int)((intptr_t)condicao)));
+        esq = avaliarExpressao(expressao->esq, globalHash, localHash, programa);
+        jump("end_ternary_", abs((int)((intptr_t)condicao)));
+        label("false_ternary_", abs((int)((intptr_t)condicao)));
+        dir = avaliarExpressao(expressao->dir, globalHash, localHash, programa);
+        label("end_ternary_", abs((int)((intptr_t)condicao)));
+
+        tipoEsq = esq->tipoReg;
+        regEsq = esq->numReg;
+        tipoDir = dir->tipoReg;
+        regDir = dir->numReg;
+
+        if(esq->NoAuxid && ((HashNo *)esq->NoAuxid)->tipok == VECTOR){
+            regEsq = loadDoArray(esq->numReg);
+            tipoEsq = 0;
+        }
+
+        if(dir->NoAuxid && ((HashNo *)dir->NoAuxid)->tipok == VECTOR){
+            regDir = loadDoArray(dir->numReg);
+            tipoDir = 0;
+        }
+
+        if(condicao->atribuicao){
+            resultado = criarResultadoExpressao(esq->tipoVar, esq->ptr, esq->atribuicao);
+            resultado->numReg = esq->numReg;
+            resultado->tipoReg = esq->tipoReg;
+            if(tipoDir == 0){
+                freeReg(tipoDir, regDir);
+            }
+        }else{
+            resultado = criarResultadoExpressao(dir->tipoVar, dir->ptr, dir->atribuicao);
+            resultado->numReg = dir->numReg;
+            resultado->tipoReg = dir->tipoReg;
+            if(tipoEsq == 0){
+                freeReg(tipoEsq, regEsq);
+            }
+        }
+
+        return resultado;
     }
 
     switch (expressao->tipo) {
