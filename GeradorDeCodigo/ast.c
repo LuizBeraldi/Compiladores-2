@@ -2549,10 +2549,11 @@ void freeAST(Programa *programa){
             if(cmd->condicao){
                 free(cmd->condicao);
             }
-            
-            if (cmd->ini) {
+
+            if(cmd->ini){
                 free(cmd->ini);
             }
+            
             if (cmd->incrimenta) {
                 free(cmd->incrimenta);
             }
