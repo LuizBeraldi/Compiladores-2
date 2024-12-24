@@ -73,7 +73,7 @@ int contDimensao(void *d) {
     return cont;
 }
 
-Dimensao *criarDimensaoExpressao(Expressao *exp) {
+Dimensao *criarDimensaoExpressao(Expressao *exp){
     Dimensao *novaDimensao = calloc(1, sizeof(Dimensao));
     novaDimensao->exp = exp;
 
