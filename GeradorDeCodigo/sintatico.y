@@ -253,28 +253,21 @@ Primaria: NUM_INT {
     | CHARACTER {
         Expressao *expr = criarExpressao(PRIMARIA, CHAR, NULL, NULL);
         if($1.valor[1] == '\\'){
-            switch ($1.valor[2]){
-                case 'n':
-                    expr->atribuicao = '\n';
-                    break;
-                case 't':
-                    expr->atribuicao = '\t';
-                    break;
-                case 'r':
-                    expr->atribuicao = '\r';
-                    break;
-                case '0':
-                    expr->atribuicao = '\0';
-                    break;
-                case '\\':
-                    expr->atribuicao = '\\';
-                    break;
-                case '\'':
-                    expr->atribuicao = '\'';
-                    break;
-                case '\"':
-                    expr->atribuicao = '\"';
-                    break;
+
+            if($1.valor[2] == 'n'){
+                expr->atribuicao = '\n';
+            }else if($1.valor[2] == 't'){
+                expr->atribuicao = '\t';
+            }else if($1.valor[2] == 'r'){
+                expr->atribuicao = '\r';
+            }else if($1.valor[2] == '0'){
+                expr->atribuicao = '\0';
+            }else if($1.valor[2] == '\\'){
+                expr->atribuicao = '\\';
+            }else if($1.valor[2] == '\''){
+                expr->atribuicao = '\'';
+            }else if($1.valor[2] == '\"'){
+                expr->atribuicao == '\"';
             }
         }else{
             expr->atribuicao = $1.valor[1];

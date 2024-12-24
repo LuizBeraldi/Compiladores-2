@@ -606,11 +606,11 @@ static const yytype_int16 yyrline[] =
      190,   191,   192,   193,   195,   200,   206,   211,   216,   222,
      223,   224,   225,   226,   227,   228,   229,   230,   231,   232,
      233,   234,   235,   236,   237,   238,   239,   240,   241,   242,
-     243,   244,   245,   246,   248,   253,   284,   289,   304,   305,
-     306,   308,   313,   317,   321,   325,   327,   328,   329,   331,
-     331,   348,   350,   350,   359,   361,   362,   364,   372,   374,
-     378,   382,   386,   390,   394,   398,   402,   406,   410,   412,
-     413,   415,   419,   421,   422,   424,   425
+     243,   244,   245,   246,   248,   253,   277,   282,   297,   298,
+     299,   301,   306,   310,   314,   318,   320,   321,   322,   324,
+     324,   341,   343,   343,   352,   354,   355,   357,   365,   367,
+     371,   375,   379,   383,   387,   391,   395,   399,   403,   405,
+     406,   408,   412,   414,   415,   417,   418
 };
 #endif
 
@@ -1739,49 +1739,42 @@ yyreduce:
                 {
         Expressao *expr = criarExpressao(PRIMARIA, CHAR, NULL, NULL);
         if((yyvsp[0].token).valor[1] == '\\'){
-            switch ((yyvsp[0].token).valor[2]){
-                case 'n':
-                    expr->atribuicao = '\n';
-                    break;
-                case 't':
-                    expr->atribuicao = '\t';
-                    break;
-                case 'r':
-                    expr->atribuicao = '\r';
-                    break;
-                case '0':
-                    expr->atribuicao = '\0';
-                    break;
-                case '\\':
-                    expr->atribuicao = '\\';
-                    break;
-                case '\'':
-                    expr->atribuicao = '\'';
-                    break;
-                case '\"':
-                    expr->atribuicao = '\"';
-                    break;
+
+            if((yyvsp[0].token).valor[2] == 'n'){
+                expr->atribuicao = '\n';
+            }else if((yyvsp[0].token).valor[2] == 't'){
+                expr->atribuicao = '\t';
+            }else if((yyvsp[0].token).valor[2] == 'r'){
+                expr->atribuicao = '\r';
+            }else if((yyvsp[0].token).valor[2] == '0'){
+                expr->atribuicao = '\0';
+            }else if((yyvsp[0].token).valor[2] == '\\'){
+                expr->atribuicao = '\\';
+            }else if((yyvsp[0].token).valor[2] == '\''){
+                expr->atribuicao = '\'';
+            }else if((yyvsp[0].token).valor[2] == '\"'){
+                expr->atribuicao == '\"';
             }
         }else{
             expr->atribuicao = (yyvsp[0].token).valor[1];
         }
         (yyval.expr) = expr;
     }
-#line 1771 "sintatico.tab.c"
+#line 1764 "sintatico.tab.c"
     break;
 
   case 56: /* Primaria: STRING  */
-#line 284 "sintatico.y"
+#line 277 "sintatico.y"
              {
         Expressao *expr = criarExpressao(PRIMARIA, STRING, NULL, NULL);
         strcpy(expr->string, (yyvsp[0].token).valor);
         (yyval.expr) = expr;
     }
-#line 1781 "sintatico.tab.c"
+#line 1774 "sintatico.tab.c"
     break;
 
   case 57: /* Primaria: ID PosFixa  */
-#line 289 "sintatico.y"
+#line 282 "sintatico.y"
                  {
         Expressao *expr = criarExpressao(PRIMARIA, ID, NULL, NULL);
         strcpy(expr->identificador, (yyvsp[-1].token).valor);
@@ -1796,94 +1789,94 @@ yyreduce:
         ehFuncOuArray = -1;
         (yyval.expr) = expr;
     }
-#line 1800 "sintatico.tab.c"
+#line 1793 "sintatico.tab.c"
     break;
 
   case 58: /* PosFixa: ArrayCall  */
-#line 304 "sintatico.y"
+#line 297 "sintatico.y"
                    { ehFuncOuArray = 1; (yyval.posfixa) = (yyvsp[0].dim); }
-#line 1806 "sintatico.tab.c"
+#line 1799 "sintatico.tab.c"
     break;
 
   case 59: /* PosFixa: FunctionCall  */
-#line 305 "sintatico.y"
+#line 298 "sintatico.y"
                    { ehFuncOuArray = 2; (yyval.posfixa) = (yyvsp[0].param); }
-#line 1812 "sintatico.tab.c"
+#line 1805 "sintatico.tab.c"
     break;
 
   case 60: /* PosFixa: %empty  */
-#line 306 "sintatico.y"
+#line 299 "sintatico.y"
       { ehFuncOuArray = 0; (yyval.posfixa) = NULL; }
-#line 1818 "sintatico.tab.c"
+#line 1811 "sintatico.tab.c"
     break;
 
   case 61: /* ArrayCall: L_SQUARE_BRACKET Expression R_SQUARE_BRACKET  */
-#line 308 "sintatico.y"
+#line 301 "sintatico.y"
                                                         {
         Dimensao *dim = criarDimensaoExpressao((yyvsp[-1].expr));
         (yyval.dim) = dim;
     }
-#line 1827 "sintatico.tab.c"
+#line 1820 "sintatico.tab.c"
     break;
 
   case 62: /* FunctionCall: L_PAREN ParamExpression R_PAREN  */
-#line 313 "sintatico.y"
+#line 306 "sintatico.y"
                                               {
         (yyval.param) = (yyvsp[-1].param);
     }
-#line 1835 "sintatico.tab.c"
+#line 1828 "sintatico.tab.c"
     break;
 
   case 63: /* ParamExpression: Expression ParamExpression  */
-#line 317 "sintatico.y"
+#line 310 "sintatico.y"
                                             {
         ExpParam *aux = criarExpressaoParametro((yyvsp[-1].expr), (yyvsp[0].param));
         (yyval.param) = aux;
     }
-#line 1844 "sintatico.tab.c"
+#line 1837 "sintatico.tab.c"
     break;
 
   case 64: /* ParamExpression: COMMA Expression ParamExpression  */
-#line 321 "sintatico.y"
+#line 314 "sintatico.y"
                                        {
         ExpParam *aux = criarExpressaoParametro((yyvsp[-1].expr), (yyvsp[0].param));
         (yyval.param) = aux;
     }
-#line 1853 "sintatico.tab.c"
+#line 1846 "sintatico.tab.c"
     break;
 
   case 65: /* ParamExpression: %empty  */
-#line 325 "sintatico.y"
+#line 318 "sintatico.y"
       { (yyval.param) = NULL; }
-#line 1859 "sintatico.tab.c"
+#line 1852 "sintatico.tab.c"
     break;
 
   case 66: /* VarType: INT  */
-#line 327 "sintatico.y"
+#line 320 "sintatico.y"
              { (yyval.token) = yylval.token; }
-#line 1865 "sintatico.tab.c"
+#line 1858 "sintatico.tab.c"
     break;
 
   case 67: /* VarType: CHAR  */
-#line 328 "sintatico.y"
+#line 321 "sintatico.y"
            { (yyval.token) = yylval.token; }
-#line 1871 "sintatico.tab.c"
+#line 1864 "sintatico.tab.c"
     break;
 
   case 68: /* VarType: VOID  */
-#line 329 "sintatico.y"
+#line 322 "sintatico.y"
            { (yyval.token) = yylval.token; }
-#line 1877 "sintatico.tab.c"
+#line 1870 "sintatico.tab.c"
     break;
 
   case 69: /* $@5: %empty  */
-#line 331 "sintatico.y"
+#line 324 "sintatico.y"
                                                   { ptrCont = 0; }
-#line 1883 "sintatico.tab.c"
+#line 1876 "sintatico.tab.c"
     break;
 
   case 70: /* Parameters: PARAMETER COLON ID TYPE COLON VarType $@5 Pointers ArrayCheck Parameters  */
-#line 331 "sintatico.y"
+#line 324 "sintatico.y"
                                                                                                   {
         void *no = inserirHash(hashAtual, (yyvsp[-7].token).valor, (yyvsp[-4].token).tipo, ptrCont);
         paramCont++;
@@ -1901,23 +1894,23 @@ yyreduce:
         param->prox = (yyvsp[0].param);
         (yyval.param) = param;
     }
-#line 1905 "sintatico.tab.c"
+#line 1898 "sintatico.tab.c"
     break;
 
   case 71: /* Parameters: %empty  */
-#line 348 "sintatico.y"
+#line 341 "sintatico.y"
       { (yyval.param) = NULL; }
-#line 1911 "sintatico.tab.c"
+#line 1904 "sintatico.tab.c"
     break;
 
   case 72: /* $@6: %empty  */
-#line 350 "sintatico.y"
+#line 343 "sintatico.y"
                                                         { ptrCont = 0; }
-#line 1917 "sintatico.tab.c"
+#line 1910 "sintatico.tab.c"
     break;
 
   case 73: /* DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType $@6 Pointers ArrayCheck DeclaracoesLocais  */
-#line 350 "sintatico.y"
+#line 343 "sintatico.y"
                                                                                                                {
         void *no = inserirHash(hashAtual, (yyvsp[-7].token).valor, (yyvsp[-4].token).tipo, ptrCont);
         if (!(yyvsp[-1].dim)){
@@ -1927,29 +1920,29 @@ yyreduce:
         }
         setDimen(no, (yyvsp[-1].dim));
     }
-#line 1931 "sintatico.tab.c"
+#line 1924 "sintatico.tab.c"
     break;
 
   case 74: /* DeclaracoesLocais: %empty  */
-#line 359 "sintatico.y"
+#line 352 "sintatico.y"
       { }
-#line 1937 "sintatico.tab.c"
+#line 1930 "sintatico.tab.c"
     break;
 
   case 75: /* Pointers: MULTIPLY Pointers  */
-#line 361 "sintatico.y"
+#line 354 "sintatico.y"
                             { ptrCont++; }
-#line 1943 "sintatico.tab.c"
+#line 1936 "sintatico.tab.c"
     break;
 
   case 76: /* Pointers: %empty  */
-#line 362 "sintatico.y"
+#line 355 "sintatico.y"
       { }
-#line 1949 "sintatico.tab.c"
+#line 1942 "sintatico.tab.c"
     break;
 
   case 77: /* ListaComandos: Comandos SemicolonDeSchrodinger ListaComandos  */
-#line 364 "sintatico.y"
+#line 357 "sintatico.y"
                                                              {       
         Comando *cmd = (yyvsp[-2].cmd);
         while (cmd->prox != NULL){
@@ -1958,155 +1951,155 @@ yyreduce:
         cmd->prox = (yyvsp[0].cmd);
         (yyval.cmd) = (yyvsp[-2].cmd);
     }
-#line 1962 "sintatico.tab.c"
+#line 1955 "sintatico.tab.c"
     break;
 
   case 78: /* ListaComandos: %empty  */
-#line 372 "sintatico.y"
+#line 365 "sintatico.y"
       { (yyval.cmd) = NULL; }
-#line 1968 "sintatico.tab.c"
+#line 1961 "sintatico.tab.c"
     break;
 
   case 79: /* Comandos: IF L_PAREN Expression COMMA Comandos AuxElse R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 374 "sintatico.y"
+#line 367 "sintatico.y"
                                                                                                {
         Comando *cmd = criarSe((yyvsp[-6].expr), (yyvsp[-4].cmd), (yyvsp[-3].cmd), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 1977 "sintatico.tab.c"
+#line 1970 "sintatico.tab.c"
     break;
 
   case 80: /* Comandos: DO_WHILE L_PAREN Comandos COMMA Expression R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 378 "sintatico.y"
+#line 371 "sintatico.y"
                                                                                          {
         Comando *cmd = criarFaçaEnquanto((yyvsp[-3].expr), (yyvsp[-5].cmd), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 1986 "sintatico.tab.c"
+#line 1979 "sintatico.tab.c"
     break;
 
   case 81: /* Comandos: WHILE L_PAREN Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 382 "sintatico.y"
+#line 375 "sintatico.y"
                                                                                       {
         Comando *cmd = criarEnquanto((yyvsp[-5].expr), (yyvsp[-3].cmd), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 1995 "sintatico.tab.c"
+#line 1988 "sintatico.tab.c"
     break;
 
   case 82: /* Comandos: FOR L_PAREN Expression COMMA Expression COMMA Expression COMMA Comandos R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 386 "sintatico.y"
+#line 379 "sintatico.y"
                                                                                                                       {
         Comando *cmd = criarPara((yyvsp[-9].expr), (yyvsp[-7].expr), (yyvsp[-5].expr), (yyvsp[-3].cmd), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2004 "sintatico.tab.c"
+#line 1997 "sintatico.tab.c"
     break;
 
   case 83: /* Comandos: PRINTF L_PAREN STRING AuxPrint R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 390 "sintatico.y"
+#line 383 "sintatico.y"
                                                                              {
         Comando *cmd = criarImprimir((yyvsp[-4].token).valor, (yyvsp[-3].expr), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2013 "sintatico.tab.c"
+#line 2006 "sintatico.tab.c"
     break;
 
   case 84: /* Comandos: SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemicolonDeSchrodinger Comandos  */
-#line 394 "sintatico.y"
+#line 387 "sintatico.y"
                                                                                                         {
         Comando *cmd = criarScan((yyvsp[-8].token).valor, (yyvsp[-4].token).valor, (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2022 "sintatico.tab.c"
+#line 2015 "sintatico.tab.c"
     break;
 
   case 85: /* Comandos: RETURN L_PAREN AuxReturn R_PAREN Comandos  */
-#line 398 "sintatico.y"
+#line 391 "sintatico.y"
                                                 {
         Comando *cmd = criarReturn((yyvsp[-2].expr), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2031 "sintatico.tab.c"
+#line 2024 "sintatico.tab.c"
     break;
 
   case 86: /* Comandos: EXIT L_PAREN Expression R_PAREN Comandos  */
-#line 402 "sintatico.y"
+#line 395 "sintatico.y"
                                                {
         Comando *cmd = criarExit((yyvsp[-2].expr), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2040 "sintatico.tab.c"
+#line 2033 "sintatico.tab.c"
     break;
 
   case 87: /* Comandos: Expression SemicolonDeSchrodinger Comandos  */
-#line 406 "sintatico.y"
+#line 399 "sintatico.y"
                                                  {
         Comando *cmd = criarComandoExpressao((yyvsp[-2].expr), (yyvsp[0].cmd));
         (yyval.cmd) = cmd;
     }
-#line 2049 "sintatico.tab.c"
+#line 2042 "sintatico.tab.c"
     break;
 
   case 88: /* Comandos: %empty  */
-#line 410 "sintatico.y"
+#line 403 "sintatico.y"
       { (yyval.cmd) = NULL; }
-#line 2055 "sintatico.tab.c"
+#line 2048 "sintatico.tab.c"
     break;
 
   case 89: /* AuxElse: COMMA Comandos  */
-#line 412 "sintatico.y"
+#line 405 "sintatico.y"
                         { (yyval.cmd) = (yyvsp[0].cmd); }
-#line 2061 "sintatico.tab.c"
+#line 2054 "sintatico.tab.c"
     break;
 
   case 90: /* AuxElse: %empty  */
-#line 413 "sintatico.y"
+#line 406 "sintatico.y"
       { (yyval.cmd) = NULL; }
-#line 2067 "sintatico.tab.c"
+#line 2060 "sintatico.tab.c"
     break;
 
   case 91: /* AuxPrint: COMMA Expression AuxPrint  */
-#line 415 "sintatico.y"
+#line 408 "sintatico.y"
                                     {
         (yyvsp[-1].expr)->proxExpr = (yyvsp[0].expr);
         (yyval.expr) = (yyvsp[-1].expr);
     }
-#line 2076 "sintatico.tab.c"
+#line 2069 "sintatico.tab.c"
     break;
 
   case 92: /* AuxPrint: %empty  */
-#line 419 "sintatico.y"
+#line 412 "sintatico.y"
       { (yyval.expr) = NULL; }
-#line 2082 "sintatico.tab.c"
+#line 2075 "sintatico.tab.c"
     break;
 
   case 93: /* AuxReturn: Expression  */
-#line 421 "sintatico.y"
+#line 414 "sintatico.y"
                       { (yyval.expr) = (yyvsp[0].expr); }
-#line 2088 "sintatico.tab.c"
+#line 2081 "sintatico.tab.c"
     break;
 
   case 94: /* AuxReturn: %empty  */
-#line 422 "sintatico.y"
+#line 415 "sintatico.y"
       { (yyval.expr) = NULL; }
-#line 2094 "sintatico.tab.c"
+#line 2087 "sintatico.tab.c"
     break;
 
   case 95: /* SemicolonDeSchrodinger: SEMICOLON  */
-#line 424 "sintatico.y"
+#line 417 "sintatico.y"
                                   { }
-#line 2100 "sintatico.tab.c"
+#line 2093 "sintatico.tab.c"
     break;
 
   case 96: /* SemicolonDeSchrodinger: %empty  */
-#line 425 "sintatico.y"
+#line 418 "sintatico.y"
       { }
-#line 2106 "sintatico.tab.c"
+#line 2099 "sintatico.tab.c"
     break;
 
 
-#line 2110 "sintatico.tab.c"
+#line 2103 "sintatico.tab.c"
 
       default: break;
     }
@@ -2299,7 +2292,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 427 "sintatico.y"
+#line 420 "sintatico.y"
 
 
 void yyerror(void *s){
