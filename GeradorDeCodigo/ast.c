@@ -17,7 +17,7 @@ Programa *criarPrograma(void **hash, void *listaFuncoes, void *main) {
     return novoProg;
 }
 
-Funcao *criarFuncao(void **hash, int retornaTipo, int ptr, char *nome, void *listaComando, void *prox) {
+Funcao *criarFuncao(void **hash, int retornaTipo, int ptr, char *nome, void *listaComando, void *prox){
     Funcao *novoFunc = calloc(1, sizeof(Funcao));
     novoFunc->hashTable = hash;
     novoFunc->retornaTipo = retornaTipo;
