@@ -147,7 +147,7 @@ Comando *criarImprimir(char *string, Expressao *imprimirAux, void *prox) {
     return novoImprimir;
 }
 
-Comando *criarScan(char *string, char *identificador, void *prox) {
+Comando *criarScan(char *string, char *identificador, void *prox){
     Comando *novoScan = calloc(1, sizeof(Comando));
     novoScan->tipo = SCANF;
     novoScan->string = string;
