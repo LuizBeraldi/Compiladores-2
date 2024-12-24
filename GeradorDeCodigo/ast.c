@@ -2593,8 +2593,8 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                 }
             }
             imprimirReturnV0(returnAux->tipoReg, returnAux->numReg);
-            
-            if (strcmp(funcaoAtual->nome, "main")) {
+
+            if(strcmp(funcaoAtual->nome, "main")){
                 loadDaPilha();
                 loadRegT(regTsv);
                 imprimirReturn();
