@@ -10,15 +10,10 @@
 extern int yylex();
 void yyerror(void *s);
 
-int isFuncOrArray = -1;
-int pointerCount = 0;
-int paramCount = 0;
+int ehFuncOuArray = -1, ptrCont = 0, paramCont = 0;
 
-void **globalHash = NULL;
-void **currentHash = NULL;
-
-Funcao *functionList = NULL;
-
+void **hashGlobal = NULL, **hashAtual = NULL;
+Funcao *listaFunc = NULL;
 Programa *AST = NULL;
 
 %}
@@ -34,9 +29,9 @@ Programa *AST = NULL;
     int sinalAux;
     struct {
         char *valor;
-        int type;
-        int line;
-        int col;
+        int tipo;
+        int linha;
+        int coluna;
     } token;
 }
 
@@ -127,8 +122,8 @@ Programa *AST = NULL;
 %%
 
 AstParse: Declaracoes MyEOF {
-        Programa *ast = criarPrograma(globalHash, functionList, NULL);
-        Funcao *aux = functionList;
+        Programa *ast = criarPrograma(hashGlobal, listaFunc, NULL);
+        Funcao *aux = listaFunc;
         AST = ast;
         return 0;
     } ;
@@ -140,13 +135,13 @@ Declaracoes: DeclaraDefine Declaracoes { }
 
 DeclaraDefine: CONSTANT COLON ID VALUE COLON Sinal NUM_INT {
         int valor = atoi($7.valor);
-        if ($6 == MINUS) {
+        if($6 == MINUS){
             valor *= -1;
         }
-        void *node = inserirHash(globalHash, $3.valor, INT, 0);
-        setTipo(node, VAR);
-        setEhConstante(node);
-        setAtrib(node, valor); 
+        void *no = inserirHash(hashGlobal, $3.valor, INT, 0);
+        setTipo(no, VAR);
+        setEhConstante(no);
+        setAtrib(no, valor); 
         setDefinicaoVariavelInt($3.valor, valor);
     } ;
 
@@ -154,34 +149,34 @@ Sinal : PLUS { $$ = PLUS; }
     | MINUS { $$ = MINUS; } ;
     | { $$ = PLUS; } ; 
 
-DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck {
-        void *node = inserirHash(globalHash, $4.valor, $7.type, pointerCount);
-        if (!$10) {
-            setTipo(node, VAR);
-        } else {
-            setTipo(node, VECTOR);
+DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck {
+        void *no = inserirHash(hashGlobal, $4.valor, $7.tipo, ptrCont);
+        if(!$10){
+            setTipo(no, VAR);
+        }else{
+            setTipo(no, VECTOR);
         }
-        setDimen(node, $10);
-        setEhGlobal(node);
+        setDimen(no, $10);
+        setEhGlobal(no);
     } ;
 
-DeclaraFuncao: FUNCTION COLON ID { currentHash = criarHash(); } RETURN_TYPE COLON VarType { pointerCount = 0; } Pointers { paramCount = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
-        Funcao *func = criarFuncao(currentHash, $7.type, pointerCount, $3.valor, $13, NULL);
-        if (functionList) {
-            Funcao *aux = functionList;
-            while (aux->prox) {
+DeclaraFuncao: FUNCTION COLON ID { hashAtual = criarHash(); } RETURN_TYPE COLON VarType { ptrCont = 0; } Pointers { paramCont = 0; } Parameters DeclaracoesLocais ListaComandos END_FUNCTION {
+        Funcao *func = criarFuncao(hashAtual, $7.tipo, ptrCont, $3.valor, $13, NULL);
+        if(listaFunc){
+            Funcao *aux = listaFunc;
+            while(aux->prox){
                 aux = aux->prox;
             }
             aux->prox = func;
-        } else {
-            functionList = func;
+        }else{
+            listaFunc = func;
         }
         
-        void *node = inserirHash(globalHash, $3.valor, $7.type, pointerCount);
-        setTipo(node, FUNCTION);
-        setQntParam(node, paramCount);
-        setParam(node, $11);
-        currentHash = NULL;
+        void *no = inserirHash(hashGlobal, $3.valor, $7.tipo, ptrCont);
+        setTipo(no, FUNCTION);
+        setQntParam(no, paramCont);
+        setParam(no, $11);
+        hashAtual = NULL;
     } ;
 
 ArrayCheck: L_SQUARE_BRACKET NUM_INT R_SQUARE_BRACKET ArrayCheck {
@@ -198,18 +193,18 @@ Expression: BinaryExpr { $$ = $1; }
     | FunctionCall { $$ = $1; } ;
 
 BinaryExpr: Ops L_PAREN Expression COMMA Expression R_PAREN {
-        Expressao *bop = criarExpressao(BOP, $1.type, $3, $5);
+        Expressao *bop = criarExpressao(BOP, $1.tipo, $3, $5);
         $$ = bop;
     } ;
 
 TernaryExpr: TERNARY_CONDITIONAL L_PAREN Expression COMMA Expression COMMA Expression {
-        Expressao *ternary = criarExpressao(TERNARY, TERNARY_CONDITIONAL, $5, $7);
-        ternary->condicaoTernaria = $3;
-        $$ = ternary;
+        Expressao *ternaria = criarExpressao(TERNARY, TERNARY_CONDITIONAL, $5, $7);
+        ternaria->condicaoTernaria = $3;
+        $$ = ternaria;
     } ;
 
 UnaryExpr: Ops L_PAREN Expression R_PAREN {
-        Expressao *uop = criarExpressao(UOP, $1.type, $3, NULL);
+        Expressao *uop = criarExpressao(UOP, $1.tipo, $3, NULL);
         uop->preOuPos = 1;
         $$ = uop;
     } 
@@ -257,8 +252,8 @@ Primaria: NUM_INT {
     }
     | CHARACTER {
         Expressao *expr = criarExpressao(PRIMARIA, CHAR, NULL, NULL);
-        if ($1.valor[1] == '\\') {
-            switch ($1.valor[2]) {
+        if($1.valor[1] == '\\'){
+            switch ($1.valor[2]){
                 case 'n':
                     expr->atribuicao = '\n';
                     break;
@@ -281,7 +276,7 @@ Primaria: NUM_INT {
                     expr->atribuicao = '\"';
                     break;
             }
-        } else {
+        }else{
             expr->atribuicao = $1.valor[1];
         }
         $$ = expr;
@@ -294,21 +289,21 @@ Primaria: NUM_INT {
     | ID PosFixa {
         Expressao *expr = criarExpressao(PRIMARIA, ID, NULL, NULL);
         strcpy(expr->identificador, $1.valor);
-        if (isFuncOrArray == 1) {
+        if(ehFuncOuArray == 1){
             expr->tipo = ARRAY_CALL;
             setDimensaoExpressao(expr, ((Dimensao*)$2));
         
-        } else if (isFuncOrArray == 2) {
+        }else if(ehFuncOuArray == 2){
             expr->tipo = FUNCTION_CALL;
             expr->param = (ExpParam*)$2;
         }
-        isFuncOrArray = -1;
+        ehFuncOuArray = -1;
         $$ = expr;
     } ;
 
-PosFixa: ArrayCall { isFuncOrArray = 1; $$ = $1; }
-    | FunctionCall { isFuncOrArray = 2; $$ = $1; }
-    | { isFuncOrArray = 0; $$ = NULL; }
+PosFixa: ArrayCall { ehFuncOuArray = 1; $$ = $1; }
+    | FunctionCall { ehFuncOuArray = 2; $$ = $1; }
+    | { ehFuncOuArray = 0; $$ = NULL; }
 
 ArrayCall: L_SQUARE_BRACKET Expression R_SQUARE_BRACKET {
         Dimensao *dim = criarDimensaoExpressao($2);
@@ -333,42 +328,42 @@ VarType: INT { $$ = yylval.token; }
     | CHAR { $$ = yylval.token; }
     | VOID { $$ = yylval.token; } ;
 
-Parameters: PARAMETER COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck Parameters {
-        void *node = inserirHash(currentHash, $3.valor, $6.type, pointerCount);
-        paramCount++;
-        setQntParam(node, paramCount);
-        setRegSHash(node, paramCount-1);
-        Param *param = criarParamH($6.type, $3.valor, pointerCount, $10);
-        if (!$9) {
-            setTipo(node, VAR);
+Parameters: PARAMETER COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck Parameters {
+        void *no = inserirHash(hashAtual, $3.valor, $6.tipo, ptrCont);
+        paramCont++;
+        setQntParam(no, paramCont);
+        setRegSHash(no, paramCont-1);
+        Param *param = criarParamH($6.tipo, $3.valor, ptrCont, $10);
+        if (!$9){
+            setTipo(no, VAR);
             param->tipoParam = VAR;
-        } else {
-            setTipo(node, VECTOR);
+        }else{
+            setTipo(no, VECTOR);
             param->tipoParam = VECTOR;
         }
-        setDimen(node, $9);
+        setDimen(no, $9);
         param->prox = $10;
         $$ = param;
     }
     | { $$ = NULL; } ;
 
-DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType { pointerCount = 0; } Pointers ArrayCheck DeclaracoesLocais {
-        void *node = inserirHash(currentHash, $3.valor, $6.type, pointerCount);
-        if (!$9) {
-            setTipo(node, VAR);
-        } else {
-            setTipo(node, VECTOR);
+DeclaracoesLocais: VARIABLE COLON ID TYPE COLON VarType { ptrCont = 0; } Pointers ArrayCheck DeclaracoesLocais {
+        void *no = inserirHash(hashAtual, $3.valor, $6.tipo, ptrCont);
+        if (!$9){
+            setTipo(no, VAR);
+        }else{
+            setTipo(no, VECTOR);
         }
-        setDimen(node, $9);
+        setDimen(no, $9);
     }
     | { } ; 
 
-Pointers: MULTIPLY Pointers { pointerCount++; }
+Pointers: MULTIPLY Pointers { ptrCont++; }
     | { } ;
 
 ListaComandos: Comandos SemicolonDeSchrodinger ListaComandos {       
         Comando *cmd = $1;
-        while (cmd->prox != NULL) {
+        while (cmd->prox != NULL){
             cmd = cmd->prox;
         }
         cmd->prox = $3;
@@ -431,21 +426,22 @@ SemicolonDeSchrodinger: SEMICOLON { }
 
 %%
 
-void yyerror(void *s) {
-    printf("Erro na gramatica %d [ %s ]:%d:%d \n", yychar, yylval.token.valor, yylval.token.line, yylval.token.col);
+void yyerror(void *s){
+    printf("Erro na gramatica %d [ %s ]:%d:%d \n", yychar, yylval.token.valor, yylval.token.linha, yylval.token.coluna);
 }
 
-int main(int argc, char *argv[]) {
-    globalHash = criarHash();
+int main(int argc, char *argv[]){
+    hashGlobal = criarHash();
     yyparse();
 
-    if (AST) {
+    if(AST){
         Programa *ast = (Programa*)AST;
         traverseAST(ast);
         imprimirExit();
-    } else {
+    }else{
         printf("AST NULL\n");
         exit(1);
     }
+
     return 0;
 }

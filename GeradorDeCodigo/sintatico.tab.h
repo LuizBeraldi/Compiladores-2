@@ -120,7 +120,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 26 "sintatico.y"
+#line 21 "sintatico.y"
 
     Programa *prog;
     Funcao *func;
@@ -132,9 +132,9 @@ union YYSTYPE
     int sinalAux;
     struct {
         char *valor;
-        int type;
-        int line;
-        int col;
+        int tipo;
+        int linha;
+        int coluna;
     } token;
 
 #line 141 "sintatico.tab.h"
