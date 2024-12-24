@@ -2503,7 +2503,8 @@ int traverseAST(Programa *programa) {
         }
         HashNo *funcNode = getIdentifierNode(programa->hashTable, funcaoAtual->nome);
         funcao(funcaoAtual->nome);
-        if (strcmp(funcaoAtual->nome, "main")) {
+
+        if(strcmp(funcaoAtual->nome, "main")){
             regTsv = calloc(10, sizeof(int));
             armazenarRegT(regTsv);
             armazenarNaPilha();
