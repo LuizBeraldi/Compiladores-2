@@ -49,7 +49,7 @@ Expressao *criarExpressao(int tipo, int operador, void * esq, void *dir) {
     return novaExpr;
 }
 
-Dimensao *criarDimensao(int tam) {
+Dimensao *criarDimensao(int tam){
     Dimensao *novaDimensao = calloc(1, sizeof(Dimensao));
     novaDimensao->tam = tam;
 
