@@ -2511,6 +2511,7 @@ int traverseAST(Programa *programa) {
         }else{
             globalAtribuicaoVar();
         }
+        
         parametroFuncao(funcaoAtual->nome, funcNode->qntParam);
         lookForNodeInHashWithExpr(programa->hashTable, funcaoAtual->hashTable, programa);
         Comando *comando = funcaoAtual->listaComando;
