@@ -2491,9 +2491,9 @@ int traverseAST(Programa *programa) {
     definicao();
     lookForNodeInHashWithExpr(programa->hashTable, programa->hashTable, programa);
     printf(".text\n\n");
-
     Funcao *funcaoAtual = programa->listaFuncoes;
-    while (funcaoAtual != NULL) {
+
+    while(funcaoAtual != NULL){
         for (int i = 0; i < 10; i++) freeReg(0, i);
         for (int i = 0; i < 8; i++) freeReg(1, i);
         HashNo *funcNode = getIdentifierNode(programa->hashTable, funcaoAtual->nome);
