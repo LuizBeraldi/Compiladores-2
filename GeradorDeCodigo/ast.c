@@ -2499,9 +2499,9 @@ void traverseASTCommand(Comando *comando, void **globalHash, void **localHash, P
                     printing = INT;
                 }else{
                     formatSpecifier = strstr(stringWithoutFormat, "%s");
-                    if (formatSpecifier) {
+                    if(formatSpecifier){
                         printing = STRING;
-                    } else {
+                    }else{
                         formatSpecifier = strstr(stringWithoutFormat, "%c");
                         if (formatSpecifier) {
                             printing = CHAR;
