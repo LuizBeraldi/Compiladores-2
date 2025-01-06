@@ -4,40 +4,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum tiposExpressao {
-    BOP = 1001,
-    UOP,
-    TERNARY,
-    ARRAY_CALL,
-    FUNCTION_CALL,
-    PRIMARIA
+enum tiposExpressao{
+    BOP = 1001, UOP, TERNARIA, AC, FC, PR
 };
+
 #define LISTA_EXP_COMANDO 9802
 
-typedef struct programa {
+typedef struct programa{
     void **hashTable, *listaFuncoes, *definesExps, *dimensionsExps, *main;
 } Programa;
 
-typedef struct funcao {
+typedef struct funcao{
     void **hashTable, *declarations, *listaComando, *prox;
     int retornaTipo, ptr;
     char *nome;
 } Funcao;
 
-typedef struct dimensao {
+typedef struct dimensao{
     int tam;
     void *exp;
     struct dimensao *prox;
 } Dimensao;
 
-typedef struct expParam {
+typedef struct expParam{
     int tipo, ptr;
     void *exp;
     char *identificador;
     struct expParam *prox;
 } ExpParam;
 
-typedef struct expressao {
+typedef struct expressao{
     int tipo, ptr, operador, atribuicao, preOuPos, inicioLista;
     Dimensao *dimensao;
     ExpParam *param;
@@ -45,7 +41,7 @@ typedef struct expressao {
     struct expressao *proxExpr, *condicaoTernaria, *esq, *dir;
 } Expressao;
 
-typedef struct comando {
+typedef struct comando{
     int tipo, visitado;
     Expressao *condicao;
     void *entao, *prox, *elseS;
@@ -53,7 +49,7 @@ typedef struct comando {
     char *string, *identificador;
 } Comando;
 
-typedef struct resultadoExpr {
+typedef struct resultadoExpr{
     int tipoVar, ptr, atribuicao, tipoReg, numReg;
     char str[256];
     void *NoAuxid;

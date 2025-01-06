@@ -154,7 +154,7 @@ DeclaraVarGlobal: GLOBAL VARIABLE COLON ID TYPE COLON TipoVar { ptrCont = 0; } P
         if(!$10){
             setTipo(no, VAR);
         }else{
-            setTipo(no, VECTOR);
+            setTipo(no, VETOR);
         }
         setDimen(no, $10);
         setEhGlobal(no);
@@ -173,7 +173,7 @@ DeclaraFuncao: FUNCTION COLON ID { hashAtual = criarHash(); } RETURN_TYPE COLON 
         }
         
         void *no = inserirHash(hashGlobal, $3.valor, $7.tipo, ptrCont);
-        setTipo(no, FUNCTION);
+        setTipo(no, FUNCAO);
         setQntParam(no, paramCont);
         setParam(no, $11);
         hashAtual = NULL;
@@ -198,7 +198,7 @@ ExpressaoBinaria: Ops L_PAREN Expressao COMMA Expressao R_PAREN {
     } ;
 
 ExpressaoTernaria: TERNARY_CONDITIONAL L_PAREN Expressao COMMA Expressao COMMA Expressao {
-        Expressao *ternaria = criarExpressao(TERNARY, TERNARY_CONDITIONAL, $5, $7);
+        Expressao *ternaria = criarExpressao(TERNARIA, TERNARY_CONDITIONAL, $5, $7);
         ternaria->condicaoTernaria = $3;
         $$ = ternaria;
     } ;
@@ -246,12 +246,12 @@ Ops: PLUS { $$ = yylval.token; }
     | BITWISE_NOT { $$ = yylval.token; } ; 
 
 Primaria: NUM_INT {
-        Expressao *expr = criarExpressao(PRIMARIA, INT, NULL, NULL);
+        Expressao *expr = criarExpressao(PR, INT, NULL, NULL);
         expr->atribuicao = atoi($1.valor);
         $$ = expr;
     }
     | CHARACTER {
-        Expressao *expr = criarExpressao(PRIMARIA, CHAR, NULL, NULL);
+        Expressao *expr = criarExpressao(PR, CHAR, NULL, NULL);
         if($1.valor[1] == '\\'){
 
             if($1.valor[2] == 'n'){
@@ -275,19 +275,19 @@ Primaria: NUM_INT {
         $$ = expr;
     }
     | STRING {
-        Expressao *expr = criarExpressao(PRIMARIA, STRING, NULL, NULL);
+        Expressao *expr = criarExpressao(PR, STRING, NULL, NULL);
         strcpy(expr->string, $1.valor);
         $$ = expr;
     }
     | ID PosFixa {
-        Expressao *expr = criarExpressao(PRIMARIA, ID, NULL, NULL);
+        Expressao *expr = criarExpressao(PR, ID, NULL, NULL);
         strcpy(expr->identificador, $1.valor);
         if(ehFuncOuArray == 1){
-            expr->tipo = ARRAY_CALL;
+            expr->tipo = AC;
             setDimensaoExpressao(expr, ((Dimensao*)$2));
         
         }else if(ehFuncOuArray == 2){
-            expr->tipo = FUNCTION_CALL;
+            expr->tipo = FC;
             expr->param = (ExpParam*)$2;
         }
         ehFuncOuArray = -1;
@@ -327,12 +327,12 @@ Param: PARAMETER COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr ChecarArray Pa
         setQntParam(no, paramCont);
         setRegSHash(no, paramCont-1);
         Param *param = criarParamH($6.tipo, $3.valor, ptrCont, $10);
-        if (!$9){
+        if(!$9){
             setTipo(no, VAR);
             param->tipoParam = VAR;
         }else{
-            setTipo(no, VECTOR);
-            param->tipoParam = VECTOR;
+            setTipo(no, VETOR);
+            param->tipoParam = VETOR;
         }
         setDimen(no, $9);
         param->prox = $10;
@@ -345,7 +345,7 @@ DeclaracoesLocais: VARIABLE COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr Che
         if (!$9){
             setTipo(no, VAR);
         }else{
-            setTipo(no, VECTOR);
+            setTipo(no, VETOR);
         }
         setDimen(no, $9);
     }

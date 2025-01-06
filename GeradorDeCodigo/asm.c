@@ -11,7 +11,6 @@ int obRegS(){
             return i;
         }
     }
-    printf("\n######### No free $s register found #########\n\n");
     exit(-1);
     return -1;
 }
@@ -40,10 +39,9 @@ int constante(int valor){
 }
 
 int opeAritmeticas(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, l, regEsq, r, regDir);
+    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, tipoEsq == 0 ? 't' : 's', regEsq, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -57,9 +55,7 @@ int opeAritmeticas(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
 }
 
 int opDivisao(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
-
-    printf("\tdiv $%c%d, $%c%d\n", l, regEsq, r, regDir);
+    printf("\tdiv $%c%d, $%c%d\n", tipoEsq == 0 ? 't' : 's', regEsq, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -76,8 +72,7 @@ int opDivisao(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
 }
 
 int preIncremento(int tipoEsq, int regEsq, char *op){
-    char l = tipoEsq == 0 ? 't' : 's';
-    printf("\t%s $%c%d, $%c%d, 1\n", op, l, regEsq, l, regEsq);
+    printf("\t%s $%c%d, $%c%d, 1\n", op, tipoEsq == 0 ? 't' : 's', regEsq, tipoEsq == 0 ? 't' : 's', regEsq);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -87,20 +82,18 @@ int preIncremento(int tipoEsq, int regEsq, char *op){
 }
 
 int posIncremento(int tipoEsq, int regEsq, char *op){
-    char l = tipoEsq == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\tadd $t%d, $zero, $%c%d\n", t, l, regEsq);
-    printf("\t%s $%c%d, $%c%d, 1\n", op, l, regEsq, l, regEsq);
+    printf("\tadd $t%d, $zero, $%c%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq);
+    printf("\t%s $%c%d, $%c%d, 1\n", op, tipoEsq == 0 ? 't' : 's', regEsq, tipoEsq == 0 ? 't' : 's', regEsq);
 
     return t;
 }
 
 int atribuicao(int tipoDir, int regDir){
-    char r = tipoDir == 0 ? 't' : 's';
     int s = obRegS();
 
-    printf("\tadd $s%d, $zero, $%c%d\n", s, r, regDir);
+    printf("\tadd $s%d, $zero, $%c%d\n", s, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoDir == 0){
         regT[regDir] = 0;
@@ -110,9 +103,7 @@ int atribuicao(int tipoDir, int regDir){
 }
 
 void atribuicaoParaReg(int tipoDir, int regDir, int regEsq){
-    char r = tipoDir == 0 ? 't' : 's';
-
-    printf("\tadd $s%d, $zero, $%c%d\n", regEsq, r, regDir);
+    printf("\tadd $s%d, $zero, $%c%d\n", regEsq, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoDir == 0){
         regT[regDir] = 0;
@@ -144,9 +135,7 @@ int atribuicaoEndereco(int tipoEsq, int regEsq, char *nome){
 }
 
 void armazenadoNoEndereco(int tipoEsq, int regEsq, int tipoDir, int regDir){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
-
-    printf("\tsw $%c%d, 0($%c%d)\n", r, regDir, l, regEsq);
+    printf("\tsw $%c%d, 0($%c%d)\n", tipoDir == 0 ? 't' : 's', regDir, tipoEsq == 0 ? 't' : 's', regEsq);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -158,10 +147,9 @@ void armazenadoNoEndereco(int tipoEsq, int regEsq, int tipoDir, int regDir){
 }
 
 int maisMenos(int tipoEsq, int regEsq, char *op){
-    char r = tipoEsq == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\t%s $t%d, $zero, $%c%d\n", op, t, r, regEsq);
+    printf("\t%s $t%d, $zero, $%c%d\n", op, t, tipoEsq == 0 ? 't' : 's', regEsq);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -171,10 +159,9 @@ int maisMenos(int tipoEsq, int regEsq, char *op){
 }
 
 int bitNao(int tipoEsq, int regEsq){
-    char r = tipoEsq == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\tnot $t%d, $%c%d\n", t, r, regEsq);
+    printf("\tnot $t%d, $%c%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -184,10 +171,9 @@ int bitNao(int tipoEsq, int regEsq){
 }
 
 int bitOp(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, l, regEsq, r, regDir);
+    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, tipoEsq == 0 ? 't' : 's', regEsq, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -201,11 +187,10 @@ int bitOp(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
 }
 
 int naoLogico(int tipoEsq, int regEsq){
-    char r = tipoEsq == 0 ? 't' : 's';
     int t = obRegT();
 
     printf("\taddi $t%d, $zero, 1\n", t);
-    printf("\tslt $t%d, $%c%d, $zero\n", t, r, regEsq);
+    printf("\tslt $t%d, $%c%d, $zero\n", t, tipoEsq == 0 ? 't' : 's', regEsq);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -215,10 +200,9 @@ int naoLogico(int tipoEsq, int regEsq){
 }
 
 int opRelacional(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, l, regEsq, r, regDir);
+    printf("\t%s $t%d, $%c%d, $%c%d\n", op, t, tipoEsq == 0 ? 't' : 's', regEsq, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -232,14 +216,13 @@ int opRelacional(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op){
 }
 
 int eLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
     int t = obRegT();
 
     printf("\taddi $t%d, $zero, 0\n", t);
-    printf("\tbeq $t%d, $%c%d, %s%d\n", t, l, regEsq, "f_logical_and_", labelID);
-    printf("\tbeq $t%d, $%c%d, %s%d\n", t, r, regDir, "f_logical_and_", labelID);
+    printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq, "e_", labelID);
+    printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoDir == 0 ? 't' : 's', regDir, "e_", labelID);
     printf("\taddi $t%d, $zero, 1\n", t);
-    printf("\t%s%d:\n", "f_logical_and_", labelID);
+    printf("\t%s%d:\n", "e_", labelID);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -253,14 +236,13 @@ int eLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
 }
 
 int ouLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
-    char l = tipoEsq == 0 ? 't' : 's', r = tipoDir == 0 ? 't' : 's';
     int t = obRegT();
 
     printf("\taddi $t%d, $zero, 1\n", t);
-    printf("\tbeq $t%d, $%c%d, %s%d\n", t, l, regEsq, "t_logical_or_", labelID);
-    printf("\tbeq $t%d, $%c%d, %s%d\n", t, r, regDir, "t_logical_or_", labelID);
+    printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq, "ou_", labelID);
+    printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoDir == 0 ? 't' : 's', regDir, "ou_", labelID);
     printf("\taddi $t%d, $zero, 0\n", t);
-    printf("\t%s%d:\n", "t_logical_or_", labelID);
+    printf("\t%s%d:\n", "ou_", labelID);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -274,9 +256,7 @@ int ouLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
 }
 
 void se(int tipoCond, int regCond, int labelID){
-    char c = tipoCond == 0 ? 't' : 's';
-
-    printf("\tbeqz $%c%d, else_%d\n", c, regCond, labelID);
+    printf("\tbeqz $%c%d, senao_%d\n", tipoCond == 0 ? 't' : 's', regCond, labelID);
 
     if(tipoCond == 0){
         regT[regCond] = 0;
@@ -284,10 +264,9 @@ void se(int tipoCond, int regCond, int labelID){
 }
 
 void enquanto(int tipoCond, int regCond, int labelID){
-    char c = tipoCond == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\tbnez $%c%d, while_corpo_%d\n", c, regCond, labelID);
+    printf("\tbnez $%c%d, enquantoc_%d\n", tipoCond == 0 ? 't' : 's', regCond, labelID);
 
     if(tipoCond == 0){
         regT[regCond] = 0;
@@ -296,10 +275,9 @@ void enquanto(int tipoCond, int regCond, int labelID){
 }
 
 void para(int tipoCond, int regCond, int labelID){
-    char c = tipoCond == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\tbnez $%c%d, for_corpo_%d\n", c, regCond, labelID);
+    printf("\tbnez $%c%d, parac_%d\n", tipoCond == 0 ? 't' : 's', regCond, labelID);
 
     if(tipoCond == 0){
         regT[regCond] = 0;
@@ -308,11 +286,9 @@ void para(int tipoCond, int regCond, int labelID){
 }
 
 void ternario(int tipoCond, int regCond, int labelID){
-    char c = tipoCond == 0 ? 't' : 's';
     int t = obRegT();
 
-    printf("\taddi $t%d, $zero, 0\n", t);
-    printf("\tbeq $t%d, $%c%d, false_ternary_%d\n", t, c, regCond, labelID);
+    printf("\taddi $t%d, $zero, 0\n\tbeq $t%d, $%c%d, ternariof_%d\n", t, t, tipoCond == 0 ? 't' : 's', regCond, labelID);
 
     if (tipoCond == 0){
         regT[regCond] = 0;
@@ -341,7 +317,7 @@ void setDefinicaoVariavelInt(char *nome, int valor){
         definirDeclaracoes = calloc(4096, sizeof(char));
     }
         
-    sprintf(definirDeclaracoes + strlen(definirDeclaracoes), "\t%s: .word %d # define\n", nome, valor);
+    sprintf(definirDeclaracoes + strlen(definirDeclaracoes), "\t%s: .word %d\n", nome, valor);
 }
 
 void definicao(){
@@ -366,9 +342,7 @@ void setGlobalAtribuicaoVar(char *nome, int valor){
 
 void globalAtribuicaoVar(){
     if(atribuicaoGlobal){
-        printf("\t# BLOCO DE ATRIBUICOES GLOBAIS NO COMEÇO DA MAIN\n");
         printf("%s", atribuicaoGlobal);
-        printf("\t# END BLOCO ATRIBUICOES GLOBAIS\n");
         free(atribuicaoGlobal);
     }
 }
@@ -376,19 +350,17 @@ void globalAtribuicaoVar(){
 int loadGlobalInt(char *nome){
     int t1 = obRegT(), t2 = obRegT();
 
-    printf("\tla $t%d, %s\n", t1, nome);
-    printf("\tlw $t%d, 0($t%d)\n", t2, t1);
+    printf("\tla $t%d, %s\n\tlw $t%d, 0($t%d)\n", t1, nome, t2, t1);
+
     regT[t1] = 0;
 
     return t2;
 }
 
 void armazenarGlobalInt(int tipo, int reg, char *nome){
-    char r = tipo == 0 ? 't' : 's';
     int t1 = obRegT();
 
-    printf("\tla $t%d, %s\n", t1, nome);
-    printf("\tsw $%c%d, 0($t%d)\n", r, reg, t1);
+    printf("\tla $t%d, %s\n\tsw $%c%d, 0($t%d)\n", t1, nome, tipo == 0 ? 't' : 's', reg, t1);
 
     if(tipo == 0){
         regT[reg] = 0;
@@ -398,27 +370,35 @@ void armazenarGlobalInt(int tipo, int reg, char *nome){
 
 int declaraArray(char *nome, int tam, int ehGlobal){
     if(ehGlobal){
-        printf("\t%s: .space %d # global array\n", nome, tam * 4);
+        printf("\t%s: .space %d\n", nome, tam * 4);
         return -1;
     }
 
     int s = obRegS();
-    printf("\t.data\n");
-    printf("\t\t%s: .space %d # local function array\n", nome, tam * 4);
-    printf("\t.text\n");
+
+    printf("\t.data\n\t\t%s: .space %d\n\t.text\n", nome, tam * 4);
 
     return s;
 }
 
 int acessarEnderecoArray(int tipoArray, int arrayReg, char *nome, int indexTipo, int indexReg, int ehGlobal){
-    char index = indexTipo == 0 ? 't' : 's', a = tipoArray == 0 ? 't' : 's';
+    if(ehGlobal){
+        int t1 = obRegT(), t2 = obRegT();
 
-    if(!ehGlobal){
+        printf("\tla $t%d, %s\n\tsll $t%d, $%c%d, 2\n", t1, nome, t2, indexTipo == 0 ? 't' : 's', indexReg);
+        printf("\tadd $t%d, $t%d, $t%d\n", t2, t2, t1);
+
+        if(indexTipo == 0){
+            regT[indexReg] = 0;
+        }
+        regT[t1] = 0;
+
+        return t2;
+    }else{
         int t = obRegT();
 
-        printf("\tla $%c%d, %s\n", a, arrayReg, nome);
-        printf("\tsll $t%d, $%c%d, 2\n", t, index, indexReg);
-        printf("\tadd $t%d, $t%d, $%c%d\n", t, t, a, arrayReg);
+        printf("\tla $%c%d, %s\n\tsll $t%d, $%c%d, 2\n", tipoArray == 0 ? 't' : 's', arrayReg, nome, t, indexTipo == 0 ? 't' : 's', indexReg);
+        printf("\tadd $t%d, $t%d, $%c%d\n", t, t, tipoArray == 0 ? 't' : 's', arrayReg);
 
         if(indexTipo == 0){
             regT[indexReg] = 0;
@@ -429,26 +409,11 @@ int acessarEnderecoArray(int tipoArray, int arrayReg, char *nome, int indexTipo,
         }
 
         return t;
-    }else{
-        int t1 = obRegT(), t2 = obRegT();
-
-        printf("\tla $t%d, %s\n", t1, nome);
-        printf("\tsll $t%d, $%c%d, 2\n", t2, index, indexReg);
-        printf("\tadd $t%d, $t%d, $t%d\n", t2, t2, t1);
-
-        if(indexTipo == 0){
-            regT[indexReg] = 0;
-        }
-        regT[t1] = 0;
-
-        return t2;
     }
 }
 
 void armazenarNoArray(int posic, int tipoDir, int regDir){
-    char c = tipoDir == 0 ? 't' : 's';
-
-    printf("\tsw $%c%d, 0($t%d)\n", c, regDir, posic);
+    printf("\tsw $%c%d, 0($t%d)\n", tipoDir == 0 ? 't' : 's', regDir, posic);
 
     if(tipoDir == 0){
         regT[regDir] = 0;
@@ -478,11 +443,7 @@ int loadByte(int tipo, int reg){
 }
 
 void inteiro(int tipoReg, int numReg){
-    char r = tipoReg == 0 ? 't' : 's';
-
-    printf("\tadd $a0, $zero, $%c%d\n", r, numReg);
-    printf("\taddi $v0, $zero, 1\n");
-    printf("\tsyscall\n");
+    printf("\tadd $a0, $zero, $%c%d\n\taddi $v0, $zero, 1\n\tsyscall\n", tipoReg == 0 ? 't' : 's', numReg);
 
     if(tipoReg == 0){
         regT[numReg] = 0;
@@ -490,11 +451,7 @@ void inteiro(int tipoReg, int numReg){
 }
 
 void caracter(int tipoReg, int numReg){
-    char r = tipoReg == 0 ? 't' : 's';
-
-    printf("\tadd $a0, $zero, $%c%d\n", r, numReg);
-    printf("\taddi $v0, $zero, 11\n");
-    printf("\tsyscall\n");
+    printf("\tadd $a0, $zero, $%c%d\n\taddi $v0, $zero, 11\n\tsyscall\n", tipoReg == 0 ? 't' : 's', numReg);
 
     if(tipoReg == 0){
         regT[numReg] = 0;
@@ -502,11 +459,7 @@ void caracter(int tipoReg, int numReg){
 }
 
 void stringVar(int tipo, int valor){
-    char t = tipo == 0 ? 't' : 's';
-
-    printf("\tmove $a0, $%c%d\n", t, valor);
-    printf("\taddi $v0, $zero, 4\n");
-    printf("\tsyscall\n");
+    printf("\tmove $a0, $%c%d\n\taddi $v0, $zero, 4\n\tsyscall\n", tipo == 0 ? 't' : 's', valor);
 
     if(tipo == 0){
         regT[valor] = 0;
@@ -514,26 +467,19 @@ void stringVar(int tipo, int valor){
 }
 
 void string(char *valor, int stringID){
-    printf("\t.data\n");
-    printf("\t\tstring_%d: .asciiz \"%s\"\n", stringID, valor);
-    printf("\t.text\n");
-    printf("\tla $a0, string_%d\n", stringID);
-    printf("\taddi $v0, $zero, 4\n");
-    printf("\tsyscall\n");
+    printf("\t.data\n\t\tstring_%d: .asciiz \"%s\"\n\t.text\n\tla $a0, string_%d\n\taddi $v0, $zero, 4\n\tsyscall\n", stringID, valor, stringID);
 }
 
 int scanInt(int sReg, char *nome, int ehGlobal){
     if(sReg == -1){
         sReg = obRegS();
     }
-    printf("\taddi $v0, $zero, 5\n");
-    printf("\tsyscall\n");
+    printf("\taddi $v0, $zero, 5\n\tsyscall\n");
 
     if(ehGlobal){
         int t = obRegT();
 
-        printf("\tla $t%d, %s\n", t, nome);
-        printf("\tsw $v0, 0($t%d)\n", t);
+        printf("\tla $t%d, %s\n\tsw $v0, 0($t%d)\n", t, nome, t);
         regT[t] = 0;
 
         return -1;
@@ -548,7 +494,7 @@ void chamarFuncao(char *nome){
 }
 
 void setParametroNoReg(int aReg, int tipoDir, int regDir, char *var){
-    printf("\tadd $a%d, $zero, $%c%d # function param %s\n", aReg, tipoDir == 0 ? 't' : 's', regDir, var);
+    printf("\tadd $a%d, $zero, $%c%d\n", aReg, tipoDir == 0 ? 't' : 's', regDir);
 
     if(tipoDir == 0){
         regT[regDir] = 0;
@@ -563,7 +509,6 @@ void parametroFuncao(char *nome, int params){
     if(params == 0){
         return;
     }
-    printf("\t#loading %d params\n", params);
 
     for(int i = 0; i < params; i++){
         printf("\tadd $s%d, $zero, $a%d\n", i, i);
@@ -576,9 +521,7 @@ void imprimirReturn(){
 }
 
 void imprimirReturnV0(int tipo, int reg){
-    char r = tipo == 0 ? 't' : 's';
-
-    printf("\tadd $v0, $zero, $%c%d\n", r, reg);
+    printf("\tadd $v0, $zero, $%c%d\n", tipo == 0 ? 't' : 's', reg);
 
     if(tipo == 0){
         regT[reg] = 0;
@@ -691,6 +634,5 @@ void freeReg(int tipo, int num){
 }
 
 void imprimirExit(){
-    printf("\n\taddi $v0, $zero, 10\n");
-    printf("\tsyscall\n");
+    printf("\n\taddi $v0, $zero, 10\n\tsyscall\n");
 }

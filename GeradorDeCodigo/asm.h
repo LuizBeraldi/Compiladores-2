@@ -6,7 +6,6 @@
 #include <string.h>
 
 void imprimirComeco();
-
 int constante(int valor);
 int opeAritmeticas(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op);
 int opDivisao(int tipoEsq, int regEsq, int tipoDir, int regDir, char *op);

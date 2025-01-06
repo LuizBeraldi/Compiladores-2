@@ -9,7 +9,7 @@
 	v11: .word 0
 	v02: .word 0
 	v21: .word 0
-	a: .space 400 # global array
+	a: .space 400
 	v12: .word 0
 	v03: .word 0
 	v22: .word 0
@@ -48,7 +48,6 @@ GenValue:
 	sw $s7, 44($sp)
 	sw $ra, 48($sp)
 
-	#loading 1 params
 	add $s0, $zero, $a0
 	add $v0, $zero, $s0
 
@@ -103,673 +102,673 @@ Panic:
 	sw $ra, 48($sp)
 
 	.data
-		string_902096848: .asciiz "\n\n"
+		string_1247280: .asciiz "\n\n"
 	.text
-	la $a0, string_902096848
+	la $a0, string_1247280
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902096688: .asciiz "                 "
+		string_1247440: .asciiz "                 "
 	.text
-	la $a0, string_902096688
+	la $a0, string_1247440
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902096528: .asciiz "#######\n"
+		string_1247600: .asciiz "#######\n"
 	.text
-	la $a0, string_902096528
+	la $a0, string_1247600
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902096368: .asciiz "             "
+		string_1247760: .asciiz "             "
 	.text
-	la $a0, string_902096368
+	la $a0, string_1247760
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902096208: .asciiz "###############\n"
+		string_1247920: .asciiz "###############\n"
 	.text
-	la $a0, string_902096208
+	la $a0, string_1247920
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902096048: .asciiz "          "
+		string_1248080: .asciiz "          "
 	.text
-	la $a0, string_902096048
+	la $a0, string_1248080
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095888: .asciiz "#####################\n"
+		string_1248240: .asciiz "#####################\n"
 	.text
-	la $a0, string_902095888
+	la $a0, string_1248240
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095712: .asciiz "         "
+		string_1248416: .asciiz "         "
 	.text
-	la $a0, string_902095712
+	la $a0, string_1248416
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095552: .asciiz "#######################\n"
+		string_1248576: .asciiz "#######################\n"
 	.text
-	la $a0, string_902095552
+	la $a0, string_1248576
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095376: .asciiz "        "
+		string_1248752: .asciiz "        "
 	.text
-	la $a0, string_902095376
+	la $a0, string_1248752
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095216: .asciiz "#########################\n"
+		string_1248912: .asciiz "#########################\n"
 	.text
-	la $a0, string_902095216
+	la $a0, string_1248912
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902095040: .asciiz "       "
+		string_1249088: .asciiz "       "
 	.text
-	la $a0, string_902095040
+	la $a0, string_1249088
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094880: .asciiz "###########################\n"
+		string_1249248: .asciiz "###########################\n"
 	.text
-	la $a0, string_902094880
+	la $a0, string_1249248
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094704: .asciiz "       "
+		string_1249424: .asciiz "       "
 	.text
-	la $a0, string_902094704
+	la $a0, string_1249424
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094544: .asciiz "###########################\n"
+		string_1249584: .asciiz "###########################\n"
 	.text
-	la $a0, string_902094544
+	la $a0, string_1249584
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094368: .asciiz "       "
+		string_1249760: .asciiz "       "
 	.text
-	la $a0, string_902094368
+	la $a0, string_1249760
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094208: .asciiz "########"
+		string_1249920: .asciiz "########"
 	.text
-	la $a0, string_902094208
+	la $a0, string_1249920
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902094048: .asciiz "   "
+		string_1250080: .asciiz "   "
 	.text
-	la $a0, string_902094048
+	la $a0, string_1250080
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093888: .asciiz "#####"
+		string_1250240: .asciiz "#####"
 	.text
-	la $a0, string_902093888
+	la $a0, string_1250240
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093728: .asciiz "   "
+		string_1250400: .asciiz "   "
 	.text
-	la $a0, string_902093728
+	la $a0, string_1250400
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093568: .asciiz "########\n"
+		string_1250560: .asciiz "########\n"
 	.text
-	la $a0, string_902093568
+	la $a0, string_1250560
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093408: .asciiz "       "
+		string_1250720: .asciiz "       "
 	.text
-	la $a0, string_902093408
+	la $a0, string_1250720
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093248: .asciiz "######"
+		string_1250880: .asciiz "######"
 	.text
-	la $a0, string_902093248
+	la $a0, string_1250880
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902093088: .asciiz "      "
+		string_1251040: .asciiz "      "
 	.text
-	la $a0, string_902093088
+	la $a0, string_1251040
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092928: .asciiz "###"
+		string_1251200: .asciiz "###"
 	.text
-	la $a0, string_902092928
+	la $a0, string_1251200
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092768: .asciiz "       "
+		string_1251360: .asciiz "       "
 	.text
-	la $a0, string_902092768
+	la $a0, string_1251360
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092608: .asciiz "#####\n"
+		string_1251520: .asciiz "#####\n"
 	.text
-	la $a0, string_902092608
+	la $a0, string_1251520
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902082416: .asciiz "        "
+		string_1261712: .asciiz "        "
 	.text
-	la $a0, string_902082416
+	la $a0, string_1261712
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902082256: .asciiz "####"
+		string_1261872: .asciiz "####"
 	.text
-	la $a0, string_902082256
+	la $a0, string_1261872
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902082096: .asciiz "       "
+		string_1262032: .asciiz "       "
 	.text
-	la $a0, string_902082096
+	la $a0, string_1262032
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081936: .asciiz "###"
+		string_1262192: .asciiz "###"
 	.text
-	la $a0, string_902081936
+	la $a0, string_1262192
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081776: .asciiz "       "
+		string_1262352: .asciiz "       "
 	.text
-	la $a0, string_902081776
+	la $a0, string_1262352
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081616: .asciiz "####\n"
+		string_1262512: .asciiz "####\n"
 	.text
-	la $a0, string_902081616
+	la $a0, string_1262512
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081456: .asciiz "        "
+		string_1262672: .asciiz "        "
 	.text
-	la $a0, string_902081456
+	la $a0, string_1262672
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081296: .asciiz "####"
+		string_1262832: .asciiz "####"
 	.text
-	la $a0, string_902081296
+	la $a0, string_1262832
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902081136: .asciiz "      "
+		string_1262992: .asciiz "      "
 	.text
-	la $a0, string_902081136
+	la $a0, string_1262992
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080976: .asciiz "#####"
+		string_1263152: .asciiz "#####"
 	.text
-	la $a0, string_902080976
+	la $a0, string_1263152
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080816: .asciiz "      "
+		string_1263312: .asciiz "      "
 	.text
-	la $a0, string_902080816
+	la $a0, string_1263312
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080656: .asciiz "####\n"
+		string_1263472: .asciiz "####\n"
 	.text
-	la $a0, string_902080656
+	la $a0, string_1263472
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080496: .asciiz "         "
+		string_1263632: .asciiz "         "
 	.text
-	la $a0, string_902080496
+	la $a0, string_1263632
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080336: .asciiz "##########"
+		string_1263792: .asciiz "##########"
 	.text
-	la $a0, string_902080336
+	la $a0, string_1263792
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080176: .asciiz "   "
+		string_1263952: .asciiz "   "
 	.text
-	la $a0, string_902080176
+	la $a0, string_1263952
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902080016: .asciiz "##########\n"
+		string_1264112: .asciiz "##########\n"
 	.text
-	la $a0, string_902080016
+	la $a0, string_1264112
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079856: .asciiz "          "
+		string_1264272: .asciiz "          "
 	.text
-	la $a0, string_902079856
+	la $a0, string_1264272
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079696: .asciiz "#########"
+		string_1264432: .asciiz "#########"
 	.text
-	la $a0, string_902079696
+	la $a0, string_1264432
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079536: .asciiz "   "
+		string_1264592: .asciiz "   "
 	.text
-	la $a0, string_902079536
+	la $a0, string_1264592
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079376: .asciiz "#########\n"
+		string_1264752: .asciiz "#########\n"
 	.text
-	la $a0, string_902079376
+	la $a0, string_1264752
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079216: .asciiz "            "
+		string_1264912: .asciiz "            "
 	.text
-	la $a0, string_902079216
+	la $a0, string_1264912
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902079056: .asciiz "#################\n"
+		string_1265072: .asciiz "#################\n"
 	.text
-	la $a0, string_902079056
+	la $a0, string_1265072
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078896: .asciiz "             "
+		string_1265232: .asciiz "             "
 	.text
-	la $a0, string_902078896
+	la $a0, string_1265232
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078736: .asciiz "###############\n"
+		string_1265392: .asciiz "###############\n"
 	.text
-	la $a0, string_902078736
+	la $a0, string_1265392
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078576: .asciiz "  "
+		string_1265552: .asciiz "  "
 	.text
-	la $a0, string_902078576
+	la $a0, string_1265552
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078416: .asciiz "###        "
+		string_1265712: .asciiz "###        "
 	.text
-	la $a0, string_902078416
+	la $a0, string_1265712
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078256: .asciiz "####"
+		string_1265872: .asciiz "####"
 	.text
-	la $a0, string_902078256
+	la $a0, string_1265872
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902078096: .asciiz " "
+		string_1266032: .asciiz " "
 	.text
-	la $a0, string_902078096
+	la $a0, string_1266032
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902077936: .asciiz "#"
+		string_1266192: .asciiz "#"
 	.text
-	la $a0, string_902077936
+	la $a0, string_1266192
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902077776: .asciiz " "
+		string_1266352: .asciiz " "
 	.text
-	la $a0, string_902077776
+	la $a0, string_1266352
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902077616: .asciiz "#"
+		string_1266512: .asciiz "#"
 	.text
-	la $a0, string_902077616
+	la $a0, string_1266512
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902077456: .asciiz " "
+		string_1266672: .asciiz " "
 	.text
-	la $a0, string_902077456
+	la $a0, string_1266672
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902077296: .asciiz "#"
+		string_1266832: .asciiz "#"
 	.text
-	la $a0, string_902077296
+	la $a0, string_1266832
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092480: .asciiz " "
+		string_1251648: .asciiz " "
 	.text
-	la $a0, string_902092480
+	la $a0, string_1251648
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092320: .asciiz "####"
+		string_1251808: .asciiz "####"
 	.text
-	la $a0, string_902092320
+	la $a0, string_1251808
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092160: .asciiz "       "
+		string_1251968: .asciiz "       "
 	.text
-	la $a0, string_902092160
+	la $a0, string_1251968
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902092000: .asciiz "###\n"
+		string_1252128: .asciiz "###\n"
 	.text
-	la $a0, string_902092000
+	la $a0, string_1252128
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091840: .asciiz " "
+		string_1252288: .asciiz " "
 	.text
-	la $a0, string_902091840
+	la $a0, string_1252288
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091680: .asciiz "#####"
+		string_1252448: .asciiz "#####"
 	.text
-	la $a0, string_902091680
+	la $a0, string_1252448
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091520: .asciiz "        "
+		string_1252608: .asciiz "        "
 	.text
-	la $a0, string_902091520
+	la $a0, string_1252608
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091360: .asciiz "#############"
+		string_1252768: .asciiz "#############"
 	.text
-	la $a0, string_902091360
+	la $a0, string_1252768
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091200: .asciiz "       "
+		string_1252928: .asciiz "       "
 	.text
-	la $a0, string_902091200
+	la $a0, string_1252928
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902091040: .asciiz "#####\n"
+		string_1253088: .asciiz "#####\n"
 	.text
-	la $a0, string_902091040
+	la $a0, string_1253088
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090880: .asciiz "  "
+		string_1253248: .asciiz "  "
 	.text
-	la $a0, string_902090880
+	la $a0, string_1253248
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090720: .asciiz "#######"
+		string_1253408: .asciiz "#######"
 	.text
-	la $a0, string_902090720
+	la $a0, string_1253408
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090560: .asciiz "      "
+		string_1253568: .asciiz "      "
 	.text
-	la $a0, string_902090560
+	la $a0, string_1253568
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090400: .asciiz "###########"
+		string_1253728: .asciiz "###########"
 	.text
-	la $a0, string_902090400
+	la $a0, string_1253728
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090240: .asciiz "     "
+		string_1253888: .asciiz "     "
 	.text
-	la $a0, string_902090240
+	la $a0, string_1253888
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902090080: .asciiz "########\n"
+		string_1254048: .asciiz "########\n"
 	.text
-	la $a0, string_902090080
+	la $a0, string_1254048
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089920: .asciiz "##############"
+		string_1254208: .asciiz "##############"
 	.text
-	la $a0, string_902089920
+	la $a0, string_1254208
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089760: .asciiz "    "
+		string_1254368: .asciiz "    "
 	.text
-	la $a0, string_902089760
+	la $a0, string_1254368
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089600: .asciiz "#####"
+		string_1254528: .asciiz "#####"
 	.text
-	la $a0, string_902089600
+	la $a0, string_1254528
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089440: .asciiz "    "
+		string_1254688: .asciiz "    "
 	.text
-	la $a0, string_902089440
+	la $a0, string_1254688
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089280: .asciiz "##############\n"
+		string_1254848: .asciiz "##############\n"
 	.text
-	la $a0, string_902089280
+	la $a0, string_1254848
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902089120: .asciiz "####################"
+		string_1255008: .asciiz "####################"
 	.text
-	la $a0, string_902089120
+	la $a0, string_1255008
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088960: .asciiz "   "
+		string_1255168: .asciiz "   "
 	.text
-	la $a0, string_902088960
+	la $a0, string_1255168
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088800: .asciiz "##################\n"
+		string_1255328: .asciiz "##################\n"
 	.text
-	la $a0, string_902088800
+	la $a0, string_1255328
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088640: .asciiz " "
+		string_1255488: .asciiz " "
 	.text
-	la $a0, string_902088640
+	la $a0, string_1255488
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088480: .asciiz "###"
+		string_1255648: .asciiz "###"
 	.text
-	la $a0, string_902088480
+	la $a0, string_1255648
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088320: .asciiz "      "
+		string_1255808: .asciiz "      "
 	.text
-	la $a0, string_902088320
+	la $a0, string_1255808
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088160: .asciiz "###############"
+		string_1255968: .asciiz "###############"
 	.text
-	la $a0, string_902088160
+	la $a0, string_1255968
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902088000: .asciiz " "
+		string_1256128: .asciiz " "
 	.text
-	la $a0, string_902088000
+	la $a0, string_1256128
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087840: .asciiz "######\n"
+		string_1256288: .asciiz "######\n"
 	.text
-	la $a0, string_902087840
+	la $a0, string_1256288
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087680: .asciiz "           "
+		string_1256448: .asciiz "           "
 	.text
-	la $a0, string_902087680
+	la $a0, string_1256448
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087520: .asciiz "####"
+		string_1256608: .asciiz "####"
 	.text
-	la $a0, string_902087520
+	la $a0, string_1256608
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087360: .asciiz " "
+		string_1256768: .asciiz " "
 	.text
-	la $a0, string_902087360
+	la $a0, string_1256768
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087200: .asciiz "###############\n"
+		string_1256928: .asciiz "###############\n"
 	.text
-	la $a0, string_902087200
+	la $a0, string_1256928
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902087040: .asciiz "  "
+		string_1257088: .asciiz "  "
 	.text
-	la $a0, string_902087040
+	la $a0, string_1257088
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086880: .asciiz "##################"
+		string_1257248: .asciiz "##################"
 	.text
-	la $a0, string_902086880
+	la $a0, string_1257248
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086720: .asciiz " "
+		string_1257408: .asciiz " "
 	.text
-	la $a0, string_902086720
+	la $a0, string_1257408
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086560: .asciiz "###################\n"
+		string_1257568: .asciiz "###################\n"
 	.text
-	la $a0, string_902086560
+	la $a0, string_1257568
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086400: .asciiz "  "
+		string_1257728: .asciiz "  "
 	.text
-	la $a0, string_902086400
+	la $a0, string_1257728
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086240: .asciiz "##############"
+		string_1257888: .asciiz "##############"
 	.text
-	la $a0, string_902086240
+	la $a0, string_1257888
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902086080: .asciiz "           "
+		string_1258048: .asciiz "           "
 	.text
-	la $a0, string_902086080
+	la $a0, string_1258048
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085920: .asciiz "##############\n"
+		string_1258208: .asciiz "##############\n"
 	.text
-	la $a0, string_902085920
+	la $a0, string_1258208
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085760: .asciiz "   "
+		string_1258368: .asciiz "   "
 	.text
-	la $a0, string_902085760
+	la $a0, string_1258368
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085600: .asciiz "#######"
+		string_1258528: .asciiz "#######"
 	.text
-	la $a0, string_902085600
+	la $a0, string_1258528
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085440: .asciiz "                      "
+		string_1258688: .asciiz "                      "
 	.text
-	la $a0, string_902085440
+	la $a0, string_1258688
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085264: .asciiz "########\n"
+		string_1258864: .asciiz "########\n"
 	.text
-	la $a0, string_902085264
+	la $a0, string_1258864
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902085104: .asciiz "     "
+		string_1259024: .asciiz "     "
 	.text
-	la $a0, string_902085104
+	la $a0, string_1259024
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902084944: .asciiz "####"
+		string_1259184: .asciiz "####"
 	.text
-	la $a0, string_902084944
+	la $a0, string_1259184
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902084784: .asciiz "                         "
+		string_1259344: .asciiz "                         "
 	.text
-	la $a0, string_902084784
+	la $a0, string_1259344
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902084608: .asciiz "#####\n"
+		string_1259520: .asciiz "#####\n"
 	.text
-	la $a0, string_902084608
+	la $a0, string_1259520
 	addi $v0, $zero, 4
 	syscall
 	.data
-		string_902084448: .asciiz "\n\nFATAL ERROR: O codigo assembly gerado possui ao menos um Erro.\n"
+		string_1259680: .asciiz "\n\nFATAL ERROR: O codigo assembly gerado possui ao menos um Erro.\n"
 	.text
-	la $a0, string_902084448
+	la $a0, string_1259680
 	addi $v0, $zero, 4
 	syscall
 	addi $t0, $zero, 666
-	# exit with status 666
+
 	addi $v0, $zero, 10
 	syscall
 
@@ -809,7 +808,7 @@ PopulateArray:
 	la $t0, v01
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v01
@@ -817,7 +816,7 @@ PopulateArray:
 	la $t0, v02
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v02
@@ -825,7 +824,7 @@ PopulateArray:
 	la $t0, v03
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v03
@@ -833,7 +832,7 @@ PopulateArray:
 	la $t0, v04
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v04
@@ -841,7 +840,7 @@ PopulateArray:
 	la $t0, v05
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v05
@@ -849,7 +848,7 @@ PopulateArray:
 	la $t0, v06
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v06
@@ -857,7 +856,7 @@ PopulateArray:
 	la $t0, v07
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v07
@@ -865,7 +864,7 @@ PopulateArray:
 	la $t0, v08
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v08
@@ -873,7 +872,7 @@ PopulateArray:
 	la $t0, v09
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v09
@@ -881,7 +880,7 @@ PopulateArray:
 	la $t0, v10
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v10
@@ -889,7 +888,7 @@ PopulateArray:
 	la $t0, v11
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v11
@@ -897,7 +896,7 @@ PopulateArray:
 	la $t0, v12
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v12
@@ -905,7 +904,7 @@ PopulateArray:
 	la $t0, v13
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v13
@@ -913,7 +912,7 @@ PopulateArray:
 	la $t0, v14
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v14
@@ -921,7 +920,7 @@ PopulateArray:
 	la $t0, v15
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v15
@@ -929,7 +928,7 @@ PopulateArray:
 	la $t0, v16
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v16
@@ -937,7 +936,7 @@ PopulateArray:
 	la $t0, v17
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v17
@@ -945,7 +944,7 @@ PopulateArray:
 	la $t0, v18
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v18
@@ -953,7 +952,7 @@ PopulateArray:
 	la $t0, v19
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v19
@@ -961,7 +960,7 @@ PopulateArray:
 	la $t0, v20
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v20
@@ -969,7 +968,7 @@ PopulateArray:
 	la $t0, v21
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v21
@@ -977,7 +976,7 @@ PopulateArray:
 	la $t0, v22
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v22
@@ -985,7 +984,7 @@ PopulateArray:
 	la $t0, v23
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v23
@@ -993,7 +992,7 @@ PopulateArray:
 	la $t0, v24
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v24
@@ -1001,7 +1000,7 @@ PopulateArray:
 	la $t0, v25
 	lw $t1, 0($t0)
 	addi $t0, $zero, 1
-	add $a0, $zero, $t0 # function param i
+	add $a0, $zero, $t0
 	jal GenValue
 	add $t0, $zero, $v0
 	la $t1, v25
@@ -9684,16 +9683,15 @@ ASSERT:
 	sw $s7, 44($sp)
 	sw $ra, 48($sp)
 
-	#loading 2 params
 	add $s0, $zero, $a0
 	add $s1, $zero, $a1
 	sub $t0, $s1, $s0
-	beqz $t0, else_896424768
+	beqz $t0, senao_6919360
 	jal Panic
 	add $t0, $zero, $v0
-	j exit_if_896424768
-	else_896424768:
-	exit_if_896424768:
+	j exit_if_6919360
+	senao_6919360:
+	exit_if_6919360:
 
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -9715,8 +9713,8 @@ ASSERT:
 main:
 	addi $t0, $zero, 0
 	add $s0, $zero, $t0
-	j for_teste_896232240
-	for_corpo_896232240:
+	j parat_7111888
+	parac_7111888:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s0
 	la $t0, a
@@ -9726,170 +9724,170 @@ main:
 	sw $t0, 0($t2)
 	add $t0, $zero, $s0
 	addi $s0, $s0, 1
-	for_teste_896232240:
+	parat_7111888:
 	addi $t1, $zero, 100
 	slt $t2, $s0, $t1
-	bnez $t2, for_corpo_896232240
+	bnez $t2, parac_7111888
 	jal PopulateArray
 	add $t1, $zero, $v0
 	addi $t2, $zero, 0
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $s0, $zero, $t2
-	j for_teste_896232432
-	for_corpo_896232432:
+	j parat_7111696
+	parac_7111696:
 	addi $t2, $zero, 1
 	mul $t3, $t2, $s0
 	la $t2, a
 	sll $t4, $t3, 2
 	add $t4, $t4, $t2
 	lw $t2, 0($t4)
-	add $a1, $zero, $t2 # function param v1
+	add $a1, $zero, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	addi $t3, $zero, 1
-	add $a0, $zero, $t3 # function param i
+	add $a0, $zero, $t3
 	jal GenValue
 	add $t3, $zero, $v0
 	add $t4, $t2, $t3
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t4, $t3, $t2
 	addi $t2, $zero, 1
-	add $a0, $zero, $t2 # function param i
+	add $a0, $zero, $t2
 	jal GenValue
 	add $t2, $zero, $v0
 	add $t3, $t4, $t2
-	add $a0, $zero, $t3 # function param v2
+	add $a0, $zero, $t3
 	jal ASSERT
 	add $t2, $zero, $v0
 	addi $t3, $zero, 1
-	add $a0, $zero, $t3 # function param i
+	add $a0, $zero, $t3
 	jal GenValue
 	add $t3, $zero, $v0
 	add $t4, $s0, $t3
 	add $s0, $zero, $t4
-	for_teste_896232432:
+	parat_7111696:
 	addi $t3, $zero, 100
-	add $a0, $zero, $t3 # function param i
+	add $a0, $zero, $t3
 	jal GenValue
 	add $t3, $zero, $v0
 	slt $t4, $s0, $t3
-	bnez $t4, for_corpo_896232432
+	bnez $t4, parac_7111696
 	.data
-		string_896233760: .asciiz "O codigo assembly gerado funcionou como o esperado."
+		string_7110368: .asciiz "O codigo assembly gerado funcionou como o esperado."
 	.text
-	la $a0, string_896233760
+	la $a0, string_7110368
 	addi $v0, $zero, 4
 	syscall
 	addi $t3, $zero, 666

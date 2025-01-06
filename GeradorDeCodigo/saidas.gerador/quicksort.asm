@@ -3,8 +3,8 @@
 
 
 .data
-	MAX: .word 100 # define
-	a: .space 400 # global array
+	MAX: .word 100
+	a: .space 400
 	max: .word 0
 .text
 
@@ -25,13 +25,12 @@ quicksort:
 	sw $s7, 44($sp)
 	sw $ra, 48($sp)
 
-	#loading 2 params
 	add $s0, $zero, $a0
 	add $s1, $zero, $a1
 	addi $t0, $zero, 1
 	add $s2, $zero, $t0
 	sle $t0, $s0, $s1
-	beqz $t0, else_1071453440
+	beqz $t0, senao_56990464
 
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -49,9 +48,9 @@ quicksort:
 	addi $sp, $sp, 52
 
 	jr $ra
-	j exit_if_1071453440
-	else_1071453440:
-	exit_if_1071453440:
+	j exit_if_56990464
+	senao_56990464:
+	exit_if_56990464:
 	addi $t0, $zero, 1
 	sub $t1, $s1, $t0
 	add $s3, $zero, $t1
@@ -63,13 +62,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	add $s5, $zero, $t0
-	j while_teste_1071521616
-	while_corpo_1071521616:
-	while_corpo_1071501216:
+	j enquantot_56922288
+	enquantoc_56922288:
+	enquantoc_56942688:
 	addi $t0, $zero, 1
 	add $t1, $s3, $t0
 	add $s3, $zero, $t1
-	while_teste_1071501216:
+	enquantot_56942688:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -77,12 +76,12 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	slt $t1, $t0, $s5
-	bnez $t1, while_corpo_1071501216
-	while_corpo_1071501120:
+	bnez $t1, enquantoc_56942688
+	enquantoc_56942784:
 	addi $t0, $zero, 1
 	sub $t1, $s4, $t0
 	add $s4, $zero, $t1
-	while_teste_1071501120:
+	enquantot_56942784:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s4
 	la $t0, a
@@ -90,13 +89,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	sgt $t1, $t0, $s5
-	bnez $t1, while_corpo_1071501120
+	bnez $t1, enquantoc_56942784
 	sge $t0, $s3, $s4
-	beqz $t0, else_1071500896
+	beqz $t0, senao_56943008
 	addi $t0, $zero, 0
 	add $s2, $zero, $t0
-	j exit_if_1071488400
-	else_1071500896:
+	j exit_if_56955504
+	senao_56943008:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -122,9 +121,9 @@ quicksort:
 	sll $t2, $t1, 2
 	add $t2, $t2, $t0
 	sw $s6, 0($t2)
-	exit_if_1071488400:
-	while_teste_1071521616:
-	bnez $s2, while_corpo_1071521616
+	exit_if_56955504:
+	enquantot_56922288:
+	bnez $s2, enquantoc_56922288
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -150,14 +149,14 @@ quicksort:
 	sll $t2, $t1, 2
 	add $t2, $t2, $t0
 	sw $s6, 0($t2)
-	add $a1, $zero, $s1 # function param m
-	add $a0, $zero, $s4 # function param n
+	add $a1, $zero, $s1
+	add $a0, $zero, $s4
 	jal quicksort
 	add $t0, $zero, $v0
 	addi $t1, $zero, 1
 	add $t2, $s3, $t1
-	add $a1, $zero, $t2 # function param m
-	add $a0, $zero, $s0 # function param n
+	add $a1, $zero, $t2
+	add $a0, $zero, $s0
 	jal quicksort
 	add $t1, $zero, $v0
 
@@ -184,19 +183,19 @@ main:
 	addi $t0, $zero, 0
 	la $t1, max
 	sw $t0, 0($t1)
-	j while_teste_1071657360
-	while_corpo_1071657360:
+	j enquantot_56786544
+	enquantoc_56786544:
 	.data
-		string_1071625904: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
+		string_56818000: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
 	.text
-	la $a0, string_1071625904
+	la $a0, string_56818000
 	addi $v0, $zero, 4
 	syscall
 	addi $v0, $zero, 5
 	syscall
 	la $t0, max
 	sw $v0, 0($t0)
-	while_teste_1071657360:
+	enquantot_56786544:
 	la $t0, max
 	lw $t1, 0($t0)
 	addi $t0, $zero, 0
@@ -206,21 +205,21 @@ main:
 	addi $t0, $zero, 100
 	sgt $t3, $t1, $t0
 	addi $t0, $zero, 1
-	beq $t0, $t2, t_logical_or_1071624960
-	beq $t0, $t3, t_logical_or_1071624960
+	beq $t0, $t2, ou_56818944
+	beq $t0, $t3, ou_56818944
 	addi $t0, $zero, 0
-	t_logical_or_1071624960:
-	bnez $t0, while_corpo_1071657360
+	ou_56818944:
+	bnez $t0, enquantoc_56786544
 	addi $t0, $zero, 0
 	add $s1, $zero, $t0
-	j for_teste_1071657264
-	for_corpo_1071657264:
+	j parat_56786640
+	parac_56786640:
 	addi $t0, $zero, 1
 	add $t1, $s1, $t0
 	.data
-		string_1071686176: .asciiz "Entre com o valor da posicao "
+		string_56757728: .asciiz "Entre com o valor da posicao "
 	.text
-	la $a0, string_1071686176
+	la $a0, string_56757728
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t1
@@ -243,24 +242,24 @@ main:
 	sw $s2, 0($t2)
 	add $t0, $zero, $s1
 	addi $s1, $s1, 1
-	for_teste_1071657264:
+	parat_56786640:
 	la $t1, max
 	lw $t2, 0($t1)
 	slt $t1, $s1, $t2
-	bnez $t1, for_corpo_1071657264
+	bnez $t1, parac_56786640
 	addi $t1, $zero, 0
-	add $a1, $zero, $t1 # function param m
+	add $a1, $zero, $t1
 	la $t1, max
 	lw $t2, 0($t1)
 	addi $t1, $zero, 1
 	sub $t3, $t2, $t1
-	add $a0, $zero, $t3 # function param n
+	add $a0, $zero, $t3
 	jal quicksort
 	add $t1, $zero, $v0
 	addi $t2, $zero, 0
 	add $s1, $zero, $t2
-	j for_teste_1071657072
-	for_corpo_1071657072:
+	j parat_56786832
+	parac_56786832:
 	addi $t2, $zero, 1
 	mul $t3, $t2, $s1
 	la $t2, a
@@ -268,9 +267,9 @@ main:
 	add $t4, $t4, $t2
 	lw $t2, 0($t4)
 	.data
-		string_1071692048: .asciiz ""
+		string_56751856: .asciiz ""
 	.text
-	la $a0, string_1071692048
+	la $a0, string_56751856
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t2
@@ -284,15 +283,15 @@ main:
 	syscall
 	add $t2, $zero, $s1
 	addi $s1, $s1, 1
-	for_teste_1071657072:
+	parat_56786832:
 	la $t3, max
 	lw $t4, 0($t3)
 	slt $t3, $s1, $t4
-	bnez $t3, for_corpo_1071657072
+	bnez $t3, parac_56786832
 	.data
-		string_1071655776: .asciiz "\n"
+		string_56788128: .asciiz "\n"
 	.text
-	la $a0, string_1071655776
+	la $a0, string_56788128
 	addi $v0, $zero, 4
 	syscall
 	addi $t3, $zero, 0

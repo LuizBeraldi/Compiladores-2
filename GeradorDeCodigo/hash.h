@@ -15,17 +15,17 @@
 */
 
 #define VAR 1
-#define FUNCTIONN 2
-#define VECTOR 3
+#define FUNCAO 2
+#define VETOR 3
 
-typedef struct no {
+typedef struct no{
     int tipoVar, ptr, atribuicao, ehConstante, ehGlobal, tipok, qntParam, qntDimen, atribuicaoLinha, atribuicaoColuna, regS;
     char *varId, string[256];
     void *dimensao, *param, *hashExpr;
     struct no *prox;
 } HashNo;
 
-typedef struct param {
+typedef struct param{
     int tipok, ptr, tipoParam;
     char *identificador;
     struct param *prox;

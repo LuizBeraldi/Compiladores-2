@@ -78,7 +78,7 @@ void setDimen(void *no, void *dimensao){
     aux->qntDimen = qntdDimen;
 
     if(qntdDimen > 0){
-        aux->tipok = VECTOR;
+        aux->tipok = VETOR;
     }else{
         aux->tipok = VAR;
     }
