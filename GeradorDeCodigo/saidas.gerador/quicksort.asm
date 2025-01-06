@@ -30,7 +30,7 @@ quicksort:
 	addi $t0, $zero, 1
 	add $s2, $zero, $t0
 	sle $t0, $s0, $s1
-	beqz $t0, senao_56990464
+	beqz $t0, senao_105870592
 
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -48,9 +48,9 @@ quicksort:
 	addi $sp, $sp, 52
 
 	jr $ra
-	j exit_if_56990464
-	senao_56990464:
-	exit_if_56990464:
+	j exit_if_105870592
+	senao_105870592:
+	exit_if_105870592:
 	addi $t0, $zero, 1
 	sub $t1, $s1, $t0
 	add $s3, $zero, $t1
@@ -62,13 +62,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	add $s5, $zero, $t0
-	j enquantot_56922288
-	enquantoc_56922288:
-	enquantoc_56942688:
+	j enquantot_105938768
+	enquantoc_105938768:
+	enquantoc_105918368:
 	addi $t0, $zero, 1
 	add $t1, $s3, $t0
 	add $s3, $zero, $t1
-	enquantot_56942688:
+	enquantot_105918368:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -76,12 +76,12 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	slt $t1, $t0, $s5
-	bnez $t1, enquantoc_56942688
-	enquantoc_56942784:
+	bnez $t1, enquantoc_105918368
+	enquantoc_105918272:
 	addi $t0, $zero, 1
 	sub $t1, $s4, $t0
 	add $s4, $zero, $t1
-	enquantot_56942784:
+	enquantot_105918272:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s4
 	la $t0, a
@@ -89,13 +89,13 @@ quicksort:
 	add $t2, $t2, $t0
 	lw $t0, 0($t2)
 	sgt $t1, $t0, $s5
-	bnez $t1, enquantoc_56942784
+	bnez $t1, enquantoc_105918272
 	sge $t0, $s3, $s4
-	beqz $t0, senao_56943008
+	beqz $t0, senao_105918048
 	addi $t0, $zero, 0
 	add $s2, $zero, $t0
-	j exit_if_56955504
-	senao_56943008:
+	j exit_if_105905552
+	senao_105918048:
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -121,9 +121,9 @@ quicksort:
 	sll $t2, $t1, 2
 	add $t2, $t2, $t0
 	sw $s6, 0($t2)
-	exit_if_56955504:
-	enquantot_56922288:
-	bnez $s2, enquantoc_56922288
+	exit_if_105905552:
+	enquantot_105938768:
+	bnez $s2, enquantoc_105938768
 	addi $t0, $zero, 1
 	mul $t1, $t0, $s3
 	la $t0, a
@@ -183,19 +183,19 @@ main:
 	addi $t0, $zero, 0
 	la $t1, max
 	sw $t0, 0($t1)
-	j enquantot_56786544
-	enquantoc_56786544:
+	j enquantot_106074512
+	enquantoc_106074512:
 	.data
-		string_56818000: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
+		string_106043056: .asciiz "Entre com o tamanho do vetor (valor entre 1 e 100): "
 	.text
-	la $a0, string_56818000
+	la $a0, string_106043056
 	addi $v0, $zero, 4
 	syscall
 	addi $v0, $zero, 5
 	syscall
 	la $t0, max
 	sw $v0, 0($t0)
-	enquantot_56786544:
+	enquantot_106074512:
 	la $t0, max
 	lw $t1, 0($t0)
 	addi $t0, $zero, 0
@@ -205,21 +205,21 @@ main:
 	addi $t0, $zero, 100
 	sgt $t3, $t1, $t0
 	addi $t0, $zero, 1
-	beq $t0, $t2, ou_56818944
-	beq $t0, $t3, ou_56818944
+	beq $t0, $t2, ou_106042112
+	beq $t0, $t3, ou_106042112
 	addi $t0, $zero, 0
-	ou_56818944:
-	bnez $t0, enquantoc_56786544
+	ou_106042112:
+	bnez $t0, enquantoc_106074512
 	addi $t0, $zero, 0
 	add $s1, $zero, $t0
-	j parat_56786640
-	parac_56786640:
+	j parat_106074416
+	parac_106074416:
 	addi $t0, $zero, 1
 	add $t1, $s1, $t0
 	.data
-		string_56757728: .asciiz "Entre com o valor da posicao "
+		string_106103328: .asciiz "Entre com o valor da posicao "
 	.text
-	la $a0, string_56757728
+	la $a0, string_106103328
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t1
@@ -242,11 +242,11 @@ main:
 	sw $s2, 0($t2)
 	add $t0, $zero, $s1
 	addi $s1, $s1, 1
-	parat_56786640:
+	parat_106074416:
 	la $t1, max
 	lw $t2, 0($t1)
 	slt $t1, $s1, $t2
-	bnez $t1, parac_56786640
+	bnez $t1, parac_106074416
 	addi $t1, $zero, 0
 	add $a1, $zero, $t1
 	la $t1, max
@@ -258,8 +258,8 @@ main:
 	add $t1, $zero, $v0
 	addi $t2, $zero, 0
 	add $s1, $zero, $t2
-	j parat_56786832
-	parac_56786832:
+	j parat_106074224
+	parac_106074224:
 	addi $t2, $zero, 1
 	mul $t3, $t2, $s1
 	la $t2, a
@@ -267,9 +267,9 @@ main:
 	add $t4, $t4, $t2
 	lw $t2, 0($t4)
 	.data
-		string_56751856: .asciiz ""
+		string_106109200: .asciiz ""
 	.text
-	la $a0, string_56751856
+	la $a0, string_106109200
 	addi $v0, $zero, 4
 	syscall
 	add $a0, $zero, $t2
@@ -283,15 +283,15 @@ main:
 	syscall
 	add $t2, $zero, $s1
 	addi $s1, $s1, 1
-	parat_56786832:
+	parat_106074224:
 	la $t3, max
 	lw $t4, 0($t3)
 	slt $t3, $s1, $t4
-	bnez $t3, parac_56786832
+	bnez $t3, parac_106074224
 	.data
-		string_56788128: .asciiz "\n"
+		string_106072928: .asciiz "\n"
 	.text
-	la $a0, string_56788128
+	la $a0, string_106072928
 	addi $v0, $zero, 4
 	syscall
 	addi $t3, $zero, 0
