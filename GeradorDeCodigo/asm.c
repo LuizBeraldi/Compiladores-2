@@ -26,8 +26,7 @@ int obRegT(){
 }
 
 void imprimirComeco(){
-    printf(".text\n");
-    printf(".globl main\n\n");
+    printf(".text\n.globl main\n\n");
 }
 
 int constante(int valor){
@@ -111,9 +110,7 @@ void atribuicaoParaReg(int tipoDir, int regDir, int regEsq){
 }
 
 int declararString(char *nome, char *valor){
-    printf("\t.data\n");
-    printf("\t\t%s: .asciiz \"%s\"\n", nome, valor);
-    printf("\t.text\n");
+    printf("\t.data\n\t\t%s: .asciiz \"%s\"\n\t.text\n", nome, valor);
 
     int s = obRegS();
 
@@ -126,10 +123,7 @@ int atribuicaoEndereco(int tipoEsq, int regEsq, char *nome){
     if(regEsq == -1){
         regEsq = obRegS();
     }
-    printf("\t.data\n");
-    printf("\t\t%s: .word 0\n", nome);
-    printf("\t.text\n");
-    printf("\tla $s%d, %s\n", regEsq, nome);
+    printf("\t.data\n\t\t%s: .word 0\n\t.text\n\tla $s%d, %s\n", nome, regEsq, nome);
 
     return regEsq;
 }
@@ -221,8 +215,7 @@ int eLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
     printf("\taddi $t%d, $zero, 0\n", t);
     printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq, "e_", labelID);
     printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoDir == 0 ? 't' : 's', regDir, "e_", labelID);
-    printf("\taddi $t%d, $zero, 1\n", t);
-    printf("\t%s%d:\n", "e_", labelID);
+    printf("\taddi $t%d, $zero, 1\n\t%s%d:\n", t, "e_", labelID);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
@@ -241,8 +234,7 @@ int ouLogico(int tipoEsq, int regEsq, int tipoDir, int regDir, int labelID){
     printf("\taddi $t%d, $zero, 1\n", t);
     printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoEsq == 0 ? 't' : 's', regEsq, "ou_", labelID);
     printf("\tbeq $t%d, $%c%d, %s%d\n", t, tipoDir == 0 ? 't' : 's', regDir, "ou_", labelID);
-    printf("\taddi $t%d, $zero, 0\n", t);
-    printf("\t%s%d:\n", "ou_", labelID);
+    printf("\taddi $t%d, $zero, 0\n\t%s%d:\n", t, "ou_", labelID);
 
     if(tipoEsq == 0){
         regT[regEsq] = 0;
