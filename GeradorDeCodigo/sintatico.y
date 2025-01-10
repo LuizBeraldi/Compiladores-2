@@ -110,10 +110,10 @@ Programa *AST = NULL;
 %type <param> Param
 %type <cmd> ListaComandos
 %type <cmd> Comandos
-%type <cmd> AuxElse
-%type <expr> AuxReturn
-%type <expr> AuxPrint
-%type <token> SemiColunS
+%type <cmd> AuxSeNao
+%type <expr> AuxRetorno
+%type <expr> AuxImprimir
+%type <token> SemiColunas
 %type DeclaracoesLocais
 %type Ptr
 
@@ -354,7 +354,7 @@ DeclaracoesLocais: VARIABLE COLON ID TYPE COLON TipoVar { ptrCont = 0; } Ptr Che
 Ptr: MULTIPLY Ptr { ptrCont++; }
     | { } ;
 
-ListaComandos: Comandos SemiColunS ListaComandos {       
+ListaComandos: Comandos SemiColunas ListaComandos {       
         Comando *cmd = $1;
         while (cmd->prox != NULL){
             cmd = cmd->prox;
@@ -364,31 +364,31 @@ ListaComandos: Comandos SemiColunS ListaComandos {
     }
     | { $$ = NULL; } ;
 
-Comandos: IF L_PAREN Expressao COMMA Comandos AuxElse R_PAREN SemiColunS Comandos {
+Comandos: IF L_PAREN Expressao COMMA Comandos AuxSeNao R_PAREN SemiColunas Comandos {
         Comando *cmd = criarSe($3, $5, $6, $9);
         $$ = cmd;
     }
-    | DO_WHILE L_PAREN Comandos COMMA Expressao R_PAREN SemiColunS Comandos {
+    | DO_WHILE L_PAREN Comandos COMMA Expressao R_PAREN SemiColunas Comandos {
         Comando *cmd = criarFaçaEnquanto($5, $3, $8);
         $$ = cmd;
     }
-    | WHILE L_PAREN Expressao COMMA Comandos R_PAREN SemiColunS Comandos {
+    | WHILE L_PAREN Expressao COMMA Comandos R_PAREN SemiColunas Comandos {
         Comando *cmd = criarEnquanto($3, $5, $8);
         $$ = cmd;
     }
-    | FOR L_PAREN Expressao COMMA Expressao COMMA Expressao COMMA Comandos R_PAREN SemiColunS Comandos {
+    | FOR L_PAREN Expressao COMMA Expressao COMMA Expressao COMMA Comandos R_PAREN SemiColunas Comandos {
         Comando *cmd = criarPara($3, $5, $7, $9, $12);
         $$ = cmd;
     }
-    | PRINTF L_PAREN STRING AuxPrint R_PAREN SemiColunS Comandos {
+    | PRINTF L_PAREN STRING AuxImprimir R_PAREN SemiColunas Comandos {
         Comando *cmd = criarImprimir($3.valor, $4, $7);
         $$ = cmd;
     }
-    | SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemiColunS Comandos {
+    | SCANF L_PAREN STRING COMMA BITWISE_AND L_PAREN ID R_PAREN R_PAREN SemiColunas Comandos {
         Comando *cmd = criarScan($3.valor, $7.valor, $11);
         $$ = cmd;
     }
-    | RETURN L_PAREN AuxReturn R_PAREN Comandos {
+    | RETURN L_PAREN AuxRetorno R_PAREN Comandos {
         Comando *cmd = criarReturn($3, $5);
         $$ = cmd;
     }
@@ -396,25 +396,25 @@ Comandos: IF L_PAREN Expressao COMMA Comandos AuxElse R_PAREN SemiColunS Comando
         Comando *cmd = criarExit($3, $5);
         $$ = cmd;
     } 
-    | Expressao SemiColunS Comandos {
+    | Expressao SemiColunas Comandos {
         Comando *cmd = criarComandoExpressao($1, $3);
         $$ = cmd;
     } 
     | { $$ = NULL; };
 
-AuxElse: COMMA Comandos { $$ = $2; }
+AuxSeNao: COMMA Comandos { $$ = $2; }
     | { $$ = NULL; } ;
 
-AuxPrint: COMMA Expressao AuxPrint {
+AuxImprimir: COMMA Expressao AuxImprimir {
         $2->proxExpr = $3;
         $$ = $2;
     }
     | { $$ = NULL; } ;
 
-AuxReturn: Expressao { $$ = $1; }
+AuxRetorno: Expressao { $$ = $1; }
     | { $$ = NULL; } ;
 
-SemiColunS: SEMICOLON { }
+SemiColunas: SEMICOLON { }
     | { } ;
 
 %%

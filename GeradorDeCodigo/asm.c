@@ -1,5 +1,11 @@
 #include "asm.h"
 
+//TESTES RAPIDOS
+//./gerador < entradas.gerador/quicksort.txt > saidas.gerador/quicksort.asm 
+//./gerador < entradas.gerador/fatorial.txt > saidas.gerador/fatorial.asm
+//./gerador < entradas.gerador/triangulo.txt > saidas.gerador/triangulo.asm 
+//./gerador < entradas.gerador/comparacao.txt > saidas.gerador/comparacao.asm 
+
 int regS[8] = {0, 0, 0, 0, 0, 0, 0, 0}, regT[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 char *definirDeclaracoes = NULL, *atribuicaoGlobal = NULL;
