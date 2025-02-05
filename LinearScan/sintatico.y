@@ -137,17 +137,17 @@ int main(){
 
         if(qntSpills != 0){
             sprintf(auxStr, "\nK = %d: SPILL on interation(s): ", k);
-            int rep = 0;
+            int a = 0;
 
-            for(int s = 0; s < l->tam; s++){
-                if(spills[s] == 0){
+            for(int b = 0; b < l->tam; b++){
+                if(spills[b] == 0){
                     continue;
                 }
                 char *numStr = calloc(5, sizeof(char));
-                rep++;
-                sprintf(numStr, "%d", s);
+                a++;
+                sprintf(numStr, "%d", b);
 
-                if(rep != qntSpills){
+                if(a != qntSpills){
                     strcat(auxStr, numStr);
                     strcat(auxStr, ", ");
                 }else{
